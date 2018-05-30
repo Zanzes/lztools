@@ -17,6 +17,7 @@ class BSSession(object):
     _os = None
     _browser_console_logs_url = None
     _browser = None
+    _date = None
 
     @property
     def status(self):
@@ -143,4 +144,11 @@ class BSSession(object):
     @browser.setter
     def browser(self, value):
         self._browser = value
+
+    @property
+    def date(self):
+        return self._date
+    @date.setter
+    def date(self, value):
+        self._date = value
 

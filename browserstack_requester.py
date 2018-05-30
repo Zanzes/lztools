@@ -1,4 +1,6 @@
 import json
+from datetime import datetime
+
 import requests
 
 from BSSession import BSSession
@@ -31,6 +33,11 @@ class BrowserStack(object):
         jr = self._get_json(url)
         for sessions in jr:
             for key in sessions:
+                n = sessions[key]["name"]
+                if n != "":
+                    sessions[key]["date"] = datetime.strptime(n, "%Y %m %d %H:%M:%S.%f")
+                else:
+                    sessions[key]["date"] = datetime(0001, 1, 1)
                 bss = BSSession()
                 init_data_object(bss, sessions[key])
                 yield bss
@@ -58,5 +65,5 @@ class BrowserStack(object):
 
 bs = BrowserStack()
 
-for x in bs.get_sessions():
-    print(x.hashed_id)
+for x in sorted(bs.get_sessions(), key=lambda x: x.date):
+    print(x.date)
