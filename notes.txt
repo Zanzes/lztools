@@ -1,0 +1,9 @@
+HipChat:            https://mirrobot.hipchat.com/chat
+Cloud Sim:          http://nikolajsim2.f168ae4e.svc.dockerapp.io/
+Jira Test Board:    https://mirrobot.atlassian.net/secure/RapidBoard.jspa?rapidView=11&view=detail&selectedIssue=TEST-80
+Confluence:         https://mirrobot.atlassian.net/wiki/spaces/MD/pages/77398123/Test+facility+at+Teglv+rksvej+47H
+
+
+
+
+

@@ -1,18 +1,13 @@
 import os
 
-path = os.path.dirname(os.path.realpath(__file__))
+class A(object):
+    y = "success"
 
-print os.getcwd()
-print path
+    def __getitem__(self, item):
+        if item == "x":
+            return self.y
+        return super(A, self).__getitem__(item)
 
-os.chdir(path)
+a = A()
 
-print os.getcwd()
-
-import target
-
-print target.x
-
-with open("target.txt", "r+") as f:
-    print f.readlines()
-
+print(a["x"])
