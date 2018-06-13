@@ -1,11 +1,18 @@
 #!/bin/bash
 
+original=$(pwd)
+rfile=$(realpath "$0")
+rdir=$(dirname $rfile)
+cd $rdir
+
 args=""
 
 if [[ $1 == "-f" || $2 == "-f" ]]; then
     args="-f"
 fi
 
-for x in $(ls $(dirname $(realpath $0)));do
-    link-command $x $args
+for x in $(ls $rdir);do
+    $rdir/link-command $x $args
 done
+
+cd $original
