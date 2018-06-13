@@ -43,7 +43,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -132,7 +132,10 @@ alias rm='rm -v'
 #alias poweroff='sudo poweroff'
 alias cc='clear'
 
-export PS1="\[$(tput bold)\]\[$(tput setaf 1)\]\u@\h \[$(tput setaf 2)\]\d \[$(tput setaf 4)\]\A \[$(tput setaf 6)\]\# \[$(tput setaf 5)\]\! \[$(tput setaf 3)\]\w\[$(tput setaf 7)\]\n\\$> \[$(tput sgr0)\]"
+
+branch='$(bashbranch)'
+
+export PS1="\[$(tput setaf 7)\]$branch\[$(tput bold)\]\[$(tput setaf 1)\]\u@\h \[$(tput setaf 2)\]\d \[$(tput setaf 4)\]\A \[$(tput setaf 6)\]\# \[$(tput setaf 5)\]\!  \[$(tput setaf 3)\]\w\[$(tput setaf 7)\]\n\\$> \[$(tput sgr0)\]"
 
 alias poweroff='systemctl poweroff'
 alias reboot='systemctl reboot'
@@ -145,8 +148,6 @@ alias gg1="git log --graph --abbrev-commit --decorate --format=format:'%C(bold b
 alias gg2="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 alias gg3="git log --all --decorate --oneline --graph"
 alias docker="sudo docker"
-
-
 
 
 
