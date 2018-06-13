@@ -1,0 +1,10 @@
+#!/bin/bash
+
+gdata=$(git branch 2> /dev/null)
+
+if [ $? -ne 0 ]; then
+    exit
+fi
+
+branch=$(pregex "\* (.*)" "$gdata")
+echo "($branch) "
