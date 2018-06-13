@@ -1,0 +1,17 @@
+#!/bin/bash
+
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+
+if [[ $1 == "mir" || $1 == "MiR" || $1 == "MIR" ]]; then
+    workon uitesting
+    cd ~/dev/mir/
+elif [[ $1 == "script" || $1 == "scripts" ]]; then
+    workon uitesting
+    cd ~/dev/scripts/
+else
+    workon uitesting
+    cd ~/dev/mir/test/ui_tests/
+fi
+#elif [[ $1 == "ui" || $1 == "uitest" || $1 == "uitests" || $1 == "uitesting" ]]

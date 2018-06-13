@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [[ $# != 1 ]]; then
+    echo "\$1 Must be a command"
+    exit
+fi
+
+result=$(pregex "$1: (.+?\s)" "$(whereis "$1")")
+
+if [[ $result == "" ]]; then
+    echo -e $(pregex -f "\S+$1" "$(whereis $1)")
+    echo none
+else
+    echo -e $result
+    echo res
+fi
+
+
+
+
+
+
+
+#
