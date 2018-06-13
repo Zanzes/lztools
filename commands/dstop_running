@@ -2,5 +2,6 @@
 
 ids=$(sudo docker ps --format "{{.ID}}")
 for d in $(dget_running); do
-    echo "Stopping $d";
+    echo "Stopping $d"
+    sudo docker stop $d
 done
