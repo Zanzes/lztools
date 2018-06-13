@@ -1,0 +1,11 @@
+#!/bin/bash
+
+args=""
+
+if [[ $1 == "-f" || $2 == "-f" ]]; then
+    args="-f"
+fi
+
+for x in $(ls $(dirname $(realpath $0)));do
+    link-command $x $args
+done
