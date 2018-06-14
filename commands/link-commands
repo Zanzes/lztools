@@ -11,7 +11,7 @@ if [[ $1 == "-f" || $2 == "-f" ]]; then
     args="-f"
 fi
 
-for x in $(ls $rdir);do
+for x in $(ls $rdir);doyes
     if [[ $(realpath $x) != $rfile ]]; then
         $rdir/link-command $x $args
     fi
