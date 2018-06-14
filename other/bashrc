@@ -1,5 +1,7 @@
 
 
+
+
 # Laz custom
 alias cp='cp -rv'
 alias mv='mv -v'
@@ -7,6 +9,7 @@ alias rm='rm -v'
 #alias reboot='systemctl reboot'
 #alias poweroff='sudo poweroff'
 alias cc='clear'
+alias echo='echo -e'
 
 
 branch='$(bashbranch)'
