@@ -6,13 +6,14 @@ import re
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument("ITEM", type=str, default="", help="The item to search for")
-parser.add_argument("LIST", type=str, default="", help="The list to search")
+parser.add_argument("LIST", type=str, default="", help="The list to search", nargs="*")
 
 args = parser.parse_args()
 
+try:
+    if args.ITEM in args.LIST:
+        print(args.ITEM)
 
-print("Item: {}".format(args.ITEM))
-print("List: 1 {} 2".format(args.LIST))
-
-
+except:
+    pass
 
