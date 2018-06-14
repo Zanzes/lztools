@@ -34,9 +34,9 @@ shopt -s extdebug
 function auto_source_names {
     local CMD="$BASH_COMMAND"
     if [[ "$CMD" == dev-init* ]];then
-        echo "Now: $CMD"
-        w=$(lwhere dev-init)
-        source $w
+        #w=$(lwhere dev-init)
+        echo "Autosourcing"
+        eval ". $CMD"
     fi
 }
 trap 'auto_source_names' DEBUG
