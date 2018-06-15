@@ -12,8 +12,10 @@ if [[ $1 == "-f" || $2 == "-f" ]]; then
 fi
 
 for x in $(ls $rdir);do
-    if [[ $(realpath $x) != $rfile ]]; then
-        $rdir/link-command $x $args
+    if [[ $x != *.* ]]; then
+        if [[ $(realpath $x) != $rfile ]]; then
+            $rdir/link-command $x $args
+        fi
     fi
 done
 
