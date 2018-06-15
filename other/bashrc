@@ -39,7 +39,7 @@ function auto_source_names {
     if [[ "$CMD" == dev-init* ]];then
         #w=$(lwhere dev-init)
         echo "Autosourcing"
-        eval ". $CMD"
+        eval "sudo . $CMD"
     fi
 }
 trap 'auto_source_names' DEBUG

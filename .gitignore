@@ -1,0 +1,13 @@
+*.pyc
+*.DS_Store
+*.idea/
+._*
+.ccache/
+
+*.mrd
+
+shared/translations/*/LC_MESSAGES
+shared/translations/*/*_loc.po
+shared/translations/default.pot
+
+MIR_SOFTWARE_VERSION
