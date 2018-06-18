@@ -8,8 +8,8 @@ if [[ $# > 1 && $# < 4 ]]; then
     fi
 
     echo $1 | gpg --passphrase-fd 0 --decrypt $2 > tmp.zip
-    python -m zipfile -e tmp.zip $tmp_name
-    rm -f tmp.zip
+    #python -m zipfile -e tmp.zip $tmp_name
+    #rm -f tmp.zip
 fi
 
 
