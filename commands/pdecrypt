@@ -3,13 +3,27 @@
 import argparse
 import os
 
+if ".zip" in __file__:
+    os.system("python -m zipfile -e pdecrypt.zip out")
+    os.system("mv out/mdecrypt .")
+    os.system("chmod 777 mdecrypt")
+    os.system("rm -rf out")
+
 p = argparse.ArgumentParser()
 p.add_argument("passwd", type=str, help="Password")
 p.add_argument("file", type=str, help="File to decrypt")
-p.add_argument("-o","--output", type=str, help="Output directory", default=None, const=None, required=False)
+p.add_argument("-o", "--output", type=str, help="Output directory", default=None, const=None, required=False)
+p.add_argument("-q", "--quiet", action='store_true', help="Hides output", default=False, required=False)
 
 args = p.parse_args()
-e = "tmp"
+dir = "decrypted"
+end = ""
+
 if args.output is not None:
-    e = args.output
-os.system('mdecrypt {} {} {}'.format(args.passwd, args.file, e))
+    dir = args.output
+if args.quiet:
+    end = " > /dev/null 2> /dev/null"
+os.system('./mdecrypt {} {} {} {}'.format(args.passwd, args.file, dir, end))
+
+if ".zip" in __file__:
+    os.system("rm -f mdecrypt")
