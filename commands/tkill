@@ -1,0 +1,9 @@
+#!/bin/bash
+
+s=$(pregex "\d+" "$(tmux list-sessions 2> /dev/null)" -f)
+
+while [[ $s != "" ]];do
+    tmux kill-session -t $s
+    echo "$s xx"
+    s=$(pregex "\d+" "$(tmux list-sessions 2> /dev/null)" -f)
+done
