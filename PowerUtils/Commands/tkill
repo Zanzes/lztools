@@ -1,9 +1,16 @@
 #!/bin/bash
 
+usage_message="Usage: tkill [-a]\n\n-a\t\tKill all even attached tmux sessions"
+
+if [[ $# > 0 ]];then
+    if [[ $# != 1 || $1 != "-a" ]];then
+        echo -e $usage_message
+    fi
+fi
+
 s=$(pregex "\d+" "$(tmux list-sessions 2> /dev/null)" -f)
 
 while [[ $s != "" ]];do
     tmux kill-session -t $s
-    echo "$s xx"
     s=$(pregex "\d+" "$(tmux list-sessions 2> /dev/null)" -f)
 done

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ $# != 1 ]];then
+    echo "Error missing package name"
+    exit
+fi
+
+out=$(python -m pip show -V $1)
+version=$(pregex " \d+\.\d+\.\d+" "$out")
+
+echo ${version:1}

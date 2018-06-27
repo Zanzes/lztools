@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import re
+
+from PowerUtils.Text import regex
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument("EXPR", type=str, default="", help="Your regex pattern")
@@ -13,14 +14,7 @@ grp.add_argument("-a", "--All", action='store_true', default=False, help="Return
 
 args = parser.parse_args()
 
-# print "expr: {}\ntext: {}\n".format(args.EXPR, args.TEXT)
-if args.FirstOnly != False:
-    try:
-        print(re.search(args.EXPR, args.TEXT).group(0))
-    except:
-        pass
-else:
-    for x in re.findall(args.EXPR, args.TEXT):
-        print(x)
+for x in regex(args.EXPR, args.TEXT, args.FirstOnly, suppress=True):
+    print(x)
 
 

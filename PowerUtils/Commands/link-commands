@@ -13,7 +13,8 @@ fi
 
 for x in $(ls $rdir);do
     if [[ $x != *.* ]]; then
-        if [[ $(realpath $x) != $rfile ]]; then
+        rp=$(realpath $x)
+        if [[ $rp != $rfile && "$(dirname $rp)/__init__.py" != $rfile ]]; then
             $rdir/link-command $x $args
         fi
     fi
