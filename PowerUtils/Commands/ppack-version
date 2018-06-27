@@ -1,13 +1,12 @@
 #!  /usr/bin/env python
 # -*- coding: utf-8 -*-
 import argparse
-import os
+
+from PowerUtils.Modules import get_version_online
 
 p = argparse.ArgumentParser()
 p.add_argument("Name", type=str, help="Name of the pip module")
 
 args = p.parse_args()
-e = "tmp"
-if args.output is not None:
-    e = args.output
-os.system('mdecrypt {} {} {}'.format(args.passwd, args.file, e))
+
+print get_version_online(args.Name)

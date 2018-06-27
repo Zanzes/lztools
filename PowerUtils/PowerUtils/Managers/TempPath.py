@@ -10,6 +10,7 @@ class TempPath(object):
 
     def __enter__(self):
         os.chdir(self.new_path)
+        return self.new_path
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         os.chdir(self.original_path)

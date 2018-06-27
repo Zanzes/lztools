@@ -4,13 +4,13 @@
 import argparse
 import re
 
-from PowerUtils.PowerDev import install_module
+from PowerUtils.Modules import install
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument("Path", type=str, default=None, help="Path to module")
-parser.add_argument("-u", "--upload", type=str, default=None, help="Upload module to PyPy")
+parser.add_argument("-u", "--upload", action='store_true', default=False, help="Upload module to PyPy")
 
 args = parser.parse_args()
 
-install_module(args.Path)
+install(args.Path, upload=args.upload)
 

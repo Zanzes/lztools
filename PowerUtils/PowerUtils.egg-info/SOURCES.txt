@@ -14,6 +14,7 @@ Commands/mdecrypt
 Commands/pdecrypt
 Commands/pinstall-cm
 Commands/pitemInList
+Commands/ppack-version
 Commands/ppjsonfile
 Commands/pregex
 Commands/ptest
@@ -22,7 +23,7 @@ Commands/search-bash-history
 Commands/tkill
 PowerUtils/Ansi.py
 PowerUtils/Input.py
-PowerUtils/PowerDev.py
+PowerUtils/Modules.py
 PowerUtils/Text.py
 PowerUtils/__init__.py
 PowerUtils.egg-info/PKG-INFO

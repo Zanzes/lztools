@@ -1,14 +1,16 @@
 import re
 
-def regex(expr, text, first=False, suppress=False):
-    if first:
+def regex(expr, text, only_first=False, suppress=False):
+    if only_first:
         if suppress:
             try:
-                yield re.search(expr, text).group(0)
+                return re.search(expr, text).group(0)
             except:
                 pass
         else:
-            yield re.search(expr, text).group(0)
+            return re.search(expr, text).group(0)
     else:
-        for x in re.findall(expr, text):
-            yield x
+        return (x for x in re.findall(expr, text))
+
+def extract_module_version(text):
+    return regex(" \d+\.\d+\.\d+", text, only_first=True)[1:]
