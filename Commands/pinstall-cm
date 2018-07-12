@@ -4,7 +4,7 @@
 import argparse
 import re
 
-from PowerUtils.Modules import install
+from lztools.Modules import install
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument("Path", type=str, default=None, help="Path to module")

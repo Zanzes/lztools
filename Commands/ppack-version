@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 
-from PowerUtils.Modules import get_version_online
+from lztools.Modules import get_version_online
 
 p = argparse.ArgumentParser()
 p.add_argument("Name", type=str, help="Name of the pip module")

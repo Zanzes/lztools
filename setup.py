@@ -10,24 +10,21 @@ except LookupError:
     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
     codecs.register(func)
 
-orig = os.getcwd()
-np = os.path.dirname(os.path.realpath(__file__))
-
-os.chdir(np)
-scripts = []
-for x in os.listdir("Commands"):
-    scripts.append("Commands/{}".format(x))
-
 setup(
-    name='PowerUtils',
-    version='1.0.4',
-    packages=['PowerUtils', 'PowerUtils.Managers'],
-    scripts=scripts,
-    url='',
-    license='MIT License',
+    name='lztools',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
+    version='1.0.5',
+    license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
+    url='',
+    entry_points={
+        'console_scripts': [
+            'lztools = lztools.console:main',
+        ],
+    },
+    install_requires=['flickrapi'],
+    packages=['lztools', 'lztools.Managers', 'lztools.Data', 'lztools.Junk'],
     zip_safe=False,
     classifiers=[  # Optional
         # How mature is this project? Common values are
@@ -52,6 +49,6 @@ setup(
         # 'Programming Language :: Python :: 3.5',
         # 'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-    ]
+    ],
 )
-os.chdir(orig)
+

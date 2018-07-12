@@ -3,8 +3,8 @@
 import os
 import subprocess
 
-from PowerUtils.Managers import TempPath
-from PowerUtils.Text import extract_module_version
+from lztools.Managers import TempPath
+from lztools.Text import extract_module_version
 
 def install(path, upload=False):
     output_func = _upload if upload else None

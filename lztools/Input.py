@@ -1,5 +1,6 @@
 import sys
 
+from lztools.console import main
 import Ansi
 
 def add_stdin_arg(name, parser):

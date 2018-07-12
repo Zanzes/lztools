@@ -3,7 +3,7 @@
 
 import argparse
 
-from PowerUtils.Text import regex
+from lztools.Text import regex
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument("EXPR", type=str, default="", help="Your regex pattern")
