@@ -20,6 +20,7 @@ Commands/pregex
 Commands/ptest
 Commands/ptkill
 Commands/search-bash-history
+Commands/split-lines.sh
 Commands/tkill
 PowerUtils/Ansi.py
 PowerUtils/Input.py

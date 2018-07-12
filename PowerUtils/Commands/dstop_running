@@ -1,7 +1,33 @@
 #!/bin/bash
 
-ids=$(sudo docker ps --format "{{.ID}}")
-for d in $(dget_running); do
-    echo "Stopping $d"
-    sudo docker stop $d
+if [[ $# > 1 ]];then
+    echo "Does not understand arguments"
+    exit
+fi
+
+ids=$(sudo docker ps --format "{{.ID}} {{.Names}} {{.Image}}")
+x=0
+echo "$ids" | while IFS= read -r line ; do
+    l=$line
+    re='^[0-9]+$'
+    if [[ $1 == "-q" ]];then
+        pre=""
+    elif [[ $1 == "-i" ]];then
+        pre=""
+        l=$(echo $line | cut -d" " -f1)
+    elif [[ $1 =~ $re ]] ; then
+        if [[ $1 == $x ]];then
+            pre=""
+            l=$(echo $line | cut -d" " -f1)
+        else
+            pre=""
+            l=""
+        fi
+    else
+        pre="$x: "
+    fi
+    if [[ $l != "" ]];then
+        echo "$pre$l"
+    fi
+    let x++
 done

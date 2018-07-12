@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: PowerUtils
-Version: 1.0.3
+Version: 1.0.4
 Summary: A collection of useful utilities by Laz aka Zanzes
 Home-page: UNKNOWN
 Author: Laz aka Zanzes
@@ -12,4 +12,4 @@ Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
 Classifier: Topic :: System :: Systems Administration
 Classifier: License :: OSI Approved :: MIT License
-Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.7

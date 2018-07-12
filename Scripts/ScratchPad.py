@@ -1,14 +1,9 @@
-import os
+#!  /usr/bin/env python
+import progressbar
+import time
 
-t = "python setup.py -V"
+import sys
 
-s = t.replace("    ", " ").replace("   ", " ").replace("  ", " ").replace(" ", " ").split(" ")
-
-x = ""
-
-
-for y in s:
-    x += '"{}", '.format(y)
-x = x.rstrip(", ")
-os.system('echo \'{}\' | xclip -selection c'.format(x))
-#print(x)
+for i in progressbar.progressbar(range(100), redirect_stdout=True, redirect_stderr=True):
+    print(i, file=sys.stderr)
+    time.sleep(0.1)
