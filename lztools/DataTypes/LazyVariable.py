@@ -1,9 +1,20 @@
 import sys
+from functools import partial
+
 import zope.proxy
+
+def super_property(func):
+    def executor(f, key):
+        return f()
+    class _M(object):
+        y = property(partial(executor, func))
+    _m = _M()
+    return _m.y
 
 class LazyVariable(object):
     value = None
     value_loaded = False
+
 
     def __init__(self, specifier):
         self.specifier = specifier
@@ -64,6 +75,9 @@ def define(name, func):
     module = initialize(2)
     # name = get_variable_name()
     __deferred_definitions__ = module.__deferred_definitions__
+    print(module.__name__)
+    print(dir(module))
+#    sys.modules[""]
     __deferred_definitions__[name] = LazyVariable(func)
 
 #

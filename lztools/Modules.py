@@ -3,8 +3,11 @@
 import os
 import subprocess
 
-from lztools.Managers import TempPath
-from lztools.Data.Text import extract_module_version
+from lztools.Data.Text import regex
+from lztools.Managers.TempPath import TempPath
+
+def extract_module_version(text):
+    return regex(" \d+\.\d+\.\d+", text, only_first=True)[1:]
 
 def install(path, upload=False):
     output_func = _upload if upload else None
@@ -42,7 +45,6 @@ def get_version_online(name):
 def get_version(path):
     with TempPath(path) as rp:
         return subprocess.check_output(["python", "setup.py", "-V"]).rstrip("\n")
-
 
 
 

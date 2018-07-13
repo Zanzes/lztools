@@ -1,11 +1,9 @@
 import inspect
-
 import gc
-from inspect import getfile
 
 def get_variable_name():
     f = inspect.currentframe().f_back.f_back
-    filename = getfile(f)
+    filename = inspect.getfile(f)
     code_line = open(filename).readlines()[f.f_lineno - 1]
     assigned_variable = code_line.split("=")[0].strip()
     return assigned_variable
