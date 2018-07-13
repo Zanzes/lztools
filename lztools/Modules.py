@@ -4,7 +4,7 @@ import os
 import subprocess
 
 from lztools.Managers import TempPath
-from lztools.Text import extract_module_version
+from lztools.Data.Text import extract_module_version
 
 def install(path, upload=False):
     output_func = _upload if upload else None

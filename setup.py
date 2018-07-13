@@ -23,7 +23,7 @@ setup(
             'lztools = lztools.console:main',
         ],
     },
-    install_requires=['flickrapi'],
+    install_requires=['flickrapi', 'zope.proxy'],
     packages=['lztools', 'lztools.Managers', 'lztools.Data', 'lztools.Junk'],
     zip_safe=False,
     classifiers=[  # Optional
