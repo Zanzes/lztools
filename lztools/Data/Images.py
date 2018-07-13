@@ -1,5 +1,7 @@
 import argparse
 from builtins import map
+from functools import partial
+from types import GeneratorType
 
 import flickrapi
 
@@ -20,24 +22,27 @@ def handle_args():
     return args
 
 def load_url(photo):
-    return sorted([add_total(i) for i in auth().photos_getSizes(photo_id=photo["id"], secret=photo["secret"])["sizes"]["size"]], key=lambda x: x["total"]).pop()
+    sizes = auth().photos_getSizes(photo_id=photo["id"], secret=photo["secret"])
+    return sorted([add_total(i) for i in sizes["sizes"]["size"]], key=lambda x: x["total"]).pop()
 
 def search(term, count=1, verbose=False):
     photos = auth().photos_search(text=term, safe_search=3, per_page=count)["photos"]["photo"]
     return get_outputs(map(load_url, photos), verbose)
 
-def get_random_image(count=1, verbose=False):
-    words = [get_random_word() for _ in range(count)]
-    res = map(search, words, [1 for x in range(count)])
-    return get_outputs(res, verbose)
+def get_random_image(verbose=False):
+    while True:
+        res = search(get_random_word(), count=1, verbose=verbose)
+        for x in res:
+            if x != "" and x is not None:
+                return x
 
 def get_outputs(images, verbose):
     for x in images:
-        if isinstance(x, map):
+        if isinstance(x, GeneratorType):
             for y in x:
-                get_output(y, verbose)
+                yield get_output(y, verbose)
         else:
-            get_output(x, verbose)
+            yield get_output(x, verbose)
 
 def get_output(image, verbose=False):
     if verbose:

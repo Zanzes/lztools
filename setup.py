@@ -14,7 +14,7 @@ setup(
     name='lztools',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.0.5',
+    version='1.0.6',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',
@@ -23,8 +23,8 @@ setup(
             'lztools = lztools.console:main',
         ],
     },
-    install_requires=['flickrapi', 'zope.proxy'],
-    packages=['lztools', 'lztools.Managers', 'lztools.Data', 'lztools.Junk'],
+    install_requires=['flickrapi', 'zope.proxy', 'click'],
+    packages=['lztools', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk'],
     zip_safe=False,
     classifiers=[  # Optional
         # How mature is this project? Common values are
