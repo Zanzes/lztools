@@ -1,11 +1,10 @@
+#!/usr/bin/env python3
 import argparse
 from builtins import map
 from functools import partial
 from types import GeneratorType
 
 import flickrapi
-
-from lztools.Data.Text import get_random_word
 
 def auth():
     return flickrapi.FlickrAPI("2a41e37e58cd08c0dbd5af131441dca0", "72c6a92f49f48f9e", format="parsed-json")
@@ -21,20 +20,13 @@ def handle_args():
     args = parser.parse_args()
     return args
 
-def load_url(photo):
-    sizes = auth().photos_getSizes(photo_id=photo["id"], secret=photo["secret"])
-    return sorted([add_total(i) for i in sizes["sizes"]["size"]], key=lambda x: x["total"]).pop()
-
 def search(term, count=1, verbose=False):
-    photos = auth().photos_search(text=term, safe_search=3, per_page=count)["photos"]["photo"]
-    return get_outputs(map(load_url, photos), verbose)
+    photos = auth().photos_search(text=term, safe_search=3, per_page=count, extras="url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o")["photos"]["photo"]
+    return map(partial(get_output, verbose=verbose), photos)
 
-def get_random_image(verbose=False):
-    while True:
-        res = search(get_random_word(), count=1, verbose=verbose)
-        for x in res:
-            if x != "" and x is not None:
-                return x
+def get_random_image(verbose=False, count=1):
+    photos = auth().photos.getRecent(per_page=count, extras="url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o")["photos"]["photo"]
+    return map(partial(get_output, verbose=verbose), photos)
 
 def get_outputs(images, verbose):
     for x in images:
@@ -46,7 +38,11 @@ def get_outputs(images, verbose):
 
 def get_output(image, verbose=False):
     if verbose:
-        s = u"Title: {}\nUrl: {}\nSource: {}".format(image["title"], image["url"], image["source"])
+        return u"Title: {}\nUrl: {}".format(image["title"], image["url_o"])
     else:
-        s = image["source"]
-    return s
+        try:
+            return image["url_o"]
+        except:
+            for k in image:
+                if k.startswith("url") and image[k][-6] != "_":
+                    return image[k]

@@ -1,9 +1,8 @@
-from builtins import map
-
+#!/usr/bin/env python3
+import random as rand
 import click
-import collections
-
 import lztools.Data.Images
+from lztools.Data.Text import get_random_word, search_words
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -11,22 +10,44 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 def main():
     """A collection of python tools and bash commands by laz aka nea"""
 
+if __name__ == '__main__':
+    main()
+
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-c", "--count", default=1)
-@click.option("-s", "--search", default=None)
 @click.option("-v/-q", "--verbose/--quiet", default=False)
+@click.argument("search", default="")
 def picture(count, search, verbose):
-    if search is not None:
+    if search is not None and search != "":
         res = lztools.Data.Images.search(search, count, verbose=verbose)
         for x in res:
             print(x)
     else:
-        for _ in range(count):
-            print(lztools.Data.Images.get_random_image(verbose=verbose))
+        res = lztools.Data.Images.get_random_image(verbose=verbose, count=count)
+        for x in res:
+            print(x)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
-def text():
+@click.option("-r", "--random", is_flag=True, default=False)
+@click.option("-s", "--strict", is_flag=True, default=False)
+@click.argument("search", default="")
+def text(random, strict, search):
     """Get or generate text"""
+    if random and search == "":
+        print(get_random_word())
+    else:
+        res = search_words(search, strict=strict)
+        if random:
+            print(rand.choice(list(res)))
+        else:
+            for w in res:
+                print(w)
+
+@main.group(context_settings=CONTEXT_SETTINGS)
+def ascii():
+    """fun"""
+
+
 
 
 

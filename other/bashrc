@@ -45,3 +45,6 @@ export mserv=$ip
 export MediaServer=$ip
 
 export BROWSER=lynx
+
+# lztools auto-completion
+eval "$(_LZTOOLS_COMPLETE=source lztools)"

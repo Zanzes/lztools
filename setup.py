@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
 import codecs
 import os
 
 from setuptools import setup
+
+from Resources.Requirements import pip_requires
 
 try:
     codecs.lookup('mbcs')
@@ -23,8 +26,8 @@ setup(
             'lztools = lztools.console:main',
         ],
     },
-    install_requires=['flickrapi', 'zope.proxy', 'click'],
-    packages=['lztools', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk'],
+    install_requires=pip_requires,
+    packages=['lztools', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk', 'Resources'],
     zip_safe=False,
     classifiers=[  # Optional
         # How mature is this project? Common values are

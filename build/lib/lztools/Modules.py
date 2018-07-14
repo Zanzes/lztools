@@ -1,7 +1,9 @@
-#!  /usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
 import subprocess
+
+import pip
 
 from lztools.Data.Text import regex
 from lztools.Managers.TempPath import TempPath
@@ -9,7 +11,7 @@ from lztools.Managers.TempPath import TempPath
 def extract_module_version(text):
     return regex(" \d+\.\d+\.\d+", text, only_first=True)[1:]
 
-def install(path, upload=False):
+def local_install(path, upload=False):
     output_func = _upload if upload else None
     _install(path, output_func)
 
@@ -46,7 +48,8 @@ def get_version(path):
     with TempPath(path) as rp:
         return subprocess.check_output(["python", "setup.py", "-V"]).rstrip("\n")
 
-
+def pip_install(package):
+    pip.main(['install', package])
 
 
 

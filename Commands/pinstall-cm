@@ -4,7 +4,7 @@
 import argparse
 import re
 
-from lztools.Modules import install
+from lztools.Modules import local_install
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument("Path", type=str, default=None, help="Path to module")
@@ -12,5 +12,5 @@ parser.add_argument("-u", "--upload", action='store_true', default=False, help="
 
 args = parser.parse_args()
 
-install(args.Path, upload=args.upload)
+local_install(args.Path, upload=args.upload)
 

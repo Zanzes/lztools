@@ -18,11 +18,18 @@ def regex(expr, text, only_first=False, suppress=False):
 
 words = super_property(read_words_from_disk)
 
-# def get_all_words():
-#     global words
-#     if words is None:
-#         words = read_words_from_disk()
-#     return words
+def search_words(term, strict=False):
+    for word in words:
+        if strict:
+            if term in word:
+                yield word
+        else:
+            pas = True
+            for l in set(term):
+                if l not in word:
+                    pas = False
+            if pas:
+                yield word
 
 def get_random_word():
-    return random.choice(words)
+    return random.choice(list(words))
