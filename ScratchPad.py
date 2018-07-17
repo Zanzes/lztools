@@ -1,9 +1,8 @@
 #!  /usr/bin/env python
+import subprocess
 from functools import partial
-from multiprocessing import Process
 
-import click
-
+from lztools.Bash import run_command
 from lztools.Data.Images import get_random_image, search
 from lztools.Debugging import time_operation
 
@@ -19,37 +18,9 @@ def pi(imgs):
         print(img)
 
 if __name__ == '__main__':
-    pa = Process(target=a)
-    pb = Process(target=b)
-    pa.start()
-    pb.start()
-    pa.join()
-    pb.join()
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # pi(get_random_image())
-    # print("")
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
-    # pi(get_random_image(count=100))
+    # y = subprocess.check_output(["echo", "123"])
+    x = run_command("echo", "123\nass")
+    print(x)
 
 
 
