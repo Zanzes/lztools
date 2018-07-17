@@ -1,5 +1,10 @@
 from subprocess import check_output
 
-def run_command(name, *args):
+import os
+
+def return_command_result(name, *args):
     x = check_output([name, *args], universal_newlines=True)
     return x.strip()
+
+def execute_command(command):
+    os.system(command)

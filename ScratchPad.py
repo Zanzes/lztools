@@ -2,7 +2,7 @@
 import subprocess
 from functools import partial
 
-from lztools.Bash import run_command
+from lztools.Bash import return_command_result
 from lztools.Data.Images import get_random_image, search
 from lztools.Debugging import time_operation
 
@@ -19,7 +19,7 @@ def pi(imgs):
 
 if __name__ == '__main__':
     # y = subprocess.check_output(["echo", "123"])
-    x = run_command("echo", "123\nass")
+    x = return_command_result("echo", "123\nass")
     print(x)
 
 

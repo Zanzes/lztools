@@ -5,7 +5,8 @@ import click
 import os
 
 import lztools.Data.Images
-from lztools.Bash import run_command
+from Resources.Requirements import apt_requires
+from lztools.Bash import return_command_result, execute_command
 from lztools.Data import Text
 from lztools.Data.Text import get_random_word, search_words
 
@@ -25,9 +26,9 @@ def main():
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term", default="")
-@click.option('-t', '--type', type=click.Choice(['words', 'images']))
-@click.option("-s", "--strict", is_flag=True, default=False)
-@click.option("-m", "--max-images", default=1, type=click.IntRange(1, 500))
+@click.option('-t', '--type', type=click.Choice(['words', 'images']), help="The type of search")
+@click.option("-s", "--strict", is_flag=True, default=False, help="Indicates that letters has to appear in the same order as the do in TERM")
+@click.option("-m", "--max-images", default=1, type=click.IntRange(1, 500), help="Max number of images")
 def search(term, type, strict, max_images):
     if type == "words":
         res = search_words(term, strict=strict)
@@ -38,10 +39,10 @@ def search(term, type, strict, max_images):
             print(x)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
-@click.option('-t', '--type', type=click.Choice(['words', 'images', 'colorization']), default='images')
-@click.option("-c", "--count", default=1)
-@click.option("-nn", "--not-nocolor", is_flag=True, default=False)
-@click.argument("input", default=click.get_text_stream('stdin'))
+@click.option('-t', '--type', type=click.Choice(['words', 'images', 'colorization']), default='images', help="Random category")
+@click.option("-c", "--count", default=1, help="The number of results")
+@click.option("-nn", "--not-nocolor", is_flag=True, default=False, help="Random colorization never selects no color")
+@click.argument("input", default=click.get_text_stream('stdin'), help="The input")
 def random(type, count, not_nocolor, input):
     if type == "images":
         res = lztools.Data.Images.get_random_image(count=count)
@@ -59,7 +60,7 @@ def random(type, count, not_nocolor, input):
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("input", nargs=-1)
-@click.option("-d", "--delimiter", nargs=1)
+@click.option("-d", "--delimiter", nargs=1, help="The delimiter to split the input by")
 def split(input, delimiter):
     i = str.join("\n", input).strip()
     if delimiter:
@@ -70,17 +71,73 @@ def split(input, delimiter):
         print(x)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("Regex")
+@click.argument("start", help="The first indicator")
+@click.argument("end", help="The second indicator")
+@click.argument("Text", default=click.get_text_stream('stdin'))
+@click.option("-p", "--partial-matches", is_flag=True, default=False, help="Used if indicators are not complete lines")
+def cut(start, end, text, partial_matches):
+    p = False
+    for l in text.splitlines():
+        if partial_matches:
+            if end in l:
+                p = False
+        else:
+            if l == end:
+                p = False
+        if p:
+            print(l)
+        if partial_matches:
+            if start in l:
+                p = True
+        else:
+            if l == start:
+                p = True
+
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.argument("expr")
 @click.argument("Text", default=click.get_text_stream('stdin'))
 @click.option("-s", "--single-result", is_flag=True, default=False)
-def regex(regex, text, single_result):
+def regex(expr, text, single_result):
     input = try_read_input(text)
-    print(input, regex)
+    print(input, expr)
     if not single_result:
-        for x in Text.regex(regex, input, only_first=single_result, suppress=True):
+        for x in Text.regex(expr, input, only_first=single_result, suppress=True):
             print(x)
     else:
-        print(Text.regex(regex, input, only_first=single_result, suppress=True))
+        print(Text.regex(expr, input, only_first=single_result, suppress=True))
+
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.argument("input")
+@click.option('-t', '--type', type=click.Choice(colorizations))
+@click.option("-nn", "--not-nocolor", is_flag=True, default=False)
+def colorize(input, type, not_nocolor):
+    color(input, type, not_nocolor)
+
+def color(input, type, not_nocolor):
+    if type == 'none':
+        print(input)
+    elif type == 'rainbow':
+        print(return_command_result("toilet", "-f", "term", "--gay", input))
+    elif type == 'altbow':
+        execute_command("echo \"{}\" | lolcat".format(input))
+    elif type == 'metal':
+        print(return_command_result("toilet", "-f", "term", "--metal", input))
+
+@main.command(context_settings=CONTEXT_SETTINGS)
+def install():
+    execute_command("sudo apt install -y {}".format(str.join(" ", apt_requires)))
+
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.option('-o', '--operation', type=click.Choice(["bashrc", "autosource"]))
+def bash(operation):
+
+    pass
+
+if __name__ == '__main__':
+    main()
+
+
+
 
 # @main.command(context_settings=CONTEXT_SETTINGS)
 # @click.option("-r", "--random", "operation", default=False, flag_value="random")
@@ -130,33 +187,6 @@ def regex(regex, text, single_result):
 #     command = ["asciiart", *args]
 #     print("Command: {}".format(command))
 #     print(subprocess.check_call(command))
-
-@main.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("input")
-@click.option('-t', '--type', type=click.Choice(colorizations))
-@click.option("-nn", "--not-nocolor", is_flag=True, default=False)
-def colorize(input, type, not_nocolor):
-    color(input, type, not_nocolor)
-
-def color(input, type, not_nocolor):
-    if type == 'none':
-        print(input)
-    elif type == 'rainbow':
-        print(run_command("toilet", "-f", "term", "--gay", input))
-    elif type == 'altbow':
-        os.system("echo \"{}\" | lolcat".format(input))
-
-    elif type == 'metal':
-        print(run_command("toilet", "-f", "term", "--metal", input))
-
-
-if __name__ == '__main__':
-    main()
-
-
-
-
-
 
 
 

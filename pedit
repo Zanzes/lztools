@@ -4,5 +4,5 @@ export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
 source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
-workon lztools
+workon UITests
 eval "$(_LZTOOLS_COMPLETE=source lztools)"

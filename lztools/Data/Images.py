@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-from builtins import map
 from functools import partial
 from types import GeneratorType
 
