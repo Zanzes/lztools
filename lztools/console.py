@@ -166,21 +166,11 @@ def bash(operation):
 
     pass
 
-def loader(q):
-    q.put(Images.get_random_image(count=1).__next__())
 @main.command(context_settings=CONTEXT_SETTINGS)
 def fun():
     res = return_command_result("tput", "cols")
-    img = None
-    multiprocessing.set_start_method('spawn')
-    while True:
-        q = multiprocessing.Queue()
-        p = multiprocessing.Process(target=loader, args=(q,))
-        p.start()
-        if img is not None:
-            execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
-        img = q.get()
-        p.join()
+    for img in Images.get_random_image(count=300):
+        execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
 
 if __name__ == '__main__':
     main()
