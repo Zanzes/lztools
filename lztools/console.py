@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
+import multiprocessing
 import random as rand
 
 import click
-import os
 
 import lztools.Data.Images
 from Resources.Requirements import apt_requires
 from lztools.Bash import return_command_result, execute_command
-from lztools.Data import Text
+from lztools.Data import Text, Images
 from lztools.Data.Text import get_random_word, search_words
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -42,10 +42,10 @@ def search(term, type, strict, max_images):
 @click.option('-t', '--type', type=click.Choice(['words', 'images', 'colorization']), default='images', help="Random category")
 @click.option("-c", "--count", default=1, help="The number of results")
 @click.option("-nn", "--not-nocolor", is_flag=True, default=False, help="Random colorization never selects no color")
-@click.argument("input", default=click.get_text_stream('stdin'), help="The input")
+@click.argument("input", default=click.get_text_stream('stdin'))
 def random(type, count, not_nocolor, input):
     if type == "images":
-        res = lztools.Data.Images.get_random_image(count=count)
+        res = Images.get_random_image(count=count)
         for x in res:
             print(x)
     elif type == "words":
@@ -71,8 +71,8 @@ def split(input, delimiter):
         print(x)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("start", help="The first indicator")
-@click.argument("end", help="The second indicator")
+@click.argument("start")
+@click.argument("end")
 @click.argument("Text", default=click.get_text_stream('stdin'))
 @click.option("-p", "--partial-matches", is_flag=True, default=False, help="Used if indicators are not complete lines")
 def cut(start, end, text, partial_matches):
@@ -113,6 +113,23 @@ def regex(expr, text, single_result):
 def colorize(input, type, not_nocolor):
     color(input, type, not_nocolor)
 
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.option("-s", "--speed", type=float, default=20)
+@click.option("-f", "--frequency", type=float, default=0.1)
+@click.option("-a", "--animate", is_flag=True, default=False)
+@click.argument("input")
+def rainbow(speed, frequency, animate, input):
+    args = []
+    if animate:
+        args.append("-a")
+        args.append("--speed")
+        args.append(str(speed))
+
+    args.append("--freq")
+    args.append(str(frequency))
+
+    execute_command("echo \"{}\" | lolcat {}".format(input, str.join(" ", args)))
+
 def color(input, type, not_nocolor):
     if type == 'none':
         print(input)
@@ -124,6 +141,22 @@ def color(input, type, not_nocolor):
         print(return_command_result("toilet", "-f", "term", "--metal", input))
 
 @main.command(context_settings=CONTEXT_SETTINGS)
+@click.option("-w", "--width", type=int, default=100)
+@click.option("-i", "--invert", is_flag=True, default=False)
+@click.argument("target")
+def art(width, invert, target):
+    args = []
+
+    if invert:
+        args.append("-i")
+
+    args.append("--width")
+    args.append(str(width))
+
+    args.append(target)
+    print(return_command_result("asciiart", *args))
+
+@main.command(context_settings=CONTEXT_SETTINGS)
 def install():
     execute_command("sudo apt install -y {}".format(str.join(" ", apt_requires)))
 
@@ -132,6 +165,22 @@ def install():
 def bash(operation):
 
     pass
+
+def loader(q):
+    q.put(Images.get_random_image(count=1).__next__())
+@main.command(context_settings=CONTEXT_SETTINGS)
+def fun():
+    res = return_command_result("tput", "cols")
+    img = None
+    multiprocessing.set_start_method('spawn')
+    while True:
+        q = multiprocessing.Queue()
+        p = multiprocessing.Process(target=loader, args=(q,))
+        p.start()
+        if img is not None:
+            execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
+        img = q.get()
+        p.join()
 
 if __name__ == '__main__':
     main()
