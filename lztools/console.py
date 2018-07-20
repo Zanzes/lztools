@@ -3,10 +3,11 @@ import multiprocessing
 import random as rand
 
 import click
+import time
 
 import lztools.Data.Images
 from Resources.Requirements import apt_requires
-from lztools.Bash import return_command_result, execute_command
+from lztools.Bash import return_command_result, execute_command, execute_command_and_args
 from lztools.Data import Text, Images
 from lztools.Data.Text import get_random_word, search_words
 
@@ -143,9 +144,13 @@ def color(input, type, not_nocolor):
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-w", "--width", type=int, default=100)
 @click.option("-i", "--invert", is_flag=True, default=False)
+@click.option("-c", "--add-color", is_flag=True, default=False)
 @click.argument("target")
-def art(width, invert, target):
+def art(width, invert, add_color, target):
     args = []
+    if add_color:
+        print("--color")
+        args.append("-c")
 
     if invert:
         args.append("-i")
@@ -154,7 +159,7 @@ def art(width, invert, target):
     args.append(str(width))
 
     args.append(target)
-    print(return_command_result("asciiart", *args))
+    execute_command_and_args("asciiart", *args)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 def install():
@@ -167,10 +172,15 @@ def bash(operation):
     pass
 
 @main.command(context_settings=CONTEXT_SETTINGS)
-def fun():
+@click.option("-n", "--noire", is_flag=True, default=False)
+def fun(noire):
     res = return_command_result("tput", "cols")
     for img in Images.get_random_image(count=300):
-        execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
+        if not noire:
+            execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
+        else:
+            execute_command(f"lztools art {img} -w {int(res)-2} -c")
+            time.sleep(1)
 
 if __name__ == '__main__':
     main()

@@ -8,3 +8,7 @@ def return_command_result(name, *args):
 
 def execute_command(command):
     os.system(command)
+
+def execute_command_and_args(command, *args):
+    command = "{} {}".format(command, str.join(" ", args))
+    os.system(command)
