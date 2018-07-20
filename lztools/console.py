@@ -3,10 +3,11 @@ import multiprocessing
 import random as rand
 
 import click
+import time
 
 import lztools.Data.Images
 from Resources.Requirements import apt_requires
-from lztools.Bash import return_command_result, execute_command
+from lztools.Bash import return_command_result, execute_command, execute_command_and_args
 from lztools.Data import Text, Images
 from lztools.Data.Text import get_random_word, search_words
 
@@ -143,9 +144,9 @@ def color(input, type, not_nocolor):
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-w", "--width", type=int, default=100)
 @click.option("-i", "--invert", is_flag=True, default=False)
-@click.option("-c", "--color", is_flag=True, default=False)
+@click.option("-c", "--add-color", is_flag=True, default=False)
 @click.argument("target")
-def art(width, invert, target, color):
+def art(width, invert, add_color, target):
     args = []
 
     if invert:
@@ -157,8 +158,7 @@ def art(width, invert, target, color):
     args.append(str(width))
 
     args.append(target)
-
-    execute_command("asciiart {}".format(str.join(" ", args)))
+    execute_command_and_args("asciiart", *args)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 def install():
@@ -173,16 +173,13 @@ def bash(operation):
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-n", "--noire", is_flag=True, default=False)
 def fun(noire):
-    arga = ""
-
-    for img in Images.get_random_image(count=50):
-        art_command = f"lztools art {img} {arga} -w {int(return_command_result('tput', 'cols'))-2}"
-        if noire:
-            arga = "-c"
-            execute_command(art_command)
+    res = return_command_result("tput", "cols")
+    for img in Images.get_random_image(count=300):
+        if not noire:
+            execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
         else:
-            execute_command(f"lztools rainbow -a -s 700 \"$({art_command})\"")
-
+            execute_command(f"lztools art {img} -w {int(res)-2} -c")
+            time.sleep(1)
 
 if __name__ == '__main__':
     main()
