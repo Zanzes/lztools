@@ -143,18 +143,22 @@ def color(input, type, not_nocolor):
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-w", "--width", type=int, default=100)
 @click.option("-i", "--invert", is_flag=True, default=False)
+@click.option("-c", "--color", is_flag=True, default=False)
 @click.argument("target")
-def art(width, invert, target):
+def art(width, invert, target, color):
     args = []
 
     if invert:
         args.append("-i")
+    if color:
+        args.append("-c")
 
     args.append("--width")
     args.append(str(width))
 
     args.append(target)
-    print(return_command_result("asciiart", *args))
+
+    execute_command("asciiart {}".format(str.join(" ", args)))
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 def install():
@@ -167,10 +171,18 @@ def bash(operation):
     pass
 
 @main.command(context_settings=CONTEXT_SETTINGS)
-def fun():
-    res = return_command_result("tput", "cols")
-    for img in Images.get_random_image(count=300):
-        execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
+@click.option("-n", "--noire", is_flag=True, default=False)
+def fun(noire):
+    arga = ""
+
+    for img in Images.get_random_image(count=50):
+        art_command = f"lztools art {img} {arga} -w {int(return_command_result('tput', 'cols'))-2}"
+        if noire:
+            arga = "-c"
+            execute_command(art_command)
+        else:
+            execute_command(f"lztools rainbow -a -s 700 \"$({art_command})\"")
+
 
 if __name__ == '__main__':
     main()
