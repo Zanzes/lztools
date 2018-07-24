@@ -33,11 +33,11 @@ source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 shopt -s extdebug
 function auto_source_names {
     local CMD="$BASH_COMMAND"
-    if [[ "$CMD" == dev-init* ]];then
+    if [[ "$CMD" == "dev-init"* ]];then
         #w=$(lwhere dev-init)
         echo "Autosourcing"
         eval ". $CMD"
-    elif [[ "$CMD" == pedit || "$CMD" == *"/pedit" ]];then
+    elif [[ "$CMD" == "pedit" || "$CMD" == *"/pedit" ]];then
         #w=$(lwhere dev-init)
         echo "Autosourcing"
         eval ". $CMD"
