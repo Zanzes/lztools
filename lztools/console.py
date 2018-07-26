@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-import multiprocessing
 import random as rand
+import time
 
 import click
-import time
 
 import lztools.Data.Images
 from Resources.Requirements import apt_requires
