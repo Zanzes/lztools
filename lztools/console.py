@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 import random as rand
 import time
+from multiprocessing import Process, Queue
 
 import click
+from lztools.text import search_words, get_random_word
 
 import lztools.Data.Images
 from Resources.Requirements import apt_requires
-from lztools.Bash import command_result, execute_command, execute_command_and_args
+from lztools.Bash import command_result, command
 from lztools.Data import Text, Images
-from lztools.Data.Text import get_random_word, search_words
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -128,7 +129,7 @@ def rainbow(speed, frequency, animate, input):
     args.append("--freq")
     args.append(str(frequency))
 
-    execute_command("echo \"{}\" | lolcat {}".format(input, str.join(" ", args)))
+    command("echo \"{}\" | lolcat {}".format(input, str.join(" ", args)))
 
 def color(input, type, not_nocolor):
     if type == 'none':
@@ -136,7 +137,7 @@ def color(input, type, not_nocolor):
     elif type == 'rainbow':
         print(command_result("toilet", "-f", "term", "--gay", input))
     elif type == 'altbow':
-        execute_command("echo \"{}\" | lolcat".format(input))
+        command("echo \"{}\" | lolcat".format(input))
     elif type == 'metal':
         print(command_result("toilet", "-f", "term", "--metal", input))
 
@@ -157,11 +158,11 @@ def art(width, invert, add_color, target):
     args.append(str(width))
 
     args.append(target)
-    execute_command_and_args("asciiart", *args)
+    command("asciiart", *args)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 def install():
-    execute_command("sudo apt install -y {}".format(str.join(" ", apt_requires)))
+    command("sudo apt install -y {}".format(str.join(" ", apt_requires)))
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-o', '--operation', type=click.Choice(["bashrc", "autosource"]))
@@ -169,16 +170,55 @@ def bash(operation):
 
     pass
 
+def to_art(q, url, width, c=False):
+    args = ["art", url, f"-w {str(width-2)}"]
+    if c:
+        args.append("-c")
+    q.put(command_result("lztools", *args))
+
+
+# @main.command(context_settings=CONTEXT_SETTINGS)
+# @click.option("-n", "--noire", is_flag=True, default=False)
+# def fun(noire):
+#     active = None
+#     q = Queue()
+#     res = command_result("tput", "cols")
+#     for i in Images.get_random_image(count=300):
+#         p = Process(target=to_art, args=(q, i, noire))
+#         p.st
+#     for img in :
+#         if active != None:
+#             if not noire:
+#                 command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
+#             else:
+#                 command(f"lztools art {img} -w {int(res)-2} -c")
+#         Process(target=)
+
+
+
+# def to_art(q, url, c=False):
+#     ctext = f"lztools art {img} -w {int(res)-2}"
+#     if c:
+#         ctext += " -c"
+#     q.put(command_result(ctext))
+
+
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-n", "--noire", is_flag=True, default=False)
 def fun(noire):
-    res = command_result("tput", "cols")
-    for img in Images.get_random_image(count=300):
-        if not noire:
-            execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
-        else:
-            execute_command(f"lztools art {img} -w {int(res)-2} -c")
-            time.sleep(1)
+    q = Queue()
+    res = int(command_result("tput", "cols"))
+    ps = []
+
+    for i in Images.get_random_image(count=300):
+        p = Process(target=to_art, args=(q, i, res, noire))
+        p.start()
+        ps.append(p)
+    while True:
+        try:
+            print(q.get())
+        except:
+            break
 
 if __name__ == '__main__':
     main()
@@ -248,3 +288,6 @@ if __name__ == '__main__':
 #         print("text {}".format(data_type))
 #     else:
 #         print("Invalid argument (--data-type = {})".format(data_type))
+
+
+

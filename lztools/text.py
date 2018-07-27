@@ -1,9 +1,10 @@
 import random
 import re
 import time
-from textwrap import wrap
 from typing import Union
+from ansiwrap import wrap
 
+from lztools import Ansi
 from lztools.Bash import load_words
 from lztools.DataTypes.LazyVariable import super_property
 
@@ -31,13 +32,32 @@ def create_line(char:str= "-", width:int=200, text:str= "") -> str:
 def center_on(value:str, text:str) -> str:
     return u"{:^{}}".format(value, len(text))
 
-def wall_text(text:str, width:int=80, wall:str= "|", text_alignment="<", h_padding=2) -> str:
+def _pad_length(text:str, width:int, text_alignment) -> str:
+    alignment = _get_alignment(text_alignment)
+    if alignment == "^":
+        while Ansi.true_length(text) < width:
+            text += " "
+            if Ansi.true_length(text) < width:
+                text = " " + text
+    elif alignment == "<":
+        while Ansi.true_length(text) < width:
+            text += " "
+    elif alignment == ">":
+        while Ansi.true_length(text) < width:
+            text = " " + text
+    return text
+
+def wall_text(text:str, width:int=80, wall:str= "|", text_alignment="<", h_padding=2, colorizer=None) -> str:
     pad = _get_padding(h_padding)
     text_alignment = _get_alignment(text_alignment)
+
     result, adjusted = "", width - len(wall) * 2 - h_padding * 2
     executed = False
     for line in wrap(text, width=adjusted):
+        if colorizer:
+            line = colorizer(line)
         executed = True
+        line = _pad_length(line, adjusted, text_alignment)
         if line == "":
             line = " "
         result += "{}{}{:{}{}}{}{}\n".format(wall, pad, line, text_alignment, adjusted, pad, wall)

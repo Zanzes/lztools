@@ -48,11 +48,11 @@ class BlockWriter(object):
         self.seperate()
         self.buffer.append(f"{self.wall_str}{create_line(width=w)}{self.wall_str}")
 
-    def write_text(self, text:str, text_alignment="<") -> None:
+    def write_text(self, text:str, text_alignment="<", colorizer=None) -> None:
         if not self.started:
             self.buffer.append(create_line(self.roof_str, self.width))
             self.started = True
-        self.buffer.append(wall_text(text, self.width, self.wall_str, text_alignment=text_alignment, h_padding=self.padding_h))
+        self.buffer.append(wall_text(text, self.width, self.wall_str, text_alignment=text_alignment, h_padding=self.padding_h, colorizer=colorizer))
 
     def flush(self) -> None:
         self.buffer.append(create_line(self.roof_str, self.width))
