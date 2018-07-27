@@ -1,7 +1,13 @@
+import random
 import re
 import time
 from textwrap import wrap
 from typing import Union
+
+from lztools.Bash import load_words
+from lztools.DataTypes.LazyVariable import super_property
+
+words = super_property(load_words)
 
 def _get_alignment(alignment:str) -> str:
     if alignment in ["<", "l", "left"]:
@@ -39,9 +45,9 @@ def wall_text(text:str, width:int=80, wall:str= "|", text_alignment="<", h_paddi
         result = "{}{}{:{}{}}{}{}\n".format(wall, pad, " ", text_alignment, adjusted, pad, wall)
     return result[:-1]
 
-def box_text(text:str, width:int=80, roof:str= "-", wall:str= "|") -> str:
+def box_text(text:str, width:int=80, roof:str= "-", wall:str= "|", text_alignment="<") -> str:
     line = create_line(char=roof, width=width)
-    walled = wall_text(text, wall=wall)
+    walled = wall_text(text, wall=wall, text_alignment=text_alignment)
     return f"{line}\n{walled}\n{line}"
 
 
@@ -75,3 +81,20 @@ def trim_end(remove:str, the_text:str) -> str:
 
 def format_seconds(sec:Union[int, float, str]) -> str:
     return time.strftime('%H:%M:%S', time.gmtime(sec))
+
+
+def search_words(term, strict=False):
+    for word in words:
+        if strict:
+            if term in word:
+                yield word
+        else:
+            pas = True
+            for l in set(term):
+                if l not in word:
+                    pas = False
+            if pas:
+                yield word
+
+def get_random_word():
+    return random.choice(list(words))

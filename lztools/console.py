@@ -6,7 +6,7 @@ import click
 
 import lztools.Data.Images
 from Resources.Requirements import apt_requires
-from lztools.Bash import return_command_result, execute_command, execute_command_and_args
+from lztools.Bash import command_result, execute_command, execute_command_and_args
 from lztools.Data import Text, Images
 from lztools.Data.Text import get_random_word, search_words
 
@@ -134,11 +134,11 @@ def color(input, type, not_nocolor):
     if type == 'none':
         print(input)
     elif type == 'rainbow':
-        print(return_command_result("toilet", "-f", "term", "--gay", input))
+        print(command_result("toilet", "-f", "term", "--gay", input))
     elif type == 'altbow':
         execute_command("echo \"{}\" | lolcat".format(input))
     elif type == 'metal':
-        print(return_command_result("toilet", "-f", "term", "--metal", input))
+        print(command_result("toilet", "-f", "term", "--metal", input))
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-w", "--width", type=int, default=100)
@@ -172,7 +172,7 @@ def bash(operation):
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-n", "--noire", is_flag=True, default=False)
 def fun(noire):
-    res = return_command_result("tput", "cols")
+    res = command_result("tput", "cols")
     for img in Images.get_random_image(count=300):
         if not noire:
             execute_command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
