@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo docker ps -a --format '{{.ID}}_-_{{.Image}}_-_{{.Command}}_-_{{.CreatedAt}}_-_{{.RunningFor}}_-_{{.Ports}}_-_{{.Status}}_-_{{.Size}}_-_{{.Names}}_-_{{.Labels}}_-_{{.Mounts}}_-_{{.Networks}}'

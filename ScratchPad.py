@@ -1,12 +1,8 @@
 #!  /usr/bin/env python
-import sys
-import traceback
 from functools import partial
 
-from lztools import Ansi
-from lztools.BlockWriter import BlockWriter
 from lztools.Data.Images import get_random_image, search
-from lztools.debugging import time_operation
+from lztools.docker import get_running
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -24,23 +20,26 @@ if __name__ == '__main__':
     # x = return_command_result("echo", "123\nass")
     # print(x)
 
-    w = BlockWriter()
+    # w = BlockWriter()
+    #
+    # w.square_text("Joe sucks")
+    # w.seperate()
+    # w.write_text("tis ihdsaohw adp wapdwa poeigqwewqkeå kwqåwqoeåwqkldsak ldjaw\ntis ihdsaohw adp wapdwa poeigqwewqkeå kwqåwqoeåwqkldsak ldjawtis ihdsaohw adp wapdwa poeigqwewqkeå kwqåwqoeåwqkldsak ldjawtis ihdsaohw adp wapdwa poeigqwewqkeå kwqåwqoeåwqkldsak ldjaw")
+    # w.seperate()
+    # try:
+    #     print(2 * "llo" / "a")
+    # except Exception as e:
+    #     w.split()
+    #     w.seperate()
+    #     exc_type, exc_value, exc_traceback = sys.exc_info()
+    #     t = traceback.format_exception(exc_type, exc_value, exc_traceback)
+    #     for x in t:
+    #         w.write_text(x, colorizer=Ansi.red)
+    #     w.seperate()
+    # w.flush()
 
-    w.square_text("Joe sucks")
-    w.seperate()
-    w.write_text("tis ihdsaohw adp wapdwa poeigqwewqkeå kwqåwqoeåwqkldsak ldjaw\ntis ihdsaohw adp wapdwa poeigqwewqkeå kwqåwqoeåwqkldsak ldjawtis ihdsaohw adp wapdwa poeigqwewqkeå kwqåwqoeåwqkldsak ldjawtis ihdsaohw adp wapdwa poeigqwewqkeå kwqåwqoeåwqkldsak ldjaw")
-    w.seperate()
-    try:
-        print(2 * "llo" / "a")
-    except Exception as e:
-        w.split()
-        w.seperate()
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        t = traceback.format_exception(exc_type, exc_value, exc_traceback)
-        for x in t:
-            w.write_text(x, colorizer=Ansi.red)
-        w.seperate()
-    w.flush()
+    for x in get_running():
+        print(x)
 
 
 

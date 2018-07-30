@@ -25,10 +25,12 @@ setup(
         'console_scripts': [
             'lztools = lztools.console:main',
             'lmod = lztools.lmod:main',
+            'ldoc = lztools.ldock:main',
+            'ldat = Commands.docker_data',
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk', 'Resources'],
+    packages=['lztools', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk', 'Resources', "Commands"],
     zip_safe=False,
     classifiers=[  # Optional
         # How mature is this project? Common values are

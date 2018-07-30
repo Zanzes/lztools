@@ -1,10 +1,13 @@
-from subprocess import check_output
+from subprocess import check_output, Popen, run
 
 import os
 
 def command_result(name, *args):
-    x = check_output([name, *args], universal_newlines=True)
-    return x.strip()
+    result = run([name, *args], capture_output=True)
+    # x = check_output([name, *args], universal_newlines=True)
+    #
+    # Popen()
+    return result.stderr, result.stdout
 
 # def command(command):
 #     os.system(command)
