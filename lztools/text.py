@@ -53,14 +53,15 @@ def wall_text(text:str, width:int=80, wall:str= "|", text_alignment="<", h_paddi
 
     result, adjusted = "", width - len(wall) * 2 - h_padding * 2
     executed = False
-    for line in wrap(text, width=adjusted):
-        if colorizer:
-            line = colorizer(line)
-        executed = True
-        line = _pad_length(line, adjusted, text_alignment)
-        if line == "":
-            line = " "
-        result += "{}{}{:{}{}}{}{}\n".format(wall, pad, line, text_alignment, adjusted, pad, wall)
+    for lt in text.splitlines():
+        for line in wrap(lt, width=adjusted):
+            if colorizer:
+                line = colorizer(line)
+            executed = True
+            line = _pad_length(line, adjusted, text_alignment)
+            if line == "":
+                line = " "
+            result += "{}{}{:{}{}}{}{}\n".format(wall, pad, line, text_alignment, adjusted, pad, wall)
     if not executed:
         result = "{}{}{:{}{}}{}{}\n".format(wall, pad, " ", text_alignment, adjusted, pad, wall)
     return result[:-1]

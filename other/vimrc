@@ -1,0 +1,5 @@
+set number
+syntax enable
+set nowrap
+set tabstop=4
+set expandtab    
