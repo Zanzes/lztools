@@ -86,7 +86,8 @@ class ColumnWriter(object):
             self.write_line(stats)
 
     def flush(self):
-        self._create_columns()
-        o = "\n".join(self.buffer)
-        self.buffer = []
-        return o
+        if len(self.columns) > 0:
+            self._create_columns()
+            o = "\n".join(self.buffer)
+            self.buffer = []
+            return o
