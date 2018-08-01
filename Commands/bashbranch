@@ -6,5 +6,5 @@ if [ $? -ne 0 ]; then
     exit
 fi
 
-branch=$(pregex "\* (.*)" "$gdata")
+branch=$(preg "\* (.*)" "$gdata")
 echo "($branch) "

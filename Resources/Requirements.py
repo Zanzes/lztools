@@ -4,7 +4,8 @@ pip_requires = [
     'flickrapi',
     'zope.proxy',
     'click',
-    'pip'
+    'pip',
+    'GitPython'
 ]
 
 apt_requires = [

@@ -1,8 +1,8 @@
 #!  /usr/bin/env python
 from functools import partial
 
+from lztools.ColumnWriter import ColumnWriter
 from lztools.Data.Images import get_random_image, search
-from lztools.docker import get_running
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -38,8 +38,20 @@ if __name__ == '__main__':
     #     w.seperate()
     # w.flush()
 
-    for x in get_running():
-        print(x)
+    cm = ColumnWriter()
+    cm.mark_column("lol", "First", "X")
+    cm.mark_column("lol2", "First", "X")
+    cm.mark_column("lol", "Second", "X")
+    print(cm.flush())
+
+    # w = ColumnWriter(width=200)
+    # w.add_mark("Joe", "First", "X")
+    # w.add_mark("Joe", "Second", "X")
+    # w.add_mark("Jack", "Second", "X")
+    #
+    # print(w.get_header())
+    # for row in w.get_rows():
+    #     print(row)
 
 
 

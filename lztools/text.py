@@ -32,19 +32,19 @@ def create_line(char:str= "-", width:int=200, text:str= "") -> str:
 def center_on(value:str, text:str) -> str:
     return u"{:^{}}".format(value, len(text))
 
-def _pad_length(text:str, width:int, text_alignment) -> str:
+def pad_length(text:str, width:int, text_alignment:str, pad_char=" ") -> str:
     alignment = _get_alignment(text_alignment)
     if alignment == "^":
         while Ansi.true_length(text) < width:
-            text += " "
+            text += pad_char
             if Ansi.true_length(text) < width:
-                text = " " + text
+                text = pad_char + text
     elif alignment == "<":
         while Ansi.true_length(text) < width:
-            text += " "
+            text += pad_char
     elif alignment == ">":
         while Ansi.true_length(text) < width:
-            text = " " + text
+            text = pad_char + text
     return text
 
 def wall_text(text:str, width:int=80, wall:str= "|", text_alignment="<", h_padding=2, colorizer=None) -> str:
@@ -58,7 +58,7 @@ def wall_text(text:str, width:int=80, wall:str= "|", text_alignment="<", h_paddi
             if colorizer:
                 line = colorizer(line)
             executed = True
-            line = _pad_length(line, adjusted, text_alignment)
+            line = pad_length(line, adjusted, text_alignment)
             if line == "":
                 line = " "
             result += "{}{}{:{}{}}{}{}\n".format(wall, pad, line, text_alignment, adjusted, pad, wall)
@@ -76,11 +76,11 @@ def regex(expr:str, text:str, only_first:bool=False, suppress:bool=False) -> str
     if only_first:
         if suppress:
             try:
-                return re.search(expr, text).group(0)
+                yield re.search(expr, text).group(0)
             except:
                 pass
         else:
-            return re.search(expr, text).group(0)
+            yield re.search(expr, text).group(0)
     else:
         yield from (x for x in re.findall(expr, text))
 
