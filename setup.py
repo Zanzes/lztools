@@ -31,12 +31,12 @@ setup(
             'lztools = cli.console:main',
             'lmod = cli.lmod:main',
             'ldoc = cli.ldock:main',
-            'preg = cli.preg:main'
+            'preg = lztools.cli.preg:main'
             'lgit = cli.lgit:main'
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk', 'Resources', "Commands", "cli"],
+    packages=['lztools', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk', 'lztools.cli', 'Resources'],
     zip_safe=False,
     classifiers=[  # Optional
         # How mature is this project? Common values are
@@ -54,12 +54,12 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
-        # 'Programming Language :: Python :: 2',
-        # 'Programming Language :: Python :: 2.7'  # ,
-        # 'Programming Language :: Python :: 3',
-        # 'Programming Language :: Python :: 3.4',
-        # 'Programming Language :: Python :: 3.5',
-        # 'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7'  # ,
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
 )
