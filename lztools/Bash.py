@@ -3,11 +3,14 @@ from subprocess import check_output, Popen, run
 import os
 
 def command_result(name, *args):
-    result = run([name, *args], capture_output=True)
-    # x = check_output([name, *args], universal_newlines=True)
-    #
-    # Popen()
-    return result.stderr, result.stdout
+    try:
+        result = run([name, *args], capture_output=True, check=True, universal_newlines=True, encoding="utf8")
+        # x = check_output([name, *args], universal_newlines=True)
+        #
+        # Popen()
+        return result.stderr, result.stdout
+    except:
+        pass
 
 # def command(command):
 #     os.system(command)

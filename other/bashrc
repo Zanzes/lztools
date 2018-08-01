@@ -23,9 +23,10 @@ alias gg1="git log --graph --abbrev-commit --decorate --format=format:'%C(bold b
 alias gg2="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 alias gg3="git log --all --decorate --oneline --graph"
 alias docker="sudo docker"
+alias python3='python3.7'
 
 export WORKON_HOME=$HOME/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.7
 source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 
