@@ -42,6 +42,7 @@ if __name__ == '__main__':
     cm.mark_column("lol", "First", "X")
     cm.mark_column("lol2", "First", "X")
     cm.mark_column("lol", "Second", "X")
+    cm.mark_column("y", "AbraCaDabraLOLOLO", "X")
     print(cm.flush())
 
     # w = ColumnWriter(width=200)

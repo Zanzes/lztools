@@ -1,11 +1,9 @@
 #!  /usr/bin/env python
 # -*- coding: utf-8 -*-
 from collections import defaultdict, namedtuple
-
 from lztools.text import create_line, center_on, pad_length
 
 Row = namedtuple("Row", ["text", "marks"])
-
 
 class ColumnWriter(object):
     columns = []
@@ -40,15 +38,8 @@ class ColumnWriter(object):
         if mark not in row.marks:
             row.marks[column] = mark
 
-    def get_section_header(self, max_width):
-        o = u"{:^{}}".format("Joe", max_width)
-        return o
-
     def get_column_header(self):
-        column_header = ""
-        for c in self.columns:
-            column_header += u"[{}] ".format(c)
-
+        column_header = "[{}]".format("] [".join(self.columns))
         return pad_length(column_header, self.width, ">")
 
     def get_statistics(self, text_column_width):
@@ -68,12 +59,13 @@ class ColumnWriter(object):
             for c in self.columns:
                 text = u"{:.2f}%".format((float(100)/count) * ccounts[c])
                 res += center_on(text, u"[{}]".format(c)) + u" "
-        return show_statistics, res
+        return show_statistics, res[0:self.width]
 
     def _text_width(self):
         column_header = ""
         for c in self.columns:
             column_header += u"[{}] ".format(c)
+        column_header = column_header.rstrip()
         return self.width - len(column_header)
 
     def _create_columns(self):
@@ -88,7 +80,7 @@ class ColumnWriter(object):
                     l += center_on(row.marks[column], u"[{}]".format(column)) + " "
                 else:
                     l += center_on(self.fail_char, u"[{}]".format(column)) + " "
-            self.write_line(l)
+            self.write_line(l[0:self.width])
         enable_stats, stats = self.get_statistics(t_width)
         if enable_stats:
             self.write_line(stats)
