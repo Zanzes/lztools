@@ -5,7 +5,8 @@ pip_requires = [
     'zope.proxy',
     'click',
     'pip',
-    'GitPython'
+    'GitPython',
+    'ansiwrap'
 ]
 
 apt_requires = [
