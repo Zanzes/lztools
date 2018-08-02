@@ -31,7 +31,7 @@ def _get_padding(padding:int, char:str=" ") -> str:
     return result
 
 def create_line(char:str= "-", width:int=200, text:str= "") -> str:
-    o = "{:{}<{}}".format(text, char, width)
+    o = pad_length(text, width, text_alignment="<", pad_char=char)
     return o
 
 def center_on(value:str, text:str) -> str:
@@ -72,7 +72,7 @@ def wall_text(text:str, width:int=80, wall:str= "|", text_alignment="<", h_paddi
     return result[:-1]
 
 def box_text(text:str, width:int=80, roof:str= "-", wall:str= "|", text_alignment="<") -> str:
-    line = create_line(char=roof, width=width)
+    line = pad_length("", width=width, text_alignment=text_alignment, pad_char=roof)
     walled = wall_text(text, wall=wall, text_alignment=text_alignment)
     return f"{line}\n{walled}\n{line}"
 

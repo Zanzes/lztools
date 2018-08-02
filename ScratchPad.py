@@ -1,6 +1,8 @@
 #!  /usr/bin/env python
 from functools import partial
 
+from lztools.text import create_line
+
 from lztools.ColumnWriter import ColumnWriter
 from lztools.Data.Images import get_random_image, search
 
@@ -38,11 +40,13 @@ if __name__ == '__main__':
     #     w.seperate()
     # w.flush()
 
+    print(create_line(create_line()))
+    print(create_line(create_line(text="asdw=:;")))
+
     cm = ColumnWriter()
-    # cm.mark_column("lol", "First", "X")
-    # cm.mark_column("lol2", "First", "X")
-    # cm.mark_column("lol", "Second", "X")
-    # cm.mark_column("y", "AbraCaDabraLOLOLO", "X")
+    cm.mark_column("lol", "First", "X")
+    cm.mark_column("lol2", "First", "X")
+    cm.mark_column("lol", "Second", "X")
     print(cm.flush())
 
     # w = ColumnWriter(width=200)
