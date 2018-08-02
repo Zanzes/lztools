@@ -10,7 +10,7 @@ alias ll='ls -AlhF'
 alias ee='exit'
 
 
-branch='$(bashbranch)'
+branch='$(lgit branch)'
 
 export PS1="\[$(tput setaf 7)\]$branch\[$(tput bold)\]\[$(tput setaf 1)\]\u@\h \[$(tput setaf 2)\]\d \[$(tput setaf 4)\]\A \[$(tput setaf 6)\]\# \[$(tput setaf 5)\]\!  \[$(tput setaf 3)\]\w\[$(tput setaf 7)\]\n\\$> \[$(tput sgr0)\]"
 

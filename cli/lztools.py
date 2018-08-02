@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 import random as rand
-import time
 from multiprocessing import Process, Queue
 
 import click
-from lztools.text import search_words, get_random_word
 
 import lztools.Data.Images
 from Resources.Requirements import apt_requires
-from lztools.Bash import command_result, command
+from lztools.Bash import command_result, command, search_history
 from lztools.Data import Text, Images
+from lztools.text import search_words, get_random_word
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -24,6 +23,14 @@ def try_read_input(input):
 @click.group(context_settings=CONTEXT_SETTINGS)
 def main():
     """A collection of python tools and bash commands by laz aka nea"""
+
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.argument("term")
+@click.option("-r", "--regex", is_flag=True, default=False)
+def history(term, regex):
+    """Search bash history"""
+    for line in search_history(term, regex=regex):
+        print(line)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term", default="")
