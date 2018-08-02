@@ -1,5 +1,9 @@
 set number
-syntax enable
+syntax on
 set nowrap
+
 set tabstop=4
-set expandtab    
+filetype plugin indent on
+set shiftwidth=4
+set expandtab
+
