@@ -1,4 +1,4 @@
-#!  /usr/bin/env python
+#!  /usr/bin/env python3.7
 # -*- coding: utf-8 -*-
 from collections import defaultdict, namedtuple
 from lztools.text import create_line, center_on, pad_length

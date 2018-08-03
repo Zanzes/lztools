@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
 import codecs
 import os
 import subprocess
@@ -28,11 +28,12 @@ setup(
     url='',
     entry_points={
         'console_scripts': [
-            'lztools = cli.lztools:main',
-            'preg = cli.preg:main',
-            'lmod = cli.lmod:main',
-            'ldoc = cli.ldock:main',
-            'lgit = cli.lgit:main'
+            'lztools    = cli.lztools:main',
+            'preg       = cli.preg:main',
+            'lmod       = cli.lmod:main',
+            'ldoc       = cli.ldock:main',
+            'lgit       = cli.lgit:main',
+            'lpy        = cli.lpy:main'
         ],
     },
     install_requires=pip_requires,
