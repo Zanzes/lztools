@@ -6,8 +6,8 @@ from lztools.text import create_line, center_on, pad_length
 Row = namedtuple("Row", ["text", "marks"])
 
 class ColumnWriter(object):
-    columns = []
-    rows = []
+    columns = None
+    rows = None
     tests = None
     time = 0
     width = -1

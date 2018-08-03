@@ -5,10 +5,15 @@ from typing import Union
 from ansiwrap import wrap
 
 from lztools import Ansi
-from lztools.Bash import load_words
-from lztools.DataTypes.LazyVariable import super_property
 
-words = super_property(load_words)
+_words = None
+
+def words():
+    from lztools.Bash import command_result
+    global _words
+    if _words is None:
+        _words = command_result("cat", "/usr/share/dict/words")
+    return _words
 
 def _get_alignment(alignment:str) -> str:
     if alignment in ["<", "l", "left"]:
@@ -26,7 +31,7 @@ def _get_padding(padding:int, char:str=" ") -> str:
     return result
 
 def create_line(char:str= "-", width:int=200, text:str= "") -> str:
-    o = "{:{}<{}}".format(text, char, width)
+    o = pad_length(text, width, text_alignment="<", pad_char=char)
     return o
 
 def center_on(value:str, text:str) -> str:
@@ -67,22 +72,33 @@ def wall_text(text:str, width:int=80, wall:str= "|", text_alignment="<", h_paddi
     return result[:-1]
 
 def box_text(text:str, width:int=80, roof:str= "-", wall:str= "|", text_alignment="<") -> str:
-    line = create_line(char=roof, width=width)
+    line = pad_length("", width=width, text_alignment=text_alignment, pad_char=roof)
     walled = wall_text(text, wall=wall, text_alignment=text_alignment)
     return f"{line}\n{walled}\n{line}"
 
 
 def regex(expr:str, text:str, only_first:bool=False, suppress:bool=False) -> str:
+    if not only_first:
+        return _regex(expr, text, only_first, suppress)
+    else:
+        try:
+            return _regex(expr, text, only_first, suppress).__next__()
+        except Exception as e:
+            if not suppress:
+                raise
+
+def _regex(expr:str, text:str, only_first:bool=False, suppress:bool=False) -> str:
+    gen = (x for x in re.findall(expr, text))
     if only_first:
         if suppress:
             try:
-                yield re.search(expr, text).group(0)
+                yield gen.__next__()
             except:
                 pass
         else:
-            yield re.search(expr, text).group(0)
+            yield gen.__next__()
     else:
-        yield from (x for x in re.findall(expr, text))
+        yield from gen
 
 def wrap_lines(text: str, width: int = 80) -> str:
     for line in text.splitlines():
@@ -103,9 +119,8 @@ def trim_end(remove:str, the_text:str) -> str:
 def format_seconds(sec:Union[int, float, str]) -> str:
     return time.strftime('%H:%M:%S', time.gmtime(sec))
 
-
 def search_words(term, strict=False):
-    for word in words:
+    for word in words():
         if strict:
             if term in word:
                 yield word
@@ -118,4 +133,4 @@ def search_words(term, strict=False):
                 yield word
 
 def get_random_word():
-    return random.choice(list(words))
+    return random.choice(list(words()))

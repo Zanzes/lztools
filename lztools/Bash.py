@@ -1,16 +1,18 @@
-from subprocess import check_output, Popen, run
-
 import os
+from pathlib import Path
+from subprocess import run
+
+from lztools import text
 
 def command_result(name, *args):
     try:
-        result = run([name, *args], capture_output=True, check=True, universal_newlines=True, encoding="utf8")
+        result = run([name, *args], capture_output=True, universal_newlines=True)
         # x = check_output([name, *args], universal_newlines=True)
         #
         # Popen()
-        return result.stderr, result.stdout
+        return result.stdout
     except:
-        pass
+        raise
 
 # def command(command):
 #     os.system(command)
@@ -23,6 +25,13 @@ def apt_install(package):
     command(f"sudo apt install -y {package}")
 
 
-def load_words():
-    res = command_result("cat", "/usr/share/dict/words")
-    return res
+def get_history():
+    return command_result("cat", "{}/.bash_history".format(str(Path.home())))
+
+def search_history(term, regex=False):
+    if not regex:
+        for line in get_history().splitlines():
+            if term in line:
+                yield line
+    else:
+        return text.regex(term, get_history())

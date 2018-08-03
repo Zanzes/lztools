@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 import random as rand
-import time
 from multiprocessing import Process, Queue
+from multiprocessing.pool import Pool
 
 import click
-from lztools.text import search_words, get_random_word
 
 import lztools.Data.Images
 from Resources.Requirements import apt_requires
-from lztools.Bash import command_result, command
+from lztools.Bash import command_result, command, search_history
 from lztools.Data import Text, Images
+from lztools.text import search_words, get_random_word
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -24,6 +24,14 @@ def try_read_input(input):
 @click.group(context_settings=CONTEXT_SETTINGS)
 def main():
     """A collection of python tools and bash commands by laz aka nea"""
+
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.argument("term")
+@click.option("-r", "--regex", is_flag=True, default=False)
+def history(term, regex):
+    """Search bash history"""
+    for line in search_history(term, regex=regex):
+        print(line)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term", default="")
@@ -170,11 +178,12 @@ def bash(operation):
 
     pass
 
-def to_art(q, url, width, c=False):
+def to_art(args):
+    url, width, c = args
     args = ["art", url, f"-w {str(width-2)}"]
     if c:
         args.append("-c")
-    q.put(command_result("lztools", *args))
+    return command_result("lztools", *args)
 
 
 # @main.command(context_settings=CONTEXT_SETTINGS)
@@ -206,19 +215,21 @@ def to_art(q, url, width, c=False):
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-n", "--noire", is_flag=True, default=False)
 def fun(noire):
-    q = Queue()
     res = int(command_result("tput", "cols"))
     ps = []
 
-    for i in Images.get_random_image(count=300):
-        p = Process(target=to_art, args=(q, i, res, noire))
-        p.start()
-        ps.append(p)
-    while True:
-        try:
-            print(q.get())
-        except:
-            break
+    with Pool(5) as p:
+        print(p.map(to_art, [(i, res, noire) for i in Images.get_random_image(count=300)]))
+
+    # for i in Images.get_random_image(count=300):
+    #     p = Process(target=to_art, args=(q, i, res, noire))
+    #     p.start()
+    #     ps.append(p)
+    # while True:
+    #     try:
+    #         print(q.get())
+    #     except:
+    #         break
 
 if __name__ == '__main__':
     main()
