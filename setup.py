@@ -22,7 +22,7 @@ setup(
     name='lztools',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.1.14',
+    version='1.1.15',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',
@@ -38,8 +38,10 @@ setup(
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools', 'cli', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk', 'Resources', 'other'],
+    packages=['lztools', 'cli', 'lztools.Managers', 'lztools.DataTypes', 'lztools', 'lztools.Junk', 'Resources', 'other'],
     zip_safe=False,
+    include_package_data=True,
+    package_data={'lztools': ['resources/*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha

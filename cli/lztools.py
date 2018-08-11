@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 import random as rand
-from multiprocessing import Process, Queue
+from multiprocessing import Queue
 from multiprocessing.pool import Pool
 
 import click
 
-import lztools.Data.Images
+import lztools.Images
 from Resources.Requirements import apt_requires
 from lztools.Bash import command_result, command, search_history
-from lztools.Data import Text, Images
-from lztools.text import search_words, get_random_word
+from lztools import Images
+from lztools.text import search_words, get_random_word, regex as rx
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -43,7 +43,7 @@ def search(term, type, strict, max_images):
         res = search_words(term, strict=strict)
         print(res)
     elif type == "images":
-        res = lztools.Data.Images.search(term, count=max_images)
+        res = lztools.Images.search(term, count=max_images)
         for x in res:
             print(x)
 
@@ -110,10 +110,10 @@ def regex(expr, text, single_result):
     input = try_read_input(text)
     print(input, expr)
     if not single_result:
-        for x in Text.regex(expr, input, only_first=single_result, suppress=True):
+        for x in rx(expr, input, only_first=single_result, suppress=True):
             print(x)
     else:
-        print(Text.regex(expr, input, only_first=single_result, suppress=True))
+        print(rx(expr, input, only_first=single_result, suppress=True))
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("input")

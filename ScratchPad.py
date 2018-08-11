@@ -1,10 +1,6 @@
 #!  /usr/bin/env python3.7
-from functools import partial
 from itertools import groupby
-from pprint import pprint
 from types import FunctionType
-
-from lztools.Data.Images import get_random_image, search
 
 def pi(imgs):
     for img in imgs:
