@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-import pathlib
 
 import click
 
-from lztools.Bash import get_bashrc, add_bashrc_alias, copy_bashrc_other
+from bash.lztools.Bash import add_bashrc_alias, copy_bashrc_other
 from lztools.click import proper_group, proper_command
 
 @proper_group()
@@ -21,8 +20,9 @@ def rcadd(line, type):
 
 @proper_command()
 @click.option("-t/-f", "--to-me/--from-me", is_flag=True, default=False)
-def rccopy(to_me):
+@click.option("-o", "--out", nargs=1, type=str, default=None)
+def rccopy(to_me, out):
     """Adds a line to .bashrc"""
-    copy_bashrc_other(to_me)
+    copy_bashrc_other(to_me, out_path=out)
 
 

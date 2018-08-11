@@ -56,16 +56,7 @@ def _rcadd(text, symbol):
 def _rccopy(rc, replacement, symbol):
     start, _ = rc.split(symbol, 1)
     _, replacement = replacement.split(symbol, 1)
-    start = start[:-1] + symbol + replacement
-    return f"{start}"
-
-def _write_rc(text, to_me=True):
-    if to_me:
-        path = get_bashrc_path()
-    else:
-        path = get_bashrc_other_path()
-    with open(path, "w") as f:
-        f.write(text)
+    return start[:-1] + symbol + replacement
 
 def add_bashrc_alias(text):
     print(_rcadd(text, bashrc_symbols["aliasEnd"]), end="")
@@ -79,14 +70,23 @@ def add_bashrc_export(text):
 def add_bashrc_other(text):
     print(_rcadd(text, bashrc_symbols["otherEnd"]), end="")
 
-def copy_bashrc_other(to_me=True):
+def copy_bashrc_other(to_me:bool=True, out_path:str=None):
     if to_me:
         old = get_bashrc()
         new = get_bashrc_other()
+        path = get_bashrc_path()
     else:
         old = get_bashrc_other()
         new = get_bashrc()
-    _write_rc(_rccopy(old, new, bashrc_symbols["customSection"]), to_me=to_me)
+        path = get_bashrc_other_path()
+
+    if out_path is not None:
+        path = out_path
+
+    new_rc = _rccopy(rc=old, replacement=new, symbol=bashrc_symbols["customSection"])
+
+    with open(path, "w") as f:
+        f.write(new_rc)
 
 def get_history():
     return command_result("cat", "{}/.bash_history".format(str(Path.home())))

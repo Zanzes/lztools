@@ -3,8 +3,6 @@ import codecs
 
 from setuptools import setup
 
-from lztools.resources.Requirements import pip_requires
-
 try:
     codecs.lookup('mbcs')
 except LookupError:
@@ -16,24 +14,21 @@ except LookupError:
 # subprocess.run(["./Commands/link-commands", "-f"])
 
 setup(
-    name='lztools',
+    name='lztools.text',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.2.0',
+    version='1.0.0',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',
     entry_points={
         'console_scripts': [
-            'lztools    = cli.lztools:main',
-            'lpy        = cli.lpy:main'
+            'ltext = cli.ltext:main'
         ],
     },
-    install_requires=pip_requires,
-    packages=['lztools', 'cli', 'lztools'],
+    packages=['lztools', 'cli'],
     zip_safe=False,
     include_package_data=True,
-    package_data={'lztools': ['resources/*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha

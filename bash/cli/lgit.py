@@ -1,5 +1,3 @@
-import os
-
 import click
 
 from lztools.Bash import command_result

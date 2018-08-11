@@ -6,8 +6,8 @@ from multiprocessing.pool import Pool
 import click
 
 import lztools.Images
-from Resources.Requirements import apt_requires
-from lztools.Bash import command_result, command, search_history
+from lztools.resources.Requirements import apt_requires
+from bash.lztools.Bash import command_result, command, search_history
 from lztools import Images
 from lztools.text import search_words, get_random_word, regex as rx
 

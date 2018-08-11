@@ -5,8 +5,8 @@ import subprocess
 
 import pip
 
-from lztools.Data.Text import regex
-from lztools.Managers.TempPath import TempPath
+from lztools.text import regex
+from lztools.TempPath import TempPath
 
 def extract_module_version(text):
     return regex(" \d+\.\d+\.\d+", text, only_first=True)[1:]
