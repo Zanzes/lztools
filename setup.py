@@ -33,11 +33,12 @@ setup(
             'lmod       = cli.lmod:main',
             'ldoc       = cli.ldock:main',
             'lgit       = cli.lgit:main',
-            'lpy        = cli.lpy:main'
+            'lpy        = cli.lpy:main',
+            'ltext        = cli.ltext:main'
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools', 'cli', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk', 'Resources'],
+    packages=['lztools', 'cli', 'lztools.Managers', 'lztools.DataTypes', 'lztools.Data', 'lztools.Junk', 'Resources', 'other'],
     zip_safe=False,
     classifiers=[  # Optional
         # How mature is this project? Common values are

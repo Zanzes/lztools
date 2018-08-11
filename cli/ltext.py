@@ -1,17 +1,22 @@
 #!/usr/bin/env python3.7
-
 import click
 
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+from lztools.click import proper_group, proper_command
 
-@click.group(context_settings=CONTEXT_SETTINGS)
+@proper_group()
 def main():
-    """A collection of python tools and bash commands for manipulating text by laz aka nea"""
+    """A collection of python tools and bash commands for manipulating text by laz"""
 
-if __name__ == '__main__':
-    main()
-
-
+@proper_command()
+@click.argument("delimiter")
+@click.argument("text", default=click.get_text_stream('stdin'))
+@click.option("-f/-l", "--first/--last")
+def split(delimiter:str, text:str, first):
+    """a test"""
+    if first:
+        print(text.split(delimiter, maxsplit=1)[0])
+    else:
+        print(text.split(delimiter, maxsplit=1)[1])
 
 
 # @main.command(context_settings=CONTEXT_SETTINGS)

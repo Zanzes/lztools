@@ -1,9 +1,20 @@
+import inspect
+
 import click
 
 DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+groups = dict()
 
 def proper_command():
-    return click.command(context_settings=DEFAULT_CONTEXT_SETTINGS)
+    lvars = inspect.currentframe().f_back.f_locals
+    name = lvars["__name__"]
+    return lvars[groups[name]].command(context_settings=DEFAULT_CONTEXT_SETTINGS)
 
 def proper_group():
-    return click.group(context_settings=DEFAULT_CONTEXT_SETTINGS)
+    f = inspect.currentframe().f_back
+    name = f.f_locals["__name__"]
+    filename = inspect.getfile(f)
+    code_line = open(filename).readlines()[f.f_lineno]
+    groupname = code_line.strip()[4:-3]
+    groups[name] = groupname
+    return click.group(name=groupname, context_settings=DEFAULT_CONTEXT_SETTINGS)
