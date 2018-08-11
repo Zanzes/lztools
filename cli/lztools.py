@@ -178,127 +178,39 @@ def bash(operation):
 
     pass
 
-def to_art(args):
-    url, width, c = args
+def to_art(url, width, color):
     args = ["art", url, f"-w {str(width-2)}"]
-    if c:
+    if color:
         args.append("-c")
     return command_result("lztools", *args)
 
-
-# @main.command(context_settings=CONTEXT_SETTINGS)
-# @click.option("-n", "--noire", is_flag=True, default=False)
-# def fun(noire):
-#     active = None
-#     q = Queue()
-#     res = command_result("tput", "cols")
-#     for i in Images.get_random_image(count=300):
-#         p = Process(target=to_art, args=(q, i, noire))
-#         p.st
-#     for img in :
-#         if active != None:
-#             if not noire:
-#                 command(f"lztools rainbow \"$(lztools art {img} -w {int(res)-2})\" -a -s 500")
-#             else:
-#                 command(f"lztools art {img} -w {int(res)-2} -c")
-#         Process(target=)
-
-
-
-# def to_art(q, url, c=False):
-#     ctext = f"lztools art {img} -w {int(res)-2}"
-#     if c:
-#         ctext += " -c"
-#     q.put(command_result(ctext))
-
+def queue_image(q, image, width):
+    q.put(to_art(image, width))
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-n", "--noire", is_flag=True, default=False)
 def fun(noire):
-    res = int(command_result("tput", "cols"))
-    ps = []
+    term_width = int(command_result("tput", "cols"))
+    q = Queue()
+    images = Images.get_random_image(count=300)
 
     with Pool(5) as p:
-        print(p.map(to_art, [(i, res, noire) for i in Images.get_random_image(count=300)]))
+        for result in  p.map(to_art, [(i, term_width, noire) for i in images]):
+            print(result)
 
-    # for i in Images.get_random_image(count=300):
-    #     p = Process(target=to_art, args=(q, i, res, noire))
-    #     p.start()
-    #     ps.append(p)
-    # while True:
-    #     try:
-    #         print(q.get())
-    #     except:
-    #         break
+# @main.command(context_settings=CONTEXT_SETTINGS)
+# @click.option("-n", "--noire", is_flag=True, default=False)
+# def fun(noire):
+#     res = int(command_result("tput", "cols"))
+#     ps = []
+#
+#     with Pool(5) as p:
+#         for result in  p.map(to_art, [(i, res, noire) for i in Images.get_random_image(count=300)]):
+#             print(result)
 
 if __name__ == '__main__':
     main()
 
-
-
-
-# @main.command(context_settings=CONTEXT_SETTINGS)
-# @click.option("-r", "--random", "operation", default=False, flag_value="random")
-# @click.option("-s", "--strict", "operation", default=False, flag_value="strict")
-# @click.option("-d", "--division", "operation", default=False, flag_value="division")
-# @click.option("-fr", "--find-regex", "operation", default=False, flag_value="regex")
-# @click.option("-f", "--find", "operation", default=True, flag_value="search")
-# @click.argument("search", nargs=-1)
-# def text(operation, search):
-#     print(operation, search)
-#     exit()
-#     """Get or generate text"""
-#     if operation == "random":
-#         pass
-#     elif operation == "strict":
-#         pass
-#     elif operation == "division":
-#         pass
-#     elif operation == "regex":
-#         pass
-#     elif operation == "search":
-#         ss = search.split(search)
-#         for part in ss:
-#             if part is not None and part != "":
-#                 print(part)
-#     elif operation == "random" and search == "":
-#     else:
-#         res = search_words(search, strict=strict)
-#         if random:
-#             print(rand.choice(list(res)))
-#         else:
-#             for w in res:
-#                 print(w)
-
-# @main.command(context_settings=CONTEXT_SETTINGS)
-# @click.argument("PATH")
-# @click.option("-c/-m", "--color/--monochrome", default=False)
-# @click.option("-w", "--width", default=100, type=click.IntRange(1, 500))
-# @click.option("-i", "--invert", is_flag=True, default=False)
-# def art(path, color, width, invert):
-#     """fun"""
-#     args = ["--width", str(width), path]
-#     if color:
-#         args.append("-c")
-#     if invert:
-#         args.append("-i")
-#     command = ["asciiart", *args]
-#     print("Command: {}".format(command))
-#     print(subprocess.check_call(command))
-
-
-
-
-# @main.command(context_settings=CONTEXT_SETTINGS)
-# @click.option('--data-type', type=click.Choice(['picture', 'text']), default='picture', help="The data type to work with")
-# def data(data_type):
-#     """Get or generate data"""
-#     if data_type == 'picture':
-#         print("pic {}".format(data_type))
-#     elif data_type == 'text':
-#         print("text {}".format(data_type))
-#     else:
-#         print("Invalid argument (--data-type = {})".format(data_type))
 
 
 
