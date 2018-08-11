@@ -2,7 +2,7 @@
 
 import click
 
-from bash.lztools.Bash import add_bashrc_alias, copy_bashrc_other
+from lztools.Bash import add_bashrc_alias, copy_bashrc_other
 from lztools.click import proper_group, proper_command
 
 @proper_group()

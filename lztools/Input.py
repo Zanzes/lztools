@@ -1,6 +1,6 @@
 import sys
 
-import Ansi
+from lztools import Ansi
 
 def add_stdin_arg(name, parser):
     parser.add_argument(name, nargs="*", default=sys.stdin, type=str)

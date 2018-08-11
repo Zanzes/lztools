@@ -17,7 +17,7 @@ setup(
     name='lztools.bash',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.0.0',
+    version='1.0.1',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',
@@ -26,7 +26,8 @@ setup(
         'console_scripts': [
             'lmod = cli.lmod:main',
             'ldoc = cli.ldock:main',
-            'lgit = cli.lgit:main'
+            'lgit = cli.lgit:main',
+            'lpy  = cli.lpy:main'
         ],
     },
     packages=['lztools', 'cli'],

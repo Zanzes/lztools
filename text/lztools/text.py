@@ -9,7 +9,7 @@ from lztools import Ansi
 _words = None
 
 def words():
-    from bash.lztools.Bash import command_result
+    from lztools.Bash import command_result
     global _words
     if _words is None:
         _words = command_result("cat", "/usr/share/dict/words")

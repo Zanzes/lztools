@@ -2,7 +2,7 @@ import inspect
 
 import click
 
-DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], max_content_width=click.get_terminal_size()[0])
 groups = dict()
 
 def proper_command():
