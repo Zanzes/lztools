@@ -98,3 +98,9 @@ def search_history(term, regex=False):
                 yield line
     else:
         return text.regex(term, get_history())
+
+def delete_items_in_dir(path:str):
+    if Path(path).is_dir():
+        command(["rm", "-rf", f"{path.rstrip('/*')}/*"])
+    else:
+        raise NotADirectoryError(path)

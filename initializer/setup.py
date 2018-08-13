@@ -1,6 +1,5 @@
 #!/usr/bin/env python3.7
 import codecs
-
 from setuptools import setup
 
 from lztools.resources.packs import pip_requires
@@ -12,28 +11,22 @@ except LookupError:
     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
     codecs.register(func)
 
-# print(os.getcwd())
-# subprocess.run(["./Commands/link-commands", "-f"])
-
 setup(
-    name='lztools',
+    name='lztools.initializer',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.2.3',
+    version='1.0.0',
     license='MIT License',
-    description='A collection of useful utilities by Laz aka Zanzes',
+    description='Template',
     url='',
     entry_points={
         'console_scripts': [
-            'lztools    = cli.lztools:main',
-            'lpy        = cli.lpy:main'
         ],
     },
     install_requires=pip_requires,
     packages=['lztools', 'cli'],
     zip_safe=False,
     include_package_data=True,
-    package_data={'lztools': ['resources/*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha
