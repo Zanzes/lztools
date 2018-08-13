@@ -17,11 +17,11 @@ setup(
     name='lztools.bash',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.0.1',
+    version='1.0.3',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',
-    requires=["lztools.text"],
+    requires=["lztools"],
     entry_points={
         'console_scripts': [
             'lmod = cli.lmod:main',

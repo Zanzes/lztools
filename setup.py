@@ -3,7 +3,7 @@ import codecs
 
 from setuptools import setup
 
-from lztools.resources.Requirements import pip_requires
+from lztools.resources.reqmod import pip_requires
 
 try:
     codecs.lookup('mbcs')
@@ -19,7 +19,7 @@ setup(
     name='lztools',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.2.2',
+    version='1.2.3',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',
@@ -30,7 +30,7 @@ setup(
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools', 'cli', 'lztools'],
+    packages=['lztools', 'cli'],
     zip_safe=False,
     include_package_data=True,
     package_data={'lztools': ['resources/*']},
