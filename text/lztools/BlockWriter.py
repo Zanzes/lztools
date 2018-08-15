@@ -57,4 +57,7 @@ class BlockWriter(object):
     def flush(self) -> None:
         self.buffer.append(create_line(self.roof_str, self.width))
         for line in self.buffer:
-            print(line)
+            if self.manual_print:
+                yield line
+            else:
+                print(line)
