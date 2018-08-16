@@ -1,4 +1,4 @@
-from lztools.Bash import command_result
+from lztools.bash import command_result
 from lztools.DockerData import DockerData
 
 def get_running():
