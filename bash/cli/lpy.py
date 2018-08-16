@@ -12,9 +12,10 @@ def main():
 @proper_command()
 @click.argument('paths', nargs=-1, type=click.Path())
 @click.option("-u", "--upload", is_flag=True, default=False)
+@click.option("--password", default=None)
 @click.option("-a", is_flag=True, default=False, help="Adds 0.0.1 to version number")
 @click.option("--add", default=None, type=str, help="Adds amount to version number (Default: 0.0.1)")
-def install(paths, upload, a, add):
+def install(paths, upload, password, a, add):
     """Installs one or more python3.7 modules and more by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙
 
     \b
@@ -51,9 +52,9 @@ def install(paths, upload, a, add):
             add = "0.0.1"
 
     if not paths:
-        local_install(".", upload, add)
+        local_install(".", upload, add, password)
     else:
         for x in paths:
-            local_install(str(Path(x).absolute()), upload, add)
+            local_install(str(Path(x).absolute()), upload, add, password)
 
 

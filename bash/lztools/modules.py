@@ -3,6 +3,7 @@
 from subprocess import CalledProcessError, check_output, call
 
 import pip
+import sh
 from lztools.text import regex
 from lztools.TempPath import TempPath
 
@@ -25,7 +26,7 @@ def clean():
     call(["rm", "-rf", "dist"])
     call(["rm", "-rf", "*.egg-info"])
 
-def local_install(path, upload=False, add_to_version=None):
+def local_install(path, upload=False, add_to_version=None, password=None):
     with TempPath(path):
         clean()
         if add_to_version is not None:
@@ -37,7 +38,7 @@ def local_install(path, upload=False, add_to_version=None):
         if upload:
             call(["python3.7", "setup.py", "install", "sdist", "bdist_wheel"])
             try:
-                _upload()
+                _upload(password)
             except:
                 raise
             finally:
@@ -48,13 +49,15 @@ def get_name_from_path():
     name, _ = end.split("'", 1)
     return name
 
-def _upload():
+def _upload(password):
     online = get_version_online(get_name_from_path())
     local = get_version()
     if online == local:
         raise Exception("Error: Same version as online")
     else:
-        call(["twine", "upload", "-u", "zanzes", "dist/*"])
+        twine = sh.twine.bake(_cwd=".")
+        print(twine.upload("dist/*", username="zanzes", password=password))
+        #call(["twine", "upload", "-u", "zanzes", "dist/*", *parg])
 
 def get_version_online(name):
     try:
