@@ -1,6 +1,6 @@
 import click
 
-from lztools.Bash import command_result
+from lztools.bash import command_result
 from lztools.text import regex
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -20,3 +20,4 @@ def branch(bash_format):
         git_branch = regex(r"\* (.*)", command_result("git", "branch"), only_first=True, suppress=True)
         if git_branch is not None:
             print(f"({git_branch}) ")
+

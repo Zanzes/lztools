@@ -1,6 +1,0 @@
-#!/bin/bash
-
-ids=$(sudo docker ps --format "{{.ID}}")
-for id in $ids; do
-    echo $id
-done
