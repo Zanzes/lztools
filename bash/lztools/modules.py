@@ -24,6 +24,7 @@ def add_versions(left, right):
     return f"{e1}.{e2}.{e3}"
 
 def clean():
+    call(["rm", "-rf", "*egg-info"])
     call(["rm", "-rf", "build", "dist", "*.egg-info"])
 
 def local_install(path, upload=False, add_to_version=None, password=None):

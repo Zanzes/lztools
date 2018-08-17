@@ -7,7 +7,8 @@ pip_requires = [
     'pip',
     'GitPython',
     'ansiwrap',
-    'lztools.text'
+    'lztools.text',
+    'lztools.initializer'
 ]
 
 apt_requires = [

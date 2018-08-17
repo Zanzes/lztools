@@ -18,8 +18,7 @@ def create(name, parent):
 
 @proper_command()
 @click.argument('paths', nargs=-1, type=click.Path())
-@click.option("-u", "--upload", is_flag=True, default=False)
-@click.option("--password", default=None)
+@click.option("-u", "--upload", nargs=1, default=None)
 @click.option("-a", is_flag=True, default=False, help="Adds 0.0.1 to version number")
 @click.option("--add", default=None, type=str, help="Adds amount to version number (Default: 0.0.1)")
 def install(paths, upload, password, a, add):
@@ -62,6 +61,6 @@ def install(paths, upload, password, a, add):
         local_install(".", upload, add, password)
     else:
         for x in paths:
-            local_install(str(Path(x).absolute()), upload, add, password)
+            local_install(str(Path(x).absolute()), upload == None, add, password)
 
 

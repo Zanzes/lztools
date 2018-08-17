@@ -6,7 +6,9 @@ from multiprocessing.pool import Pool
 import click
 
 import lztools.Images
-from lztools.resources.packs import apt_requires
+from lztools.click import proper_command
+from lztools.initializer import initialize
+from resources.packs import apt_requires
 from lztools.bash import command_result, command, search_history
 from lztools import Images
 from lztools.text import search_words, get_random_word, regex as rx
@@ -32,6 +34,12 @@ def history(term, regex):
     """Search bash history"""
     for line in search_history(term, regex=regex):
         print(line)
+
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.option("-f", "--override", is_flag=True, default=False)
+def init(override):
+    """Initialize lztools"""
+    initialize(override)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term", default="")
