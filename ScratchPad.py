@@ -1,4 +1,7 @@
 #!  /usr/bin/env python3.7
+
+import lztools.resources
+
 from lztools.git import list_files, load_file, save_file
 
 i = input("0 = List(Default), 1 = Load, 2 = Save:\n")

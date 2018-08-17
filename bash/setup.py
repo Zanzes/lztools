@@ -30,9 +30,10 @@ setup(
             'lpy  = cli.lpy:main'
         ],
     },
-    packages=['lztools', 'cli'],
+    packages=['lztools', 'cli', 'resources'],
     zip_safe=False,
     include_package_data=True,
+    package_data={'lztools.bash': ['resources/*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha

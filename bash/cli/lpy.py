@@ -4,10 +4,17 @@ import click
 
 from lztools.click import proper_group, proper_command
 from lztools.modules import local_install, get_version, add_versions
+from lztools.modules import create_new
 
 @proper_group()
 def main():
     """Python utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
+
+@proper_command()
+@click.argument('name', type=click.Path())
+@click.option("-p", "--parent", nargs=1, default="")
+def create(name, parent):
+    create_new(name, pack=parent)
 
 @proper_command()
 @click.argument('paths', nargs=-1, type=click.Path())
