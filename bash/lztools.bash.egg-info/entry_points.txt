@@ -1,6 +1,0 @@
-[console_scripts]
-ldoc = cli.ldock:main
-lgit = cli.lgit:main
-lmod = cli.lmod:main
-lpy = cli.lpy:main
-
