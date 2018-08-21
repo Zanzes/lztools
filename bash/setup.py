@@ -17,7 +17,7 @@ setup(
     name='lztools.bash',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.0.9',
+    version='1.0.10',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',

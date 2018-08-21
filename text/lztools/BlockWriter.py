@@ -7,24 +7,19 @@ default_fill_symbol = " "
 class BlockWriter(object):
     roof_str = None
     wall_str = None
-    manual_print = False
     fill_char = None
     started = False
-    bufferd = True
     buffer = None
     width = -1
     padding_h = -1
 
-    def __init__(self, width:int=80, horizontal_symbol:str=default_horizontal_symbol, vertical_symbol:str=default_vertical_symbol, fill_symbol:str=default_fill_symbol, bufferd:bool=True, manual_print:bool=False, padding_h:int=2):
+    def __init__(self, width:int=80, horizontal_symbol:str=default_horizontal_symbol, vertical_symbol:str=default_vertical_symbol, fill_symbol:str=default_fill_symbol, padding_h:int=2):
         self.roof_str = horizontal_symbol
         self.wall_str = vertical_symbol
-        self.manual_print = manual_print
         self.fill_char = fill_symbol
-        self.bufferd = bufferd
         self.width = width
         self.padding_h = padding_h
-        if bufferd:
-            self.buffer = []
+        self.buffer = []
 
     def _wall_len(self):
         return len(self.wall_str)
@@ -54,10 +49,7 @@ class BlockWriter(object):
             self.started = True
         self.buffer.append(wall_text(text, self.width, self.wall_str, text_alignment=text_alignment, h_padding=self.padding_h, colorizer=colorizer))
 
-    def flush(self) -> None:
-        self.buffer.append(create_line(self.roof_str, self.width))
+    def write_output(self, print_func=print) -> None:
+        print_func(create_line(self.roof_str, self.width))
         for line in self.buffer:
-            if self.manual_print:
-                yield line
-            else:
-                print(line)
+            print_func(line)
