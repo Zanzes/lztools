@@ -21,7 +21,7 @@ def create(name, parent):
 @click.option("-u", "--upload", nargs=1, default=None)
 @click.option("-a", is_flag=True, default=False, help="Adds 0.0.1 to version number")
 @click.option("--add", default=None, type=str, help="Adds amount to version number (Default: 0.0.1)")
-def install(paths, upload, password, a, add):
+def install(paths, upload, a, add):
     """Installs one or more python3.7 modules and more by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙
 
     \b

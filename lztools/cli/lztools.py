@@ -2,6 +2,7 @@
 import random as rand
 from multiprocessing import Queue
 from multiprocessing.pool import Pool
+from subprocess import call
 
 import click
 
@@ -26,6 +27,13 @@ def try_read_input(input):
 @click.group(context_settings=CONTEXT_SETTINGS)
 def main():
     """A collection of python tools and bash commands by laz aka nea"""
+
+@main.command(context_settings=CONTEXT_SETTINGS)
+def morning():
+    """Installs updates and so on..."""
+    call(["sudo", "apt", "update", "-y"])
+    call(["sudo", "apt", "upgrade", "-y"])
+    initialize()
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term")

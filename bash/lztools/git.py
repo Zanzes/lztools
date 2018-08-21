@@ -1,6 +1,10 @@
+import importlib
+import os
 from collections import namedtuple
 from datetime import datetime
 from subprocess import call
+from importlib import util
+
 
 import sh
 
@@ -36,4 +40,17 @@ def list_files(repo, filter=None, branch="master"):
         if filter is None or filter in file:
             permissions, type, hash = split.split(" ")
             yield GitFileData(permissions, type, hash, file)
+
+def clone_repo(url, name=None):
+    args = ["git", "clone", url]
+    if name is not None:
+        args.append(name)
+    call(args)
+
+def clone_repo_on_id(id, name=None):
+    p = __file__.rsplit(os.sep, 2)[0] + "/resources/KnownRepos.py"
+    KnownReposSpec = util.spec_from_file_location("KnownRepos", p)
+    KnownRepos = util.module_from_spec(KnownReposSpec)
+    url = KnownRepos.KnownRepos[id]
+    clone_repo(url, name)
 
