@@ -51,6 +51,7 @@ def clone_repo_on_id(id, name=None):
     p = __file__.rsplit(os.sep, 2)[0] + "/resources/KnownRepos.py"
     KnownReposSpec = util.spec_from_file_location("KnownRepos", p)
     KnownRepos = util.module_from_spec(KnownReposSpec)
+    KnownReposSpec.loader.exec_module(KnownRepos)
     url = KnownRepos.KnownRepos[id]
     clone_repo(url, name)
 

@@ -1,6 +1,7 @@
 from pathlib import Path
 from subprocess import call
 from lztools.git import clone_repo_on_id
+from lztools.TempPath import TempPath
 
 home_path = Path.home().absolute()
 tool_path = home_path.joinpath(".lztools").absolute()
@@ -17,7 +18,8 @@ def initialize(override=False):
     if not is_initializd():
         tool_path.mkdir()
         #resources_path.mkdir()
-        clone_repo_on_id("Resources")
+        with TempPath(tool_path.absolute()):
+            clone_repo_on_id("Resources")
         source_path.touch()
 
         with open(str(rc_path), "r") as f:
@@ -25,7 +27,8 @@ def initialize(override=False):
         if "PROMPT_COMMAND" not in data:
             marker = "# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> OTHER END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙"
             with open(str(rc_path), "w") as f:
-                data = data.replace(f"\n\n{marker}", f"PROMPT_COMMAND='source {str(source_path)};echo '' > {str(source_path)}'\n\n{marker}")
+                p = str(source_path)
+                data = data.replace(f"\n\n{marker}", f"\nPROMPT_COMMAND='source {p};echo \"\" > {p}'\n\n{marker}")
                 f.write(data)
 
 
