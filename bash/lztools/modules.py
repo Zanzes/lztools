@@ -149,6 +149,51 @@ def main(template_argument, verbose):
     if template_argument:
         print(f"TEMPLATE_ARGUMENT: {{template_argument}}")"""
 
+packs_text = """#!/usr/bin/env python3.7
+
+pip_requires = [
+    "click"
+]
+
+apt_requires = [
+]
+"""
+
+license_text = """Copyright (c) 2016 The Python Packaging Authority (PyPA)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+setup_text = """[metadata]
+# This includes the license file in the wheel.
+license_file = LICENSE.txt
+
+[bdist_wheel]
+# This flag says to generate wheels that support both Python 2 and Python
+# 3. If your code will not run unchanged on both Python 2 and 3, you will
+# need to generate separate wheels for each Python version that you
+# support. Removing this line (or setting universal to 0) will prevent
+# bdist_wheel from trying to make a universal wheel. For more see:
+# https://packaging.python.org/tutorials/distributing-packages/#wheels
+universal=1
+"""
+
 def _create_data(name, pack=""):
     packd = ""
     if pack != "":
@@ -169,19 +214,31 @@ def create_new(name, pack=""):
             f.write(text)
     pack = Path(name)
     pack.mkdir()
-    p = __file__.rsplit(os.sep, 2)[0]+"/resources"
-    call(["cp", "-rfp", p + "/resources", name+"/."])
-    call(["cp", "-rfp", p + "/LICENSE.txt", name+"/."])
-    call(["cp", "-rfp", p + "/setup.cfg", name+"/."])
+
+    res = pack.joinpath("resources")
+    res.mkdir()
+
+    packs = res.joinpath("packs.py")
+    mf(packs, packs_text)
+
+    license = pack.joinpath("LICENSE.txt")
+    mf(license, license_text)
+
+    setupcfg = pack.joinpath("setup.cfg")
+    mf(setupcfg, setup_text)
+
     # call(["rm", "-rf", name+"/resources/__pycache__"])
     setup = pack.joinpath("setup.py")
     mf(setup, _setup_text.format(module=data["module"], fullname=data["fullname"], packname=data["packname"]))
+
     readme = pack.joinpath("README.md")
     mf(readme, _readme_text.format(fullname=data["fullname"]))
+
     inner = pack.joinpath(data["packname"])
     inner.mkdir()
     main = inner.joinpath(data["module"]+".py")
     mf(main, _main_text)
+
     cli = pack.joinpath("cli")
     cli.mkdir()
     command = cli.joinpath("l"+data["module"]+".py")

@@ -17,7 +17,6 @@ def initialize(override=False):
         call(["rm", "-rf", str(tool_path)])
     if not is_initializd():
         tool_path.mkdir()
-        #resources_path.mkdir()
         with TempPath(tool_path.absolute()):
             clone_repo_on_id("Resources")
         source_path.touch()

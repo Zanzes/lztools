@@ -30,7 +30,7 @@ setup(
             'lpy  = cli.lpy:main'
         ],
     },
-    packages=['lztools', 'cli', 'resources'],
+    packages=['lztools', 'cli'],
     zip_safe=False,
     include_package_data=True,
     package_data={'lztools.bash': ['resources/*']},
