@@ -50,6 +50,6 @@ class BlockWriter(object):
         self.buffer.append(wall_text(text, self.width, self.wall_str, text_alignment=text_alignment, h_padding=self.padding_h, colorizer=colorizer))
 
     def write_output(self, print_func=print) -> None:
-        print_func(create_line(self.roof_str, self.width))
         for line in self.buffer:
             print_func(line)
+        print_func(create_line(self.roof_str, self.width))

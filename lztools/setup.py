@@ -19,7 +19,7 @@ setup(
     name='lztools',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.2.8',
+    version='1.2.9',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',

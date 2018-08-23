@@ -25,10 +25,11 @@ def install(paths, upload, a, add):
     """Installs one or more python3.7 modules and more by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙
 
     \b
-    paths [paths]           The paths to install modules from
+    PATHS                   The path(s) to install modules from
                             \b
-    -a X.X.X                Adds amount to version number
-    --add-to-version X.X.X  Format: X.X.X where X is any integer
+    --a                     Adds 0.0.1 to version number
+                            \b
+    --add X.X.X             Format: X.X.X where X is any integer
                             If no value is passed in the added amount defaults to 0.0.1
                             \b
                             Exampel 1: Default of 0.0.1 added
@@ -51,13 +52,11 @@ def install(paths, upload, a, add):
                             lpy path/to/module -a
                             the new version will be 1.2.3
                             \b
-    -u, --upload            Uploads package using twine
+    -u, --upload PASSWORD   Uploads package using twine
     """
     if a or add is not None:
         if add is None:
             add = "0.0.1"
-
-    print(upload)
 
     should_upload = upload is not None
 

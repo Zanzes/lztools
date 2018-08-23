@@ -15,7 +15,7 @@ setup(
     name='lztools.initializer',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.0.3',
+    version='1.0.4',
     license='MIT License',
     description='Template',
     url='',
