@@ -7,9 +7,7 @@ from subprocess import call
 import click
 
 import lztools.Images
-from lztools.click import proper_command
 from lztools.initializer import initialize
-from resources.packs import apt_requires
 from lztools.bash import command_result, command, search_history
 from lztools import Images
 from lztools.text import search_words, get_random_word, regex as rx
@@ -185,10 +183,6 @@ def art(width, invert, add_color, target):
     command("asciiart", *args)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
-def install():
-    command("sudo apt install -y {}".format(str.join(" ", apt_requires)))
-
-@main.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-o', '--operation', type=click.Choice(["bashrc", "autosource"]))
 def bash(operation):
 
@@ -213,16 +207,6 @@ def fun(noire):
     with Pool(5) as p:
         for result in  p.map(to_art, [(i, term_width, noire) for i in images]):
             print(result)
-
-# @main.command(context_settings=CONTEXT_SETTINGS)
-# @click.option("-n", "--noire", is_flag=True, default=False)
-# def fun(noire):
-#     res = int(command_result("tput", "cols"))
-#     ps = []
-#
-#     with Pool(5) as p:
-#         for result in  p.map(to_art, [(i, res, noire) for i in Images.get_random_image(count=300)]):
-#             print(result)
 
 if __name__ == '__main__':
     main()
