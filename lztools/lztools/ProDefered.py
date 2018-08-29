@@ -1,49 +1,15 @@
+import gc
 import inspect
 import sys
-import warnings
-
-import gc
 from inspect import getfile
 
-import zope.proxy
-
-class LazyVariable(object):
+class LazyLoader(object):
 
     def __init__(self, specifier):
         self.specifier = specifier
 
     def get(self):
         return self.specifier()
-
-class DeferredAndDeprecated(LazyVariable):
-
-    def __init__(self, specifier, message):
-        super(DeferredAndDeprecated, self).__init__(specifier)
-        self.message = message
-
-    def get(self):
-        warnings.warn(
-            self.__name__ + " is deprecated. " + self.message,
-            DeprecationWarning, stacklevel=3)
-
-        return super(DeferredAndDeprecated, self).get()
-
-class ModuleProxy(zope.proxy.ProxyBase):
-    __slots__ = ('__deferred_definitions__', '__doc__')
-
-    def __init__(self, module):
-        super(ModuleProxy, self).__init__(module)
-        self.__deferred_definitions__ = {}
-        self.__doc__ = module.__doc__
-
-    def __getattr__(self, name):
-        try:
-            get = self.__deferred_definitions__.pop(name)
-        except KeyError:
-            raise AttributeError(name)
-        v = get.get()
-        setattr(self, name, v)
-        return v
 
 def initialize(level=1):
     """Prepare a module to support deferred imports.

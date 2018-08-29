@@ -3,13 +3,27 @@ from functools import partial
 
 import zope.proxy
 
+class mu(object):
+    f = None
+    val = None
+    gotten = False
+
+    def __init__(self, func):
+        self.f = func
+    def __get__(self, instance, owner):
+        if not self.gotten:
+            self.val = self.f()
+            self.gotten = True
+        return self.val
+
 def super_property(func):
     def executor(f, key):
         return f()
+    x = mu(func)
     class _M(object):
-        y = property(partial(executor, func))
+        y = x
     _m = _M()
-    return _m.y
+    return x
 
 class LazyVariable(object):
     value = None
