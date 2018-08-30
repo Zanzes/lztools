@@ -1,3 +1,4 @@
+import inspect
 import random
 import re
 import time
@@ -5,6 +6,7 @@ from typing import Union
 from ansiwrap import wrap
 
 from lztools import Ansi
+from lztools.MatchType import MatchType, brace, bracket, parentheses, gt_lt
 
 _words = None
 
@@ -134,3 +136,54 @@ def search_words(term, strict=False):
 
 def get_random_word():
     return random.choice(list(words()))
+
+def _is_escaped(text, index) -> bool:
+    def __is_escaped(t, i, v) -> bool:
+        if t[i-1] == "\\":
+            return __is_escaped(t, i-1, not v)
+        else:
+            return v
+    return __is_escaped(text, index, False)
+
+
+def find_matching(match_type:Union[MatchType, str], text:str, offset:int=0, raise_error:bool=True, fail_value=-1) -> int:
+    if match_type is brace or match_type == "{":
+        open, close = brace
+    elif match_type is bracket or match_type == "[":
+        open, close = bracket
+    elif match_type is parentheses or match_type == "(":
+        open, close = parentheses
+    elif match_type is gt_lt or match_type == "<":
+        open, close = gt_lt
+    else:
+        raise ValueError(f"Argument 'match_type' value '{match_type}' not understood.\n'match_type' must be either {{, [, (, < or one of the values from MatchType.")
+
+    depth = 0
+    skipping:bool = False
+    for i, c in enumerate(text):
+        if i < offset:
+            continue
+        if not skipping:
+            if c == '"' and not _is_escaped(text, i):
+                skipping = True
+            if c == open:
+                depth += 1
+            if c == close:
+                if depth > 0:
+                    depth -= 1
+                else:
+                    return i
+        elif skipping and c == '"' and not _is_escaped(text, i):
+            skipping = False
+    if raise_error:
+        raise LookupError("Closing brace not found")
+    return fail_value
+
+def as_literal(*args, **kwargs) -> str:
+    f = inspect.currentframe().f_back
+    filename = inspect.getfile(f)
+    code_line = open(filename).readlines()[f.f_lineno - 1]
+    t = f"{as_literal.__name__}("
+    i = code_line.find(t) + len(t)
+    e = find_matching(parentheses, code_line, offset=i)
+    return code_line[i:e]
