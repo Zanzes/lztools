@@ -23,7 +23,7 @@ class Holder(object):
 h = Holder()
 
 m3:str = "asd"
-m2:B = Magic.A()
+m2:B = None
 m1:Magic.A = Magic(123)
 
 # pprint(locals())

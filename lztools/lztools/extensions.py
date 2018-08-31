@@ -1,5 +1,4 @@
 import inspect
-from pprint import pprint
 
 from lztools.MatchType import parentheses
 from lztools.text import find_matching

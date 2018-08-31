@@ -15,7 +15,7 @@ setup(
     name='lztools.initializer',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.0.6',
+    version='1.0.9',
     license='MIT License',
     description='Template',
     url='',
@@ -24,7 +24,7 @@ setup(
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools', 'pyres'],
+    packages=['lztools'],
     zip_safe=False,
     include_package_data=True,
     classifiers=[  # Optional
