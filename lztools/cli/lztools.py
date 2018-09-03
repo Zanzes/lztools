@@ -5,6 +5,7 @@ from multiprocessing.pool import Pool
 from subprocess import call
 
 import click
+from click import Context
 
 import lztools.Images
 from lztools.initializer import initialize
@@ -24,7 +25,7 @@ def try_read_input(input):
 
 @click.group(context_settings=CONTEXT_SETTINGS)
 def main():
-    """A collection of python tools and bash commands by laz aka nea"""
+    """A collection of python tools and bash commands by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 def morning():
@@ -40,6 +41,14 @@ def history(term, regex):
     """Search bash history"""
     for line in search_history(term, regex=regex):
         print(line)
+
+# ,.-~*´¨¯¨`*·~-.¸-( ALIAS: HISTORY )-,.-~*´¨¯¨`*·~-.¸
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.argument("term")
+@click.option("-r", "--regex", is_flag=True, default=False)
+@click.pass_context
+def h(ctx:Context, *args, **kwargs):
+    ctx.forward(history)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-f", "--override", is_flag=True, default=False)
