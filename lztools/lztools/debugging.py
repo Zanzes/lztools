@@ -46,3 +46,15 @@ def time_operation(func, count, id=None):
         average = total / i
         if i % 50 == 0:
             print("{}#{}: Average: {}\tMin: {}\tMax: {}".format(id, i, average, min, max))
+
+def is_debugging():
+    import sys
+    return sys.gettrace() is not None
+
+def debugger_break():
+    if is_debugging():
+        import pdb
+        pdb.Pdb.break_here()
+    else:
+        import pdb
+        pdb.set_trace()
