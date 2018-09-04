@@ -8,7 +8,6 @@ import click
 from click import Context
 
 import lztools.Images
-from lztools.initializer import initialize
 from lztools.bash import command_result, command, search_history
 from lztools import Images
 from lztools.text import search_words, get_random_word, regex as rx
@@ -32,7 +31,6 @@ def morning():
     """Installs updates and so on..."""
     call(["sudo", "apt", "update", "-y"])
     call(["sudo", "apt", "upgrade", "-y"])
-    initialize()
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term")
@@ -49,12 +47,6 @@ def history(term, regex):
 @click.pass_context
 def h(ctx:Context, *args, **kwargs):
     ctx.forward(history)
-
-@main.command(context_settings=CONTEXT_SETTINGS)
-@click.option("-f", "--override", is_flag=True, default=False)
-def init(override):
-    """Initialize lztools"""
-    initialize(override)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term", default="")
