@@ -26,11 +26,11 @@ def load_file(repo, file:GitFileData):
         # print("Successfully loaded: {}".format(file.path))
     except Exception as e:
         raise Exception("There was an error checking out file: {}\n{}".format(file.path, e))
-    call(["cp", "-v", repo+"/" + file.path, "."])
+    call(["cp", "-vr", repo+"/" + file.path, "."])
 
 def list_files(repo, filter=None, branch="master"):
     """git ls-tree -r master --name-only"""
-    files = _get_repo(repo)('ls-tree', "-r", branch).stdout.decode("utf8").strip().splitlines()
+    files = _get_repo(repo)('ls-tree', "-r", "-t", branch).stdout.decode("utf8").strip().splitlines()
     for data in files:
         split, file = data.split("\t")
         if filter is None or filter in file:
