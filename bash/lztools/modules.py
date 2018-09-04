@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
+from pprint import pprint
 from subprocess import CalledProcessError, check_output, call
 
 import pip
 import sh
+import sys
 from lztools.text import regex
 from lztools.TempPath import TempPath
 
@@ -240,6 +242,11 @@ def create_new(name, pack=""):
     command = cli.joinpath("l"+data["module"]+".py")
     mf(command, _command_text.format(fullname=data["fullname"]))
 
-
-
-
+def get_module_path(target):
+    if hasattr(target, "__path__") and target.__path__:
+        return next(iter(target.__path__))
+    elif hasattr(target, "__file__") and target.__file__:
+        return target.__file__
+    elif hasattr(target, "__module__") and target.__module__:
+        return get_module_path(sys.modules[target.__module__])
+    raise Exception(f"Cant find path to target (type: {type(target)}, value: {target})")

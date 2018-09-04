@@ -1,30 +1,20 @@
 from pprint import pprint
+import ScratchPad, lztools, A, B
 
-class Magic(object):
+from lztools.modules import get_module_path
 
-    class A(object):
-        pass
-    get = None
+# print("A:")
+# pprint(A.__dict__)
+# print("")
+# print("B:")
+# pprint(B.__dict__)
 
-    def __init__(self, x):
-        self.get = x
+class C(object):
+    a = 1
 
-    def __get__(self, instance, owner):
-        print(f"Getting {instance} {owner}")
-        return self.get
-
-class B(object):
-    m = Magic(321)
-
-class Holder(object):
-    m4:123 = None
-    pass
-
-h = Holder()
-
-m3:str = "asd"
-m2:B = None
-m1:Magic.A = Magic(123)
-
-# pprint(locals())
-# exit()
+print(get_module_path(A))
+print(get_module_path(B))
+print(get_module_path(C))
+print(get_module_path(C()))
+print(get_module_path(ScratchPad))
+print(get_module_path(2))
