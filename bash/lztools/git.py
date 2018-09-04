@@ -1,6 +1,8 @@
 from collections import namedtuple
 from datetime import datetime
+from resources import
 from subprocess import call
+from lztools.ResourceManager import resources_path
 
 import sh
 
@@ -36,6 +38,12 @@ def list_files(repo, filter=None, branch="master"):
         if filter is None or filter in file:
             permissions, type, hash = split.split(" ")
             yield GitFileData(permissions, type, hash, file)
+
+def select_file():
+    files = list(list_files(str(resources_path)))
+    for k, v in enumerate(files):
+        print(f'{k}:\t{v.path}')
+    id = int(input("File #:\n"))
 
 def clone_repo(url, name=None):
     args = ["git", "clone", url]
