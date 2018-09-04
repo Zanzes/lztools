@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import inspect
 import os
 from pathlib import Path
 from pprint import pprint
@@ -175,7 +176,7 @@ def _upload(password):
     else:
         twine = sh.twine.bake(_cwd=".")
         print(twine.upload("dist/*", username="zanzes", password=password))
-        #call(["twine", "upload", "-u", "zanzes", "dist/*", *parg])
+        # call(["twine", "upload", "-u", "zanzes", "dist/*", *parg])
 
 def get_version_online(name):
     try:
@@ -195,10 +196,10 @@ def pip_install(package):
 def _create_data(name, pack=""):
     packd = ""
     if pack != "":
-        packd = pack+"."
+        packd = pack + "."
     pname = name if pack == "" else pack
     data = {
-        "fullname": packd+name,
+        "fullname": packd + name,
         "packname": pname,
         "module": name
     }
@@ -206,10 +207,12 @@ def _create_data(name, pack=""):
 
 def create_new(name, pack=""):
     data = _create_data(name, pack)
-    def mf(file:Path, text:str):
+
+    def mf(file: Path, text: str):
         file.touch()
         with file.open("w") as f:
             f.write(text)
+
     pack = Path(name)
     pack.mkdir()
 
@@ -234,12 +237,12 @@ def create_new(name, pack=""):
 
     inner = pack.joinpath(data["packname"])
     inner.mkdir()
-    main = inner.joinpath(data["module"]+".py")
+    main = inner.joinpath(data["module"] + ".py")
     mf(main, _main_text)
 
     cli = pack.joinpath("cli")
     cli.mkdir()
-    command = cli.joinpath("l"+data["module"]+".py")
+    command = cli.joinpath("l" + data["module"] + ".py")
     mf(command, _command_text.format(fullname=data["fullname"]))
 
 def get_module_path(target):
@@ -249,4 +252,8 @@ def get_module_path(target):
         return target.__file__
     elif hasattr(target, "__module__") and target.__module__:
         return get_module_path(sys.modules[target.__module__])
+    try:
+        return inspect.getsourcefile(target)
+    except:
+        pass
     raise Exception(f"Cant find path to target (type: {type(target)}, value: {target})")
