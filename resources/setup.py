@@ -1,7 +1,6 @@
 #!/usr/bin/env python3.7
 import codecs
 from setuptools import setup
-
 from resources.packs import pip_requires
 
 try:
@@ -12,7 +11,7 @@ except LookupError:
     codecs.register(func)
 
 setup(
-    name='lztools.initializer',
+    name='lztools.resources',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
     version='1.0.11',
@@ -21,12 +20,15 @@ setup(
     url='',
     entry_points={
         'console_scripts': [
+            'lvault              = cli.lvault:main',
+            '__lztools_resources = cli.__lztools_resources:main'
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools'],
+    packages=['lztools', 'lztools.shared_resources', 'cli'],
     zip_safe=False,
     include_package_data=True,
+    package_data={'lztools': ['resources/*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha

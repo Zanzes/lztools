@@ -12,14 +12,11 @@ except LookupError:
     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
     codecs.register(func)
 
-# print(os.getcwd())
-# subprocess.run(["./Commands/link-commands", "-f"])
-
 setup(
     name='lztools',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.2.13',
+    version='1.2.14',
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',
