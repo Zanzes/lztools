@@ -30,8 +30,8 @@ def load_file(repo, file:GitFileData):
         raise Exception("There was an error checking out file: {}\n{}".format(file.path, e))
     call(["cp", "-vr", repo+"/" + file.path, "."])
 
-def list_files(repo, filter=None, branch="master"):
-    """git ls-tree -r master --name-only"""
+def list_files(repo, filter=None, branch="HEAD"):
+    """git ls-tree -r -t HEAD/{branch} --name-only"""
     files = _get_repo(repo)('ls-tree', "-r", "-t", branch).stdout.decode("utf8").strip().splitlines()
     for data in files:
         split, file = data.split("\t")
@@ -40,10 +40,12 @@ def list_files(repo, filter=None, branch="master"):
             yield GitFileData(permissions, type, hash, file)
 
 def select_file():
-    files = list(list_files(str(resources_path)))
-    for k, v in enumerate(files):
+    pairs = {}
+    for k, v in enumerate(list_files(str(resources_path))):
         print(f'{k}:\t{v.path}')
+        pairs[k] = v
     id = int(input("File #:\n"))
+    return pairs[id]
 
 def clone_repo(url, name=None):
     args = ["git", "clone", url]
