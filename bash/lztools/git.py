@@ -1,6 +1,5 @@
 from collections import namedtuple
 from datetime import datetime
-from resources import
 from subprocess import call
 from lztools.ResourceManager import resources_path
 
