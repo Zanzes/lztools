@@ -2,7 +2,8 @@
 
 pip_requires = [
     "click",
-    "lztools.bash"
+    "lztools.bash",
+    'sh'
 ]
 
 apt_requires = [

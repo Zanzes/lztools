@@ -2,7 +2,7 @@ import inspect
 import random
 import re
 import time
-from typing import Union
+from typing import Union, Iterable, Collection, Container
 from ansiwrap import wrap
 
 from lztools import Ansi
@@ -187,3 +187,60 @@ def as_literal(*args, **kwargs) -> str:
     i = code_line.find(t) + len(t)
     e = find_matching(parentheses, code_line, offset=i)
     return code_line[i:e]
+
+
+def print_collection(obj):
+    _print_collection(obj)
+
+def _print_collection(ob, i=0):
+    indent = "".join(["\t" for _ in range(i)])
+    if type(ob) == list or type(ob) == tuple:
+        for i, x in enumerate(ob):
+            res = f"{indent}{i}:"
+            if is_collection(x):
+                print(res)
+                _print_collection(x, i)
+            else:
+                print(f"{res} {x}")
+    elif type(ob) == dict:
+        for key in ob:
+            o = ob[key]
+            res = f"{indent}{key}:"
+            if type(o) in [list, dict, tuple]:
+                print(res)
+                _print_collection(o, i + 1)
+            else:
+                print(f"{res} {o}")
+    else:
+        print(ob)
+
+def print_dict(obj):
+    def pd(ob, i=0):
+        indent = "".join(["\t" for _ in range(i)])
+        for key in ob.__dict__:
+            o = ob.__dict__[key]
+            res = f"{indent}{key}:"
+            if is_collection(o):
+                print(res)
+                _print_collection(o, i + 1)
+            else:
+                print(f"{res} {o}")
+
+    pd(obj)
+
+def is_collection(obj):
+    return type(obj) in [list, dict, tuple]
+
+def print_dir_values(obj):
+    def pd(ob, i=0):
+        indent = "".join(["\t" for _ in range(i)])
+        for key in dir(ob):
+            o = getattr(ob, key)
+            res = f"{indent}{key}:"
+            if is_collection(o):
+                print(res)
+                _print_collection(o, i + 1)
+            else:
+                print(f"{res} {o}")
+
+    pd(obj)

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3.7
 import codecs
+from subprocess import call
+
 from setuptools import setup
-from resources.packs import pip_requires
 
 try:
     codecs.lookup('mbcs')
@@ -10,25 +11,26 @@ except LookupError:
     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
     codecs.register(func)
 
+call(["sudo", "apt-get", "-qq", "-y", "install", "sox"])
+
 setup(
-    name='lztools.resources',
+    name='lztools.alarm',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.0.13',
+    version='0.0.2',
     license='MIT License',
-    description='Template',
+    description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     url='',
+    requires=["lztools"],
     entry_points={
         'console_scripts': [
-            'lvault              = cli.lvault:main',
-            '__lztools_resources = cli.__lztools_resources:main'
+            'alarm = cli.alarm:main',
         ],
     },
-    install_requires=pip_requires,
-    packages=['lztools', 'lztools.shared_resources', 'cli'],
+    packages=['cli'],
     zip_safe=False,
     include_package_data=True,
-    package_data={'lztools': ['resources/*']},
+    package_data={'alarm': ['resources/*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha
