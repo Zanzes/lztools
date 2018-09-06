@@ -1,17 +1,15 @@
 #!/usr/bin/env python3.7
-import codecs
 from subprocess import call
-
 from setuptools import setup
+from setup_requires import apt_requires, pip_requires
+# try:
+#     codecs.lookup('mbcs')
+# except LookupError:
+#     ascii = codecs.lookup('ascii')
+#     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
+#     codecs.register(func)
 
-try:
-    codecs.lookup('mbcs')
-except LookupError:
-    ascii = codecs.lookup('ascii')
-    func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
-    codecs.register(func)
-
-call(["sudo", "apt-get", "-qq", "-y", "install", "sox"])
+call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
 setup(
     name='lztools.alarm',
@@ -21,12 +19,12 @@ setup(
     license='MIT License',
     description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     url='',
-    requires=["lztools"],
     entry_points={
         'console_scripts': [
             'alarm = cli.alarm:main',
         ],
     },
+    install_requires=pip_requires,
     packages=['cli'],
     zip_safe=False,
     include_package_data=True,

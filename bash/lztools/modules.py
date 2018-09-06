@@ -219,7 +219,7 @@ def create_new(name, pack=""):
     res = pack.joinpath("resources")
     res.mkdir()
 
-    packs = res.joinpath("packs.py")
+    packs = res.joinpath("setup_requires.py")
     mf(packs, packs_text)
 
     license = pack.joinpath("LICENSE.txt")

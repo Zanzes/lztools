@@ -1,19 +1,18 @@
 #!/usr/bin/env python3.7
-import codecs
-
 from setuptools import setup
+from subprocess import call
+from setup_requires import apt_requires, pip_requires
+call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
-from resources.packs import pip_requires
-
-try:
-    codecs.lookup('mbcs')
-except LookupError:
-    ascii = codecs.lookup('ascii')
-    func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
-    codecs.register(func)
+# try:
+#     codecs.lookup('mbcs')
+# except LookupError:
+#     ascii = codecs.lookup('ascii')
+#     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
+#     codecs.register(func)
 
 setup(
-    name='lztools',
+    name='lztools.core',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
     version='1.2.16',

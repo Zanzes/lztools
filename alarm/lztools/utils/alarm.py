@@ -36,7 +36,6 @@ def to_timespan(time_str:str):
 
 @click.command()
 @click.argument("time")
-@click.option("-w", "--window", is_flag=True, )
 def main(time):
     """Template bash command by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
     run_timer(to_timespan(time))

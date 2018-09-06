@@ -1,15 +1,15 @@
 #!/usr/bin/env python3.7
-import codecs
-
 from setuptools import setup
+from subprocess import call
+from setup_requires import apt_requires, pip_requires
+call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
-try:
-    codecs.lookup('mbcs')
-except LookupError:
-    ascii = codecs.lookup('ascii')
-    func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
-    codecs.register(func)
-
+# try:
+#     codecs.lookup('mbcs')
+# except LookupError:
+#     ascii = codecs.lookup('ascii')
+#     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
+#     codecs.register(func)
 
 setup(
     name='web',
@@ -19,12 +19,12 @@ setup(
     license='MIT License',
     description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     url='',
-    requires=["lztools"],
     entry_points={
         'console_scripts': [
             'lweb = cli.lweb:main',
         ],
     },
+    install_requires=pip_requires,
     packages=['web', 'cli', 'resources'],
     zip_safe=False,
     include_package_data=True,

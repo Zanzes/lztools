@@ -1,17 +1,15 @@
 #!/usr/bin/env python3.7
-import codecs
-
 from setuptools import setup
+from subprocess import call
+from setup_requires import apt_requires, pip_requires
+call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
-try:
-    codecs.lookup('mbcs')
-except LookupError:
-    ascii = codecs.lookup('ascii')
-    func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
-    codecs.register(func)
-
-# print(os.getcwd())
-# subprocess.run(["./Commands/link-commands", "-f"])
+# try:
+#     codecs.lookup('mbcs')
+# except LookupError:
+#     ascii = codecs.lookup('ascii')
+#     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
+#     codecs.register(func)
 
 setup(
     name='lztools.bash',
@@ -21,7 +19,6 @@ setup(
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     url='',
-    requires=["lztools"],
     entry_points={
         'console_scripts': [
             'lmod = cli.lmod:main',
@@ -30,6 +27,7 @@ setup(
             'lpy  = cli.lpy:main'
         ],
     },
+    install_requires=pip_requires,
     packages=['lztools', 'cli'],
     zip_safe=False,
     include_package_data=True,

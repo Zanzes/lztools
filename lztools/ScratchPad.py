@@ -12,3 +12,4 @@ print("")
 print("")
 print_dict(A())
 print(A().__dict__)
+
