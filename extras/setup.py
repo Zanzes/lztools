@@ -12,10 +12,10 @@ from setup_requires import apt_requires, pip_requires
 call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
 setup(
-    name='lztools.alarm',
+    name='lztools.extras',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='0.0.2',
+    version='0.0.3',
     license='MIT License',
     description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     url='',
@@ -25,10 +25,10 @@ setup(
         ],
     },
     install_requires=pip_requires,
-    packages=['cli'],
+    packages=['cli', 'lztools', 'lztools.extras'],
     zip_safe=False,
     include_package_data=True,
-    package_data={'alarm': ['resources/*']},
+    package_data={'lztools.extras': ['resources/*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha

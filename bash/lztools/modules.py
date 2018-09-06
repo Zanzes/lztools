@@ -257,3 +257,9 @@ def get_module_path(target):
     except:
         pass
     raise Exception(f"Cant find path to target (type: {type(target)}, value: {target})")
+
+def ignore_exception(func, exception, *args, **kwargs):
+    try:
+        func(*args, **kwargs)
+    except exception:
+        pass

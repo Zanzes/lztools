@@ -3,7 +3,7 @@ import os
 import shutil
 import time
 from time import sleep
-import click
+
 import sh
 from lztools.dating import hours_minutes_seconds
 
@@ -34,19 +34,13 @@ def to_timespan(time_str:str):
     else:
         raise Exception("Unable to parse time argument")
 
-@click.command()
-@click.argument("time")
-def main(time):
-    """Template bash command by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
-    run_timer(to_timespan(time))
-
 def beep(length, duration=0.4, freq=440):
     while length > 0:
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (duration, freq))
         time.sleep(duration)
         length -= duration * 2
 
-def run_timer(time:datetime.timedelta):
+def run_timer(time:datetime.timedelta, in_window=False):
     end = datetime.datetime.now() + time
     while end > datetime.datetime.now():
         l = end - datetime.datetime.now()
