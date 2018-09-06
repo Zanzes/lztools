@@ -57,6 +57,6 @@ def run_timer(time:datetime.timedelta):
             e = f"{e}{l.days} Days and "
         if h > 1:
             e = f"{e}{h:02}:"
-        print(figlet(f"{e}{m:02}:{s:2}", w=shutil.get_terminal_size().columns, c=True))
+        print(figlet(f"{e}{m:02}:{s:02}", w=shutil.get_terminal_size().columns, c=True))
         sleep(0.1)
     beep(9999)
