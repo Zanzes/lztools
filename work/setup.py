@@ -1,7 +1,10 @@
 #!/usr/bin/env python3.7
-from setuptools import setup
 from subprocess import call
+
+from setuptools import setup
+
 from setup_requires import apt_requires, pip_requires
+
 call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
 # try:

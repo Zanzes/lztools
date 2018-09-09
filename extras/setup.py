@@ -1,7 +1,10 @@
 #!/usr/bin/env python3.7
 from subprocess import call
+
 from setuptools import setup
+
 from setup_requires import apt_requires, pip_requires
+
 # try:
 #     codecs.lookup('mbcs')
 # except LookupError:
@@ -15,7 +18,7 @@ setup(
     name='lztools.extras',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='0.0.3',
+    version='0.0.4',
     license='MIT License',
     description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     url='',

@@ -1,7 +1,10 @@
 #!/usr/bin/env python3.7
-from setuptools import setup
 from subprocess import call
+
+from setuptools import setup
+
 from setup_requires import apt_requires, pip_requires
+
 call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
 # try:
@@ -15,7 +18,7 @@ setup(
     name='lztools.resources',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.0.14',
+    version='1.0.15',
     license='MIT License',
     description='Template',
     url='',
