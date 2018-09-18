@@ -25,7 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'lztools    = cli.lztools:main',
-            '¤lz        = cli.lztools:main'
+            '¤          = cli.lztools:main'
         ],
     },
     install_requires=pip_requires,
