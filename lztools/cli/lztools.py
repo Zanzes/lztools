@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
+
 import random as rand
-from multiprocessing import Queue
-from multiprocessing.pool import Pool
+from multiprocessing import Queue, Process
 from subprocess import call
 
 import click
 from click import Context
 
 import lztools.Images
-from lztools.bash import command_result, command, search_history
 from lztools import Images
+from lztools.bash import command_result, command, search_history
 from lztools.text import search_words, get_random_word, regex as rx
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 colorizations = ['none', 'rainbow', 'altbow', 'metal']
+
+q = Queue()
 
 def try_read_input(input):
     try:
@@ -137,12 +139,19 @@ def regex(expr, text, single_result):
 def colorize(input, type, not_nocolor):
     color(input, type, not_nocolor)
 
-@main.command(context_settings=CONTEXT_SETTINGS)
+@main.command(name="rainbow", context_settings=CONTEXT_SETTINGS)
 @click.option("-s", "--speed", type=float, default=20)
 @click.option("-f", "--frequency", type=float, default=0.1)
 @click.option("-a", "--animate", is_flag=True, default=False)
 @click.argument("input")
-def rainbow(speed, frequency, animate, input):
+def rainbow_cli(speed, frequency, animate, input):
+    rainbow(input, speed, frequency, animate)
+
+def rainbow(text, speed=20, frequency=0.1, animate=True, hide_gap=True):
+    if speed is None:
+        speed = 20
+    if frequency is None:
+        frequency = 0.1
     args = []
     if animate:
         args.append("-a")
@@ -152,7 +161,10 @@ def rainbow(speed, frequency, animate, input):
     args.append("--freq")
     args.append(str(frequency))
 
-    command("echo \"{}\" | lolcat {}".format(input, str.join(" ", args)))
+    m = "| sed '$d' " if hide_gap else ""
+    argsd = str.join(" ", args)
+
+    command(f"echo \"{text}\" {m}| lolcat -f -d 1 {argsd} 2> /dev/null")
 
 def color(input, type, not_nocolor):
     if type == 'none':
@@ -174,14 +186,16 @@ def art(width, invert, add_color, target):
 
     if invert:
         args.append("-i")
-    if color:
+    if add_color:
         args.append("-c")
 
     args.append("--width")
     args.append(str(width))
 
     args.append(target)
-    command("asciiart", *args)
+    if not add_color:
+        args.append("| tail -n +2")
+    command(f"asciiart", *args)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-o', '--operation', type=click.Choice(["bashrc", "autosource"]))
@@ -193,21 +207,42 @@ def to_art(url, width, color):
     args = ["art", url, f"-w {str(width-2)}"]
     if color:
         args.append("-c")
-    return command_result("lztools", *args)
+        # print("Args: " + " ".join(args))
+        command("lztools", *args)
+    else:
+        return command_result("lztools", *args)
 
-def queue_image(q, image, width):
-    q.put(to_art(image, width))
+def gi(qu:Queue, width, color):
+    for x in Images.get_random_image(count=1):
+        qu.put(to_art(x, width, color))
 
 @main.command(context_settings=CONTEXT_SETTINGS)
-@click.option("-n", "--noire", is_flag=True, default=False)
-def fun(noire):
-    term_width = int(command_result("tput", "cols"))
-    q = Queue()
-    images = Images.get_random_image(count=300)
+@click.option("-n/-r", "--noire/--rainbow", is_flag=True, default=False)
+@click.option("-s", "--speed", type=float, default=None)
+@click.option("-f", "--frequency", type=float, default=None)
+@click.option("-w", "--width", type=int, default=None)
+@click.option("--separate", is_flag=True, default=True)
+def fun(noire, speed, frequency, width, separate):
+    term_width = width if width else int(command_result("tput", "cols"))
+    pp = Process(target=gi, args=(q, term_width, False))
+    pp.start()
 
-    with Pool(5) as p:
-        for result in  p.map(to_art, [(i, term_width, noire) for i in images]):
-            print(result)
+    if not noire:
+        while True:
+            try:
+                pp.join()
+                n = q.get()
+                pp = Process(target=gi, args=(q, term_width, False))
+                pp.start()
+                rainbow(n, speed, frequency, hide_gap=separate)
+            except:
+                exit()
+    else:
+        while True:
+            try:
+                gi(q, term_width, True)
+            except:
+                exit()
 
 if __name__ == '__main__':
     main()

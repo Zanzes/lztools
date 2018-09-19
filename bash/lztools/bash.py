@@ -29,7 +29,9 @@ def command_result(name, *args):
 
 def command(command, *args):
     fargs = " ".join(args)
-    os.system(f"{command} {fargs}")
+    c = f"{command} {fargs}"
+    print(c)
+    os.system(c)
 
 def apt_install(package):
     command(f"sudo apt install -y {package}")
