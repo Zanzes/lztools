@@ -143,7 +143,7 @@ def colorize(input, type, not_nocolor):
 @click.option("-s", "--speed", type=float, default=20)
 @click.option("-f", "--frequency", type=float, default=0.1)
 @click.option("-a", "--animate", is_flag=True, default=False)
-@click.argument("input")
+@click.argument("input", default=click.get_text_stream('stdin'))
 def rainbow_cli(speed, frequency, animate, input):
     rainbow(input, speed, frequency, animate)
 
