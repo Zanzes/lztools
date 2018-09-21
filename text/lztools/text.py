@@ -2,7 +2,8 @@ import inspect
 import random
 import re
 import time
-from typing import Union, Iterable, Collection, Container
+from typing import Union
+
 from ansiwrap import wrap
 
 from lztools import Ansi
@@ -11,10 +12,10 @@ from lztools.MatchType import MatchType, brace, bracket, parentheses, gt_lt
 _words = None
 
 def words():
-    from lztools.bash import command_result
+    from lztools.lztools import command
     global _words
     if _words is None:
-        _words = command_result("cat", "/usr/share/dict/words")
+        _words = command("cat", "/usr/share/dict/words", return_result=True)
     return _words
 
 def _get_alignment(alignment:str) -> str:

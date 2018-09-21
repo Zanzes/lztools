@@ -9,7 +9,9 @@ from click import Context
 
 import lztools.Images
 from lztools import Images
-from lztools.bash import command_result, command, search_history
+from lztools.bash import search_history
+from lztools.beautification import rainbow
+from lztools.lztools import command
 from lztools.text import search_words, get_random_word, regex as rx
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -33,6 +35,12 @@ def morning():
     """Installs updates and so on..."""
     call(["sudo", "apt", "update", "-y"])
     call(["sudo", "apt", "upgrade", "-y"])
+
+# ,.-~*´¨¯¨`*·~-.¸-( ALIAS: MORNING )-,.-~*´¨¯¨`*·~-.¸
+@main.command(context_settings=CONTEXT_SETTINGS)
+@click.pass_context
+def m(ctx:Context, *args, **kwargs):
+    ctx.forward(morning)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term")
@@ -147,34 +155,15 @@ def colorize(input, type, not_nocolor):
 def rainbow_cli(speed, frequency, animate, input):
     rainbow(input, speed, frequency, animate)
 
-def rainbow(text, speed=20, frequency=0.1, animate=True, hide_gap=True):
-    if speed is None:
-        speed = 20
-    if frequency is None:
-        frequency = 0.1
-    args = []
-    if animate:
-        args.append("-a")
-        args.append("--speed")
-        args.append(str(speed))
-
-    args.append("--freq")
-    args.append(str(frequency))
-
-    m = "| sed '$d' " if hide_gap else ""
-    argsd = str.join(" ", args)
-
-    command(f"echo \"{text}\" {m}| lolcat -f -d 1 {argsd} 2> /dev/null")
-
 def color(input, type, not_nocolor):
     if type == 'none':
         print(input)
     elif type == 'rainbow':
-        print(command_result("toilet", "-f", "term", "--gay", input))
+        command("toilet", "-f", "term", "--gay", input)
     elif type == 'altbow':
         command("echo \"{}\" | lolcat".format(input))
     elif type == 'metal':
-        print(command_result("toilet", "-f", "term", "--metal", input))
+        command("toilet", "-f", "term", "--metal", input)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-w", "--width", type=int, default=100)
@@ -210,7 +199,7 @@ def to_art(url, width, color):
         # print("Args: " + " ".join(args))
         command("lztools", *args)
     else:
-        return command_result("lztools", *args)
+        return command("lztools", *args, return_result=True)
 
 def gi(qu:Queue, width, color):
     for x in Images.get_random_image(count=1):
@@ -223,20 +212,17 @@ def gi(qu:Queue, width, color):
 @click.option("-w", "--width", type=int, default=None)
 @click.option("--separate", is_flag=True, default=True)
 def fun(noire, speed, frequency, width, separate):
-    term_width = width if width else int(command_result("tput", "cols"))
+    term_width = width if width else int(command("tput", "cols", return_result=True))
     pp = Process(target=gi, args=(q, term_width, False))
     pp.start()
 
     if not noire:
         while True:
-            try:
-                pp.join()
-                n = q.get()
-                pp = Process(target=gi, args=(q, term_width, False))
-                pp.start()
-                rainbow(n, speed, frequency, hide_gap=separate)
-            except:
-                exit()
+            pp.join()
+            n = q.get()
+            pp = Process(target=gi, args=(q, term_width, False))
+            pp.start()
+            print(rainbow(n, frequency, hide_gap=separate))
     else:
         while True:
             try:

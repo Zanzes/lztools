@@ -1,9 +1,7 @@
-import os
 from pathlib import Path
-from subprocess import run
-
 import lztools
 from lztools import text
+from lztools.lztools import command
 
 bashrc_symbols = {
     "customSection": "# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂",
@@ -17,22 +15,6 @@ bashrc_symbols = {
     "otherEnd": "# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> OTHER END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙"
 }
 
-def command_result(name, *args):
-    try:
-        result = run([name, *args], capture_output=True, universal_newlines=True)
-        # x = check_output([name, *args], universal_newlines=True)
-        #
-        # Popen()
-        return result.stdout
-    except:
-        raise
-
-def command(command, *args):
-    fargs = " ".join(args)
-    c = f"{command} {fargs}"
-    print(c)
-    os.system(c)
-
 def apt_install(package):
     command(f"sudo apt install -y {package}")
 
@@ -43,11 +25,11 @@ def get_bashrc_other_path() -> str:
     return f"{lztools.__path__[0]}/resources/bashrc"
 
 def get_bashrc() -> str:
-    return command_result("cat", get_bashrc_path())
+    return command("cat", get_bashrc_path(), return_result=True)
 
 def get_bashrc_other() -> str:
     other_path = get_bashrc_other_path()
-    return command_result("cat", other_path)
+    return command("cat", other_path, True)
 
 def _rcadd(text, symbol):
     start, end = get_bashrc().split(symbol, 1)
@@ -91,7 +73,7 @@ def copy_bashrc_other(to_me:bool=True, out_path:str=None):
         f.write(new_rc)
 
 def get_history():
-    return command_result("cat", "{}/.bash_history".format(str(Path.home())))
+    return command("cat", "{}/.bash_history".format(str(Path.home())), return_result=True)
 
 def search_history(term, regex=False):
     if not regex:
