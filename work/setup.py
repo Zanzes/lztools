@@ -26,13 +26,14 @@ setup(
     entry_points={
         'console_scripts': [
             'lwork = cli.lwork:main',
+            'start-docker = cli.docker:main',
         ],
     },
     install_requires=pip_requires,
-    packages=['work', 'cli', 'resources'],
+    packages=['work', 'cli'],
     zip_safe=False,
     include_package_data=True,
-    package_data={'work': ['resources/*']},
+    #package_data={'work': ['resources/*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha

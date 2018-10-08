@@ -197,13 +197,9 @@ def to_art(url, width, color):
     if color:
         args.append("-c")
         # print("Args: " + " ".join(args))
-        command("lztools", *args)
+        return command("lztools", *args, return_result=True)
     else:
         return command("lztools", *args, return_result=True)
-
-def gi(qu:Queue, width, color):
-    for x in Images.get_random_image(count=1):
-        qu.put(to_art(x, width, color))
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option("-n/-r", "--noire/--rainbow", is_flag=True, default=False)
@@ -213,15 +209,10 @@ def gi(qu:Queue, width, color):
 @click.option("--separate", is_flag=True, default=True)
 def fun(noire, speed, frequency, width, separate):
     term_width = width if width else int(command("tput", "cols", return_result=True))
-    pp = Process(target=gi, args=(q, term_width, False))
-    pp.start()
 
     if not noire:
-        while True:
-            pp.join()
-            n = q.get()
-            pp = Process(target=gi, args=(q, term_width, False))
-            pp.start()
+        for x in Images.get_random_image(count=1):
+            n = to_art(x, term_width, True)
             print(rainbow(n, frequency, hide_gap=separate))
     else:
         while True:
