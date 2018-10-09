@@ -12,7 +12,7 @@ from setup_requires import apt_requires, pip_requires
 #     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
 #     codecs.register(func)
 
-call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
+# call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
 setup(
     name='lztools.extras',

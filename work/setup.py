@@ -5,7 +5,7 @@ from setuptools import setup
 
 from setup_requires import apt_requires, pip_requires
 
-call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
+# call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
 # try:
 #     codecs.lookup('mbcs')
