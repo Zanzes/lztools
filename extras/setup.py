@@ -24,14 +24,16 @@ setup(
     url='',
     entry_points={
         'console_scripts': [
-            'alarm = cli.alarm:main',
+            'alarm = cli.quick:alarm',
+            'log-work = cli.quick:log_work',
+            'parse-work = cli.quick:parse_work',
         ],
     },
     install_requires=pip_requires,
-    packages=['cli', 'lztools', 'lztools.extras'],
+    packages=['cli', 'lztools', 'lztools.extras', 'resources'],
     zip_safe=False,
     include_package_data=True,
-    package_data={'lztools.extras': ['resources/*']},
+    package_data={'resources': ['*']},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha

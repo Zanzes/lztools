@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import random as rand
-from multiprocessing import Queue, Process
+from multiprocessing import Queue
 from subprocess import call
 
 import click

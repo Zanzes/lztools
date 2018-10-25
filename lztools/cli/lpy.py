@@ -3,7 +3,7 @@ from pathlib import Path
 import click
 
 from lztools.click import proper_group, proper_command
-from lztools.modules import local_install, get_version, add_versions
+from lztools.modules import local_install
 from lztools.modules import create_new
 
 @proper_group()

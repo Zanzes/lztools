@@ -88,3 +88,7 @@ def delete_items_in_dir(path:str):
         command(["rm", "-rf", f"{path.rstrip('/*')}/*"])
     else:
         raise NotADirectoryError(path)
+
+def get_wifi_network_name():
+    res:str = command("iwgetid", return_result=True)
+    return res.split('"', 1)[1].rsplit('"')[0]
