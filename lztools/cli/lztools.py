@@ -28,33 +28,32 @@ def try_read_input(input):
     except:
         return input
 
-def get_callable_cells(function):
-    function = function.callback
-    callables = []
-    # Under some circumstances, I wound up with an object that has the name `view_func`:
-    # this is the view function I need to access.
-    if not hasattr(function, 'func_closure'):
-        if hasattr(function, 'view_func'):
-            return get_callable_cells(function.view_func)
-    # If we have no more function we are wrapping
-    if not function.func_closure:
-        return [function]
-    for closure in function.func_closure:
-        contents = closure.cell_contents
-        # Class-based views have a dispatch method
-        if hasattr(contents, 'dispatch'):
-            callables.extend(get_callable_cells(contents.dispatch.__func__))
-        if hasattr(contents, 'get'):
-            callables.extend(get_callable_cells(contents.get.__func__))
-        callables.extend(get_callable_cells(contents))
-    return [function] + callables
+# def get_callable_cells(function):
+#     function = function.callback
+#     callables = []
+#     # Under some circumstances, I wound up with an object that has the name `view_func`:
+#     # this is the view function I need to access.
+#     if not hasattr(function, 'func_closure'):
+#         if hasattr(function, 'view_func'):
+#             return get_callable_cells(function.view_func)
+#     # If we have no more function we are wrapping
+#     if not function.func_closure:
+#         return [function]
+#     for closure in function.func_closure:
+#         contents = closure.cell_contents
+#         # Class-based views have a dispatch method
+#         if hasattr(contents, 'dispatch'):
+#             callables.extend(get_callable_cells(contents.dispatch.__func__))
+#         if hasattr(contents, 'get'):
+#             callables.extend(get_callable_cells(contents.get.__func__))
+#         callables.extend(get_callable_cells(contents))
+#     return [function] + callables
 
 
 
 @lztools.click.group()
 def main():
     """A collection of python tools and bash commands by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
-    print(random.__qualname__)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 def morning():
@@ -245,7 +244,8 @@ def fun(noire, speed, frequency, width, separate):
     else:
         while True:
             try:
-                gi(q, term_width, True)
+                pass
+                # gi(q, term_width, True)
             except:
                 exit()
 
