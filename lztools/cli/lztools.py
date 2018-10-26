@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-
+import ast
+import inspect
 import random as rand
 from multiprocessing import Queue
 from subprocess import call
@@ -13,6 +14,7 @@ from lztools.bash import search_history
 from lztools.beautification import rainbow
 from lztools.lztools import command
 from lztools.text import search_words, get_random_word, regex as rx
+import lztools.click
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -26,9 +28,33 @@ def try_read_input(input):
     except:
         return input
 
-@click.group(context_settings=CONTEXT_SETTINGS)
+def get_callable_cells(function):
+    function = function.callback
+    callables = []
+    # Under some circumstances, I wound up with an object that has the name `view_func`:
+    # this is the view function I need to access.
+    if not hasattr(function, 'func_closure'):
+        if hasattr(function, 'view_func'):
+            return get_callable_cells(function.view_func)
+    # If we have no more function we are wrapping
+    if not function.func_closure:
+        return [function]
+    for closure in function.func_closure:
+        contents = closure.cell_contents
+        # Class-based views have a dispatch method
+        if hasattr(contents, 'dispatch'):
+            callables.extend(get_callable_cells(contents.dispatch.__func__))
+        if hasattr(contents, 'get'):
+            callables.extend(get_callable_cells(contents.get.__func__))
+        callables.extend(get_callable_cells(contents))
+    return [function] + callables
+
+
+
+@lztools.click.group()
 def main():
     """A collection of python tools and bash commands by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
+    print(random.__qualname__)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 def morning():
@@ -39,8 +65,9 @@ def morning():
 # ,.-~*´¨¯¨`*·~-.¸-( ALIAS: MORNING )-,.-~*´¨¯¨`*·~-.¸
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.pass_context
-def m(ctx:Context, *args, **kwargs):
+def m(ctx: Context, *args, **kwargs):
     ctx.forward(morning)
+
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term")
@@ -55,7 +82,7 @@ def history(term, regex):
 @click.argument("term")
 @click.option("-r", "--regex", is_flag=True, default=False)
 @click.pass_context
-def h(ctx:Context, *args, **kwargs):
+def h(ctx: Context, *args, **kwargs):
     ctx.forward(history)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
@@ -91,6 +118,8 @@ def random(type, count, not_nocolor, input):
         if not_nocolor:
             choices = colorizations[1:]
         color(input, rand.choice(choices), not_nocolor=not_nocolor)
+
+print(random.callback.__qualname__)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("input", nargs=-1)
@@ -189,7 +218,6 @@ def art(width, invert, add_color, target):
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.option('-o', '--operation', type=click.Choice(["bashrc", "autosource"]))
 def bash(operation):
-
     pass
 
 def to_art(url, width, color):
@@ -223,7 +251,3 @@ def fun(noire, speed, frequency, width, separate):
 
 if __name__ == '__main__':
     main()
-
-
-
-

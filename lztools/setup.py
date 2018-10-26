@@ -25,11 +25,14 @@ setup(
     entry_points={
         'console_scripts': [
             'lztools    = cli.lztools:main',
-            '¤          = cli.lztools:main'
+            '¤          = cli.lztools:main',
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools', 'cli'],
+    packages=[
+        'lztools',
+        'cli'
+    ],
     zip_safe=False,
     include_package_data=True,
     package_data={'lztools': ['resources/*']},
