@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-import ast
-import inspect
+import os
 import random as rand
 from multiprocessing import Queue
 from subprocess import call
 
 import click
-from click import Context
+from click import Context, Path
 
 import lztools.Images
+import lztools.click
 from lztools import Images
 from lztools.bash import search_history
 from lztools.beautification import rainbow
 from lztools.lztools import command
 from lztools.text import search_words, get_random_word, regex as rx
-import lztools.click
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -83,6 +82,26 @@ def history(term, regex):
 @click.pass_context
 def h(ctx: Context, *args, **kwargs):
     ctx.forward(history)
+
+@main.group(context_settings=CONTEXT_SETTINGS)
+def files():
+    pass
+
+@files.command(context_settings=CONTEXT_SETTINGS)
+@click.argument('FIND')
+@click.argument('REPLACEMENT')
+@click.option("-p", "--path", default=".", type=str, help="The path for search for files (Default: .)")
+def replace(find, replacement, path):
+    """Searches files in --path for the term in FIND and replaces occurrences with REPLACEMENT"""
+    os.system(f"find {path} -type f -exec sed -i 's/{find}/{replacement}/g' {{}} +")
+
+@files.command(context_settings=CONTEXT_SETTINGS)
+@click.argument('FIND')
+@click.option("-p", "--path", default=".", type=str, help="The path for search for files (Default: .)")
+@click.option("-e", "--exclude", default="*.git", type=Path(), help="Path not included in search (Default: *.git)")
+def search(find, path, exclude):
+    """Searches for FIND in --path"""
+    os.system(f"grep -Rnw '{path}' --color=auto --exclude \"*.pyc\" --exclude-dir \"{exclude}\" -e '{find}'")
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term", default="")
