@@ -2,21 +2,21 @@ from pathlib import Path
 
 import click
 
-from lztools.click import proper_group, proper_command
+from lztools.click import command, group
 from lztools.modules import local_install
 from lztools.modules import create_new
 
-@proper_group()
+@group()
 def main():
     """Python utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
-@proper_command()
+@main.command()
 @click.argument('name', type=click.Path())
 @click.option("-p", "--parent", nargs=1, default="")
 def create(name, parent):
     create_new(name, pack=parent)
 
-@proper_command()
+@main.command()
 @click.argument('paths', nargs=-1, type=click.Path())
 @click.option("-u", "--upload", nargs=1, default=None)
 @click.option("-a", is_flag=True, default=False, help="Adds 0.0.1 to version number")

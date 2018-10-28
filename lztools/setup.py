@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'lztools    = cli.lztools:main',
             '¤          = cli.lztools:main',
+            'lpy          = cli.lpy:main',
         ],
     },
     install_requires=pip_requires,
