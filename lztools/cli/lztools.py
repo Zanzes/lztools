@@ -12,6 +12,7 @@ import lztools.click
 from lztools import Images
 from lztools.bash import search_history
 from lztools.beautification import rainbow
+from lztools.click import AliasedGroup
 from lztools.lztools import command
 from lztools.text import search_words, get_random_word, regex as rx
 
@@ -50,7 +51,7 @@ def try_read_input(input):
 
 
 
-@lztools.click.group()
+@lztools.click.alias_group()
 def main():
     """A collection of python tools and bash commands by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
@@ -83,7 +84,7 @@ def history(term, regex):
 def h(ctx: Context, *args, **kwargs):
     ctx.forward(history)
 
-@main.group(context_settings=CONTEXT_SETTINGS)
+@main.group(context_settings=CONTEXT_SETTINGS, cls=AliasedGroup)
 def files():
     pass
 
@@ -102,6 +103,14 @@ def replace(find, replacement, path):
 def search(find, path, exclude):
     """Searches for FIND in --path"""
     os.system(f"grep -Rnw '{path}' --color=auto --exclude \"*.pyc\" --exclude-dir \"{exclude}\" -e '{find}'")
+
+@files.command(context_settings=CONTEXT_SETTINGS)
+@click.argument('PATTERN')
+@click.option("-p", "--path", default=".", type=str, help="The path for search for files (Default: .)")
+@click.option("-e", "--exclude", default="*.git", type=Path(), help="Path not included in search (Default: *.git)")
+def find(pattern, path):
+    os.system(f"find {path} -type f -exec sed -i 's/{find}/{replacement}/g' {{}} +")
+
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term", default="")
@@ -136,8 +145,6 @@ def random(type, count, not_nocolor, input):
         if not_nocolor:
             choices = colorizations[1:]
         color(input, rand.choice(choices), not_nocolor=not_nocolor)
-
-print(random.callback.__qualname__)
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("input", nargs=-1)
