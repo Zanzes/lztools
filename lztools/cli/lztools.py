@@ -12,7 +12,7 @@ import lztools.click
 from lztools import Images
 from lztools.bash import search_history
 from lztools.beautification import rainbow
-from lztools.click import AliasedGroup
+from lztools.click import MatchNameGroup
 from lztools.lztools import command
 from lztools.text import search_words, get_random_word, regex as rx
 
@@ -61,11 +61,11 @@ def morning():
     call(["sudo", "apt", "update", "-y"])
     call(["sudo", "apt", "upgrade", "-y"])
 
-# ,.-~*´¨¯¨`*·~-.¸-( ALIAS: MORNING )-,.-~*´¨¯¨`*·~-.¸
-@main.command(context_settings=CONTEXT_SETTINGS)
-@click.pass_context
-def m(ctx: Context, *args, **kwargs):
-    ctx.forward(morning)
+# # ,.-~*´¨¯¨`*·~-.¸-( ALIAS: MORNING )-,.-~*´¨¯¨`*·~-.¸
+# @main.command(context_settings=CONTEXT_SETTINGS)
+# @click.pass_context
+# def m(ctx: Context, *args, **kwargs):
+#     ctx.forward(morning)
 
 
 @main.command(context_settings=CONTEXT_SETTINGS)
@@ -76,15 +76,15 @@ def history(term, regex):
     for line in search_history(term, regex=regex):
         print(line)
 
-# ,.-~*´¨¯¨`*·~-.¸-( ALIAS: HISTORY )-,.-~*´¨¯¨`*·~-.¸
-@main.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("term")
-@click.option("-r", "--regex", is_flag=True, default=False)
-@click.pass_context
-def h(ctx: Context, *args, **kwargs):
-    ctx.forward(history)
+# # ,.-~*´¨¯¨`*·~-.¸-( ALIAS: HISTORY )-,.-~*´¨¯¨`*·~-.¸
+# @main.command(context_settings=CONTEXT_SETTINGS)
+# @click.argument("term")
+# @click.option("-r", "--regex", is_flag=True, default=False)
+# @click.pass_context
+# def h(ctx: Context, *args, **kwargs):
+#     ctx.forward(history)
 
-@main.group(context_settings=CONTEXT_SETTINGS, cls=AliasedGroup)
+@main.group(context_settings=CONTEXT_SETTINGS, cls=MatchNameGroup)
 def files():
     pass
 

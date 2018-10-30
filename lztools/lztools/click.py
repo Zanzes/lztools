@@ -21,7 +21,7 @@ DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], max_content_
 #     groups[name] = groupname
 #     return click.group(name=groupname, context_settings=DEFAULT_CONTEXT_SETTINGS)
 
-class AliasedGroup(click.Group):
+class MatchNameGroup(click.Group):
 
     def get_command(self, ctx, cmd_name):
         rv = click.Group.get_command(self, ctx, cmd_name)
@@ -39,7 +39,7 @@ def group(name=None, cls=click.Group):
     return click.group(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS, cls=cls)
 
 def alias_group(name=None):
-    return click.group(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS, cls=AliasedGroup)
+    return click.group(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS, cls=MatchNameGroup)
 
 def command(name=None):
     return click.command(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS)
