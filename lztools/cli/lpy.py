@@ -2,11 +2,12 @@ from pathlib import Path
 
 import click
 
-from lztools.click import command, group
+from lztools.click import command, group, short_name_group
 from lztools.modules import local_install
 from lztools.modules import create_new
+from lztools import Qt
 
-@group()
+@short_name_group()
 def main():
     """Python utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
@@ -66,4 +67,7 @@ def install(paths, upload, a, add):
         for x in paths:
             local_install(str(Path(x).absolute()), should_upload, add, upload)
 
-
+@main.command()
+@click.argument('PATH', type=click.Path())
+def generate(path):
+    Qt.generate(path)

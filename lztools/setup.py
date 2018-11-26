@@ -32,6 +32,9 @@ setup(
     install_requires=pip_requires,
     packages=[
         'lztools',
+        'lztools.shared_resources',
+        'lztools.extras',
+        'lztools.resources',
         'cli'
     ],
     zip_safe=False,

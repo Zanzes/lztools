@@ -1,10 +1,3 @@
-import inspect
-from types import FunctionType
-
-import click
-from click import Context
-
-DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], max_content_width=click.get_terminal_size()[0])
 # groups = dict()
 
 # def proper_command():
@@ -21,7 +14,44 @@ DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], max_content_
 #     groups[name] = groupname
 #     return click.group(name=groupname, context_settings=DEFAULT_CONTEXT_SETTINGS)
 
-class MatchNameGroup(click.Group):
+# class MatchNameGroup(click.Group):
+#
+#     def get_command(self, ctx, cmd_name):
+#         rv = click.Group.get_command(self, ctx, cmd_name)
+#         if rv is not None:
+#             return rv
+#         matches = [x for x in self.list_commands(ctx)
+#                    if x.startswith(cmd_name)]
+#         if not matches:
+#             return None
+#         elif len(matches) == 1:
+#             return click.Group.get_command(self, ctx, matches[0])
+#         ctx.fail('Too many matches: %s' % ', '.join(sorted(matches)))
+#
+# def group(name=None, cls=click.Group):
+#     return click.group(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS, cls=cls)
+#
+# def alias_group(name=None):
+#     return click.group(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS, cls=MatchNameGroup)
+#
+# def command(name=None):
+#     return click.command(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS)
+#
+# def create_alias(alias, targer:FunctionType, group=None):
+#     cmd = click
+#     if group:
+#         cmd = group
+#     getattr()
+#     return exec(f"""@cmd.command(context_settings=DEFAULT_CONTEXT_SETTINGS)
+#     @click.pass_context
+#     def {alias}(ctx:Context, *args, **kwargs):
+#         ctx.forward(get_at)""")
+
+import click
+
+DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], max_content_width=click.get_terminal_size()[0])
+
+class ShortNameGroup(click.Group):
 
     def get_command(self, ctx, cmd_name):
         rv = click.Group.get_command(self, ctx, cmd_name)
@@ -35,21 +65,21 @@ class MatchNameGroup(click.Group):
             return click.Group.get_command(self, ctx, matches[0])
         ctx.fail('Too many matches: %s' % ', '.join(sorted(matches)))
 
-def group(name=None, cls=click.Group):
-    return click.group(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS, cls=cls)
+def short_name_group(name=None):
+    return click.group(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS, cls=ShortNameGroup)
 
-def alias_group(name=None):
-    return click.group(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS, cls=MatchNameGroup)
+def parse_args(kwargs):
+    tmp_set = DEFAULT_CONTEXT_SETTINGS.copy()
+    if "context_settings" in kwargs:
+        for key in kwargs["context_settings"]:
+            tmp_set[key] = kwargs["context_settings"][key]
+        del kwargs["context_settings"]
+    return tmp_set, kwargs
 
-def command(name=None):
-    return click.command(name=name, context_settings=DEFAULT_CONTEXT_SETTINGS)
+def group(**kwargs):
+    ctxt, kwargs = parse_args(kwargs)
+    return click.group(context_settings=ctxt, **kwargs)
 
-def create_alias(alias, targer:FunctionType, group=None):
-    cmd = click
-    if group:
-        cmd = group
-    getattr()
-    return exec(f"""@cmd.command(context_settings=DEFAULT_CONTEXT_SETTINGS)
-    @click.pass_context
-    def {alias}(ctx:Context, *args, **kwargs):
-        ctx.forward(get_at)""")
+def command(**kwargs):
+    ctxt, kwargs = parse_args(kwargs)
+    return click.command(context_settings=ctxt, **kwargs)

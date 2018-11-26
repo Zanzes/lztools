@@ -28,28 +28,6 @@ def try_read_input(input):
     except:
         return input
 
-# def get_callable_cells(function):
-#     function = function.callback
-#     callables = []
-#     # Under some circumstances, I wound up with an object that has the name `view_func`:
-#     # this is the view function I need to access.
-#     if not hasattr(function, 'func_closure'):
-#         if hasattr(function, 'view_func'):
-#             return get_callable_cells(function.view_func)
-#     # If we have no more function we are wrapping
-#     if not function.func_closure:
-#         return [function]
-#     for closure in function.func_closure:
-#         contents = closure.cell_contents
-#         # Class-based views have a dispatch method
-#         if hasattr(contents, 'dispatch'):
-#             callables.extend(get_callable_cells(contents.dispatch.__func__))
-#         if hasattr(contents, 'get'):
-#             callables.extend(get_callable_cells(contents.get.__func__))
-#         callables.extend(get_callable_cells(contents))
-#     return [function] + callables
-
-
 
 @lztools.click.alias_group()
 def main():
@@ -61,13 +39,6 @@ def morning():
     call(["sudo", "apt", "update", "-y"])
     call(["sudo", "apt", "upgrade", "-y"])
 
-# # ,.-~*´¨¯¨`*·~-.¸-( ALIAS: MORNING )-,.-~*´¨¯¨`*·~-.¸
-# @main.command(context_settings=CONTEXT_SETTINGS)
-# @click.pass_context
-# def m(ctx: Context, *args, **kwargs):
-#     ctx.forward(morning)
-
-
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term")
 @click.option("-r", "--regex", is_flag=True, default=False)
@@ -75,14 +46,6 @@ def history(term, regex):
     """Search bash history"""
     for line in search_history(term, regex=regex):
         print(line)
-
-# # ,.-~*´¨¯¨`*·~-.¸-( ALIAS: HISTORY )-,.-~*´¨¯¨`*·~-.¸
-# @main.command(context_settings=CONTEXT_SETTINGS)
-# @click.argument("term")
-# @click.option("-r", "--regex", is_flag=True, default=False)
-# @click.pass_context
-# def h(ctx: Context, *args, **kwargs):
-#     ctx.forward(history)
 
 @main.group(context_settings=CONTEXT_SETTINGS, cls=MatchNameGroup)
 def files():
@@ -109,7 +72,8 @@ def search(find, path, exclude):
 @click.option("-p", "--path", default=".", type=str, help="The path for search for files (Default: .)")
 @click.option("-e", "--exclude", default="*.git", type=Path(), help="Path not included in search (Default: *.git)")
 def find(pattern, path):
-    os.system(f"find {path} -type f -exec sed -i 's/{find}/{replacement}/g' {{}} +")
+    # os.system(f"find {path} -type f -exec sed -i 's/{find}/{replacement}/g' {{}} +")
+    pass
 
 
 @main.command(context_settings=CONTEXT_SETTINGS)
