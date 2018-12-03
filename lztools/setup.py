@@ -36,6 +36,9 @@ setup(
     packages=[
         'lztools',
         'extras',
+        'lztools.shared_resources',
+        'lztools.extras',
+        'lztools.resources',
         'cli'
     ],
     zip_safe=False,

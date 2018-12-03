@@ -28,7 +28,7 @@ setup(
         ],
     },
     install_requires=pip_requires,
-    packages=['lztools', 'cli'],
+    packages=['lztools'],
     zip_safe=False,
     include_package_data=True,
     classifiers=[  # Optional

@@ -30,7 +30,7 @@ setup(
         ],
     },
     install_requires=pip_requires,
-    packages=['cli', 'lztools', 'lztools.extras', 'resources'],
+    packages=['lztools', 'resources'],
     zip_safe=False,
     include_package_data=True,
     package_data={'resources': ['*']},
