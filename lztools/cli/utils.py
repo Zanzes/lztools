@@ -1,8 +1,8 @@
 import click
 import sh
 
-from lztools.extras import work_logger
-from lztools.extras.alarm import run_timer, to_timespan
+from extras import work_logger
+from extras.alarm import run_timer, to_timespan
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 gnome_terminal = sh.gnome_terminal.bake()
@@ -17,10 +17,10 @@ def alarm(time, no_window):
     else:
         gnome_terminal("--hide-menubar", "--geometry=40x8", "--", "alarm", time, "-n")
 
-@click.command(context_settings=CONTEXT_SETTINGS)
+@click.command(context_settings=CONTEXT_SETTINGS, name="log-work")
 def log_work():
     work_logger.work_logger()
 
-@click.command(context_settings=CONTEXT_SETTINGS)
+@click.command(context_settings=CONTEXT_SETTINGS, name="parse-work")
 def parse_work():
     work_logger.work_interpreter()

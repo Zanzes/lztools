@@ -27,11 +27,15 @@ setup(
             'lztools    = cli.lztools:main',
             '¤          = cli.lztools:main',
             'lpy        = cli.lpy:main',
+            'parse-work = cli.utils:parse_work',
+            'log-work   = cli.utils:log_work',
+            'alarm      = cli.utils:alarm',
         ],
     },
     install_requires=pip_requires,
     packages=[
         'lztools',
+        'extras',
         'cli'
     ],
     zip_safe=False,

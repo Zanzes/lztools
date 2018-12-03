@@ -1,10 +1,10 @@
 import datetime
 from pathlib import Path
 
-from lztools.modules import get_module_path
-from lztools.bash import get_wifi_network_name
-
 import resources
+
+from lztools.bash import get_wifi_network_name
+from lztools.modules import get_module_path
 
 resources_path = Path(get_module_path(resources))
 
