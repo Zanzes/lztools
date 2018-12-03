@@ -7,6 +7,7 @@ pip_requires = [
     'pip',
     'GitPython',
     'ansiwrap',
+    'sh'
 ]
 
 apt_requires = [

@@ -24,11 +24,10 @@ setup(
     url='',
     entry_points={
         'console_scripts': [
-            'lweb = cli.lweb:main',
         ],
     },
     install_requires=pip_requires,
-    packages=['web', 'cli', 'resources'],
+    packages=['web'],
     zip_safe=False,
     include_package_data=True,
     package_data={'web': ['resources/*']},
