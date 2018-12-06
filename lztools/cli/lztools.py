@@ -5,14 +5,14 @@ from multiprocessing import Queue
 from subprocess import call
 
 import click
-from click import Context, Path
+from click import Path
 
 import lztools.Images
 import lztools.click
 from lztools import Images
 from lztools.bash import search_history
 from lztools.beautification import rainbow
-from lztools.click import MatchNameGroup
+from lztools.click import ShortNameGroup
 from lztools.lztools import command
 from lztools.text import search_words, get_random_word, regex as rx
 
@@ -29,7 +29,7 @@ def try_read_input(input):
         return input
 
 
-@lztools.click.alias_group()
+@lztools.click.short_name_group()
 def main():
     """A collection of python tools and bash commands by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
@@ -47,7 +47,7 @@ def history(term, regex):
     for line in search_history(term, regex=regex):
         print(line)
 
-@main.group(context_settings=CONTEXT_SETTINGS, cls=MatchNameGroup)
+@main.group(context_settings=CONTEXT_SETTINGS, cls=ShortNameGroup)
 def files():
     pass
 
