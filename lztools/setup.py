@@ -37,7 +37,6 @@ setup(
         'lztools',
         'extras',
         'lztools.shared_resources',
-        'lztools.extras',
         'lztools.resources',
         'cli'
     ],

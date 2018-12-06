@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+import itertools
 import os
 import random as rand
+import subprocess
 from multiprocessing import Queue
 from subprocess import call
 
@@ -208,6 +210,75 @@ def art(width, invert, add_color, target):
 @click.option('-o', '--operation', type=click.Choice(["bashrc", "autosource"]))
 def bash(operation):
     pass
+
+@main.group(cls=ShortNameGroup, context_settings=CONTEXT_SETTINGS)
+def rc():
+    """Operations for interacting with .bashrc"""
+
+@rc.command(context_settings=CONTEXT_SETTINGS)
+@click.argument("VALUE")
+def add(value):
+    print(value)
+
+@rc.command(context_settings=CONTEXT_SETTINGS)
+def show():
+    subprocess.call("cat $HOME/.bashrc", shell=True)
+
+@rc.command(context_settings=CONTEXT_SETTINGS)
+@click.argument("VALUE")
+def replace(value):
+    home = subprocess.getoutput("echo $HOME")
+    rcdata = subprocess.getoutput("cat $HOME/.bashrc")
+    data = rcdata.splitlines()
+    taken = itertools.takewhile(lambda line: line != "# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂", data)
+    lines = []
+    lines.extend(taken)
+    lines.append("# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂")
+    lines.append("")
+    lines.append(value)
+    text = "\n".join(lines)
+    print(text)
+    if click.confirm(f"Overwrite old bashrc? ({home}/.bashrc)"):
+        with open(home + "/.bashrc", "w") as f:
+            f.write(text)
+
+marker = "¤¤¤||||¤¤¤"
+@rc.command(context_settings=CONTEXT_SETTINGS, name="get-section")
+@click.argument("NAME", default=marker)
+@click.option("-l", "--list", default=True, is_flag=True)
+def get_section(name, list):
+    rcdata = subprocess.getoutput("cat $HOME/.bashrc")
+    if list:
+        for line in rcdata.splitlines():
+            if line.endswith(" START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙"):
+                line = line.replace(" START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙")
+                line = line.replace("# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> ")
+                print(line)
+        pass
+    taken = rcdata.split(f"# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> {name} START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙", 1)[1]
+    taken = taken.split(f"# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> {name} END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙", 1)[0]
+    taken = f"""# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> {name} START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+{taken}
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> {name} END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙"""
+    print(taken)
+
+@rc.command(context_settings=CONTEXT_SETTINGS, name="set-section")
+@click.argument("VALUE")
+def set_section(value):
+    home = subprocess.getoutput("echo $HOME")
+    rcdata = subprocess.getoutput("cat $HOME/.bashrc")
+    data = rcdata.splitlines()
+    taken = itertools.takewhile(lambda line: line != "# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂", data)
+    lines = []
+    lines.extend(taken)
+    lines.append("# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂")
+    lines.append("")
+    lines.append(value)
+    text = "\n".join(lines)
+    print(text)
+    if click.confirm(f"Overwrite old bashrc? ({home}/.bashrc)"):
+        with open(home + "/.bashrc", "w") as f:
+            f.write(text)
 
 def to_art(url, width, color):
     args = ["art", url, f"-w {str(width-2)}"]
