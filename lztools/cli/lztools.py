@@ -8,11 +8,11 @@ from subprocess import call
 
 import click
 from click import Path
-
+from lztools import bashrc
 import lztools.Images
 import lztools.click
-from lztools import Images
-from lztools.bash import search_history
+from lztools import Images, constants
+from lztools.bashrc import search_history
 from lztools.beautification import rainbow
 from lztools.click import ShortNameGroup
 from lztools.lztools import command
@@ -215,52 +215,66 @@ def bash(operation):
 def rc():
     """Operations for interacting with .bashrc"""
 
-@rc.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("VALUE")
-def add(value):
-    print(value)
+# @rc.command(context_settings=CONTEXT_SETTINGS)
+# @click.argument("VALUE")
+# def add(value):
+#     print(value)
 
 @rc.command(context_settings=CONTEXT_SETTINGS)
-def show():
-    subprocess.call("cat $HOME/.bashrc", shell=True)
+@click.argument("NAME", default=constants.SENTINEL_MARKER)
+@click.option("-a", "--all", default=False, is_flag=True)
+@click.option("-l", "--list-sections", default=False, is_flag=True)
+@click.option("-i", "--include-padding", default=False, is_flag=True)
+def show(name, all, list_sections, include_padding):
+    if all:
+        rcdata = bashrc.read_bash_rc()
+        print(rcdata)
+    elif list_sections or name == constants.SENTINEL_MARKER:
+        if list_sections or name == constants.SENTINEL_MARKER:
+            print("Sections:")
+            for i, line in enumerate(bashrc.get_section_names(), 1):
+                print(f"{lztools.text.pad_length()}{i}. {line}")
+    elif name != constants.SENTINEL_MARKER:
+        print(bashrc.get_section(name, include_padding))
 
-@rc.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("VALUE")
-def replace(value):
-    home = subprocess.getoutput("echo $HOME")
-    rcdata = subprocess.getoutput("cat $HOME/.bashrc")
-    data = rcdata.splitlines()
-    taken = itertools.takewhile(lambda line: line != "# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂", data)
-    lines = []
-    lines.extend(taken)
-    lines.append("# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂")
-    lines.append("")
-    lines.append(value)
-    text = "\n".join(lines)
-    print(text)
-    if click.confirm(f"Overwrite old bashrc? ({home}/.bashrc)"):
-        with open(home + "/.bashrc", "w") as f:
-            f.write(text)
+# @rc.command(context_settings=CONTEXT_SETTINGS)
+# @click.argument("VALUE")
+# def replace(value):
+#     home = subprocess.getoutput("echo $HOME")
+#     rcdata = subprocess.getoutput("cat $HOME/.bashrc")
+#     data = rcdata.splitlines()
+#     taken = itertools.takewhile(lambda line: line != "# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂", data)
+#     lines = []
+#     lines.extend(taken)
+#     lines.append("# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂")
+#     lines.append("")
+#     lines.append(value)
+#     text = "\n".join(lines)
+#     print(text)
+#     if click.confirm(f"Overwrite old bashrc? ({home}/.bashrc)"):
+#         with open(home + "/.bashrc", "w") as f:
+#             f.write(text)
 
-marker = "¤¤¤||||¤¤¤"
 @rc.command(context_settings=CONTEXT_SETTINGS, name="get-section")
-@click.argument("NAME", default=marker)
-@click.option("-l", "--list", default=True, is_flag=True)
-def get_section(name, list):
+@click.argument("NAME", default=constants.SENTINEL_MARKER)
+@click.option("-l", "--list", default=False, is_flag=True)
+@click.option("-f", "--full-section", default=False, is_flag=True)
+def get_section(name, list, full_section):
     rcdata = subprocess.getoutput("cat $HOME/.bashrc")
-    if list:
+    if list or name == constants.SENTINEL_MARKER:
         for line in rcdata.splitlines():
-            if line.endswith(" START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙"):
-                line = line.replace(" START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙")
-                line = line.replace("# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> ")
+            if line.endswith(" " + constants.RC_SECTION_START_RIGHT):
+                line = line.replace(" " + constants.RC_SECTION_START_RIGHT, "")
+                line = line.replace(constants.RC_SECTION_START_LEFT + " ", "")
                 print(line)
-        pass
-    taken = rcdata.split(f"# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> {name} START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙", 1)[1]
-    taken = taken.split(f"# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> {name} END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙", 1)[0]
-    taken = f"""# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> {name} START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+    elif name != constants.SENTINEL_MARKER:
+        taken = rcdata.split(f"{constants.RC_SECTION_START_LEFT} {name} {constants.RC_SECTION_START_RIGHT}", 1)[1]
+        taken = taken.split(f"{constants.RC_SECTION_END_LEFT} {name} {constants.RC_SECTION_END_RIGHT}", 1)[0]
+        if full_section:
+            taken = f"""# {constants.RC_SECTION_START_LEFT} {name} {constants.RC_SECTION_START_RIGHT}
 {taken}
-# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> {name} END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙"""
-    print(taken)
+{constants.RC_SECTION_END_LEFT} {name} {constants.RC_SECTION_END_RIGHT}"""
+        print(taken.strip())
 
 @rc.command(context_settings=CONTEXT_SETTINGS, name="set-section")
 @click.argument("VALUE")

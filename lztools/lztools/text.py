@@ -40,6 +40,20 @@ def create_line(char:str= "-", width:int=200, text:str= "") -> str:
 def center_on(value:str, text:str) -> str:
     return u"{:^{}}".format(value, len(text))
 
+def pad(text, count, pad_char, text_alignment):
+    alignment = _get_alignment(text_alignment)
+    if alignment == "^":
+        while Ansi.true_length(text) < count:
+            text += pad_char
+            if Ansi.true_length(text) < count:
+                text = pad_char + text
+    elif alignment == "<":
+        while Ansi.true_length(text) < count:
+            text += pad_char
+    elif alignment == ">":
+        while Ansi.true_length(text) < count:
+            text = pad_char + text
+
 def pad_length(text:str, width:int, text_alignment:str, pad_char=" ") -> str:
     alignment = _get_alignment(text_alignment)
     if alignment == "^":
