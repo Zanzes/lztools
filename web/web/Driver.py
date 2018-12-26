@@ -3,14 +3,14 @@ import time
 
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver import DesiredCapabilities
 from urllib3.exceptions import MaxRetryError
+
+from web.enums import Browser
 
 _instance = None
 
 def init_chrome():
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.binary_location = "/usr/bin/chromium-browser"
     chrome_options.add_argument('--no-proxy-server')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--window-size=1312,754')
@@ -18,29 +18,18 @@ def init_chrome():
 
 def init_firefox():
     firefox_options = webdriver.FirefoxOptions()
-    # chrome_options.binary_location = "/usr/bin/chromium-browser"
     firefox_options.add_argument('--no-proxy-server')
     firefox_options.add_argument('--disable-gpu')
     firefox_options.add_argument('--window-size=1312,754')
     return webdriver.Firefox(firefox_options=firefox_options)
 
-def create_instance(browser):
-    if BrowserStack["browser"].lower() == "chrome":
+def create_instance(browser:Browser):
+    if browser == Browser.Chrome:
         res = init_chrome()
-    elif BrowserStack["browser"].lower() == "firefox":
+    elif browser == Browser.Firefox:
         res = init_firefox()
     else:
-        raise Exception("Selected browser not recognized ({})".format(BrowserStack["browser"]))
-
-    if not ConfigManager["Default"].remote_testing:
-        if ConfigManager["Default"].implicitwait > 0:
-            res.implicitly_wait(ConfigManager["Default"].implicitwait_timeout)
-    if ConfigManager["Default"].maximize:
-        res.maximize_window()
-        # pyautogui.hotkey('shift', 'winleft', 'right')
-        # pyautogui.hotkey('shift', 'winleft', 'right')
-
-    # res.set_page_load_timeout(ConfigManager["Default"].pageload)
+        raise Exception(f"Selected browser not recognized ({browser})")
 
     def ex():
         try:

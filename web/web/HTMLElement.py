@@ -3,13 +3,13 @@
 from collections import namedtuple
 from datetime import datetime
 
-from DataTypes.Position import Position
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 
-from Tools.HTMLElementList import HTMLElementList
+from web.HTMLElementList import HTMLElementList
+from web.Position import Position
 
 Locator = namedtuple("Locator", ["find_target", "by"])
 
@@ -69,7 +69,7 @@ class HTMLElement(object):
         return HTMLElement(self.element.find_element(value=locator.find_target, by=locator.by))
 
     def find_elements(self, locator):
-        elements = self.element.find_elements(value=locator.find_target,by=locator.by)
+        elements = self.element.find_elements(value=locator.find_target, by=locator.by)
         return HTMLElementList([HTMLElement(e) for e in elements])
 
     def select_set_value(self, value, select_by_value=False):

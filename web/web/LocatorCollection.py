@@ -1,4 +1,4 @@
-from Tools.HTMLElement import Locator
+from web.HTMLElement import Locator
 
 class LocatorCollection(dict):
     def __setitem__(self, key, value):

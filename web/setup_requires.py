@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.7
 
 pip_requires = [
-    "click"
+    "click", 'selenium', 'urllib3'
 ]
 
 apt_requires = [
