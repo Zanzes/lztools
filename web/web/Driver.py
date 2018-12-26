@@ -6,9 +6,6 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import DesiredCapabilities
 from urllib3.exceptions import MaxRetryError
 
-from Tools.BrowserStack import BrowserStack
-from Tools.ConfigManager import ConfigManager
-
 _instance = None
 
 def init_chrome():
@@ -16,9 +13,6 @@ def init_chrome():
     # chrome_options.binary_location = "/usr/bin/chromium-browser"
     chrome_options.add_argument('--no-proxy-server')
     chrome_options.add_argument('--disable-gpu')
-    if ConfigManager["Default"].multiple_monitors:
-        pos = f'--window-position={ConfigManager["Default"].window_x},{ConfigManager["Default"].window_y}'
-        chrome_options.add_argument(pos)
     chrome_options.add_argument('--window-size=1312,754')
     return webdriver.Chrome(chrome_options=chrome_options)
 
@@ -27,27 +21,11 @@ def init_firefox():
     # chrome_options.binary_location = "/usr/bin/chromium-browser"
     firefox_options.add_argument('--no-proxy-server')
     firefox_options.add_argument('--disable-gpu')
-    if ConfigManager["Default"].multiple_monitors:
-        pos = f'--window-position={ConfigManager["Default"].window_x},{ConfigManager["Default"].window_y}'
-        firefox_options.add_argument(pos)
     firefox_options.add_argument('--window-size=1312,754')
     return webdriver.Firefox(firefox_options=firefox_options)
 
-def init_remote():
-    dc = BrowserStack.get_config("Default")
-    desired_capabilities = {}
-    if dc["browser"] == "firefox":
-        desired_capabilities = DesiredCapabilities.FIREFOX.copy()
-    if dc["browser"] == "chrome":
-        desired_capabilities = DesiredCapabilities.CHROME.copy()
-    desired_capabilities.update(dc)
-    # capabilities['platform'] = "MAC"
-    return webdriver.Remote(desired_capabilities=desired_capabilities, command_executor='http://172.17.0.1:4444/wd/hub')
-
-def create_instance():
-    if ConfigManager["Default"].remote_testing:
-        res = init_remote()
-    elif BrowserStack["browser"].lower() == "chrome":
+def create_instance(browser):
+    if BrowserStack["browser"].lower() == "chrome":
         res = init_chrome()
     elif BrowserStack["browser"].lower() == "firefox":
         res = init_firefox()

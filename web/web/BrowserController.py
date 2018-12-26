@@ -21,7 +21,7 @@ class BrowserController(object):
     _instance = Driver()
     
     def __init__(self, *args, **kwargs):
-        self.timeout = ConfigManager["Default"].timeout_short
+        self.timeout = 10
         super().__init__(*args, **kwargs)
 
     def get(self, url):
@@ -31,13 +31,10 @@ class BrowserController(object):
     def get_current_url(self):
         return self._instance.current_url
 
-    def find_mirbutton(self, data_template_value, wait=None):
-        return self.wait_elements(Locator(find_target="mirbutton", by=By.CLASS_NAME), wait).by_attribute("data-template", data_template_value)
-
     def __wait(self, wait):
         if wait is None:
-            wait = ConfigManager["Default"].timeout_short
-        return WebDriverWait(self._instance, timeout=wait, poll_frequency=ConfigManager["Default"].pollfrequency)
+            wait = 10
+        return WebDriverWait(self._instance, timeout=wait, poll_frequency=0.3)
 
     def find_element(self, locator):
         return HTMLElement(self._instance.find_element(locator[1], locator[0]))
@@ -47,13 +44,13 @@ class BrowserController(object):
 
     def wait_element(self, locator, wait=None, condition=expected_conditions.presence_of_element_located):
         if wait is None:
-            wait = ConfigManager["Default"].timeout_short
+            wait = 10
         elm = self.__wait(wait=wait).until(condition((locator.by, locator.find_target)), f"Timeout while waiting for element ({locator.by}: {locator.find_target})")
         return HTMLElement(elm)
 
     def wait_elements(self, locator, wait=None, condition=expected_conditions.presence_of_all_elements_located):
         if wait is None:
-            wait = ConfigManager["Default"].timeout_short
+            wait = 10
         elms = self.__wait(wait=wait).until(condition((locator.by, locator.find_target)), message=f"Timeout while waiting for element ({locator.by}: {locator.find_target})")
         return HTMLElementList([HTMLElement(e) for e in elms])
 
@@ -114,7 +111,7 @@ class BrowserController(object):
 
         :raises: ElementVisiblityTimeout
         """
-        w = wait/ConfigManager["Default"].pollfrequency
+        w = wait/0.3
         if w < 1:
             w = 1
         for i in range(int(w)):
@@ -123,7 +120,7 @@ class BrowserController(object):
                     break
             except:
                 pass
-            time.sleep(ConfigManager["Default"].pollfrequency)
+            time.sleep(0.3)
         else:
             raise ElementVisibilityTimeout(f"Cant locate ({locator.find_target}: {locator.by})")
         return True
@@ -137,10 +134,10 @@ class BrowserController(object):
         """
         t = self.timeout
         while t > 0:
-            t -= ConfigManager["Default"].pollfrequency
+            t -= 0.3
             e = self.is_visible(locator, wait)
             if e:
-                time.sleep(ConfigManager["Default"].pollfrequency)
+                time.sleep(0.3)
             else:
                 return
         raise Exception(f"Timeout while waiting for element ({locator.by}: {locator.find_target})")
@@ -159,7 +156,7 @@ class BrowserController(object):
         else:
             w = self.timeout
 
-        pf = ConfigManager["Default"].pollfrequency
+        pf = 0.3
         ticks = w / pf
 
         for _ in range(int(ceil(ticks))):
@@ -179,7 +176,7 @@ class BrowserController(object):
 
     def wait_for_alert(self, wait=None):
         if wait is None:
-            wait = ConfigManager["Default"].timeout_short
+            wait = 10
         return self.__wait(wait).until(expected_conditions.alert_is_present())
 
     def wait_for_value_changed(self, locator, text):
@@ -225,31 +222,6 @@ class BrowserController(object):
         except NoAlertPresentException:
             pass
 
-    def has_error(self, status=None):
-        from Tools import APIModule
-        if status is None:
-            status = APIModule.get_robot_status()
-        return status.state_text == RobotStates.Error
-
-    def reset_error(self):
-        # return self.find_element("status").click()
-        self.execute_script("clear_errors(event, 'left');")
-
-    def error_9000_workaround(self):
-        from Tools import APIModule
-        status = APIModule.get_robot_status()
-        if self.has_error(status):
-            only_9000 = True
-            for error in status.errors:
-                if error.code != 9000:
-                    only_9000 = False
-                    break
-            if not only_9000:
-                raise Exception("Check robot error!")
-            else:
-                self.reset_error()
-                self.error_9000_workaround()
-
     def wait_for(self, l, op, r, exe_l=False, exe_r=False):
         if exe_l and exe_r:
             while not op(l(), r()):
@@ -268,35 +240,8 @@ class BrowserController(object):
         while not eval(action_str):
             time.sleep(pollfrequency)
 
-    def add_mission_to_queue(self, name):
-        from Tools import APIModule
-        APIModule.add_mission_to_queue(name)
-
-    def clear_mission_queue(self):
-        from Tools import APIModule
-        APIModule.remove_all_missions_from_queue()
-
     def execute_script(self, script):
         return self._instance.execute_script(script)
-
-    def ensure_mission_executing(self):
-        from Tools import APIModule
-        status = APIModule.get_robot_status()
-        if not status.state_text == RobotStates.Executing:
-            self.execute_script("robot_change_state(3);")
-        # if not get_execution_status() == ExecutionStatus.Running:
-        #     execute_script("robot_change_state(3);")
-
-    def get_mission_queue(self):
-        from Tools import APIModule
-        return APIModule.get_mission_queue()
-
-    def get_mission_queue_count(self):
-        return len(self.get_mission_queue())
-
-    def get_selected_language(self):
-        text = self.wait_element(Locator("language", By.ID)).text
-        return text
 
     def get_page_text(self):
         t = self.wait_element(locators['body']).text
@@ -304,7 +249,7 @@ class BrowserController(object):
 
     def set_select(self, locator, value, wait=None):
         if wait is None:
-            wait = ConfigManager["Default"].timeout_short
+            wait = 10
         sel = self.wait_element(locator, wait).to_select()
         try:
             sel.select_by_visible_text(value)
@@ -345,7 +290,3 @@ class BrowserController(object):
 
     def delete_all_cookies(self):
         self._instance.delete_all_cookies()
-
-    # @classmethod
-    # def quit(cls):
-    #     cls._instance.quit()
