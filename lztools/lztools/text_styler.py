@@ -1,3 +1,5 @@
+import time
+
 from requests_html import HTMLSession
 
 try:
@@ -13,7 +15,7 @@ pyppeteer.launch()
 async def main():
     browser = await launch()
     page = await browser.newPage()
-    page.
+    page
     page.go
     await page.goto('http://example.com')
     await page.screenshot({'path': 'example.png'})
@@ -38,8 +40,8 @@ print("kaskelot" in resp)
 phtml = BeautifulSoup(resp.text)
 i = phtml.body.find("input")
 print(i)
-return
+# return
 for part in resp.text.split("preview"):
     print(part[:200])
     time.sleep(1)
-return resp
+# return resp

@@ -11,6 +11,7 @@ from click import Path
 from lztools import bashrc
 import lztools.Images
 import lztools.click
+import lztools.docker
 from lztools import Images, constants
 from lztools.bashrc import search_history
 from lztools.beautification import rainbow
@@ -210,6 +211,14 @@ def art(width, invert, add_color, target):
 @click.option('-o', '--operation', type=click.Choice(["bashrc", "autosource"]))
 def bash(operation):
     pass
+
+@main.group(cls=ShortNameGroup, context_settings=CONTEXT_SETTINGS)
+def docker():
+    """Operations for interacting with docker"""
+
+@docker.command(context_settings=CONTEXT_SETTINGS)
+def cleanup():
+    lztools.docker.cleanup()
 
 @main.group(cls=ShortNameGroup, context_settings=CONTEXT_SETTINGS)
 def rc():
