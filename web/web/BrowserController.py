@@ -1,24 +1,25 @@
 import time
-
 from math import ceil
+
+from selenium import webdriver
 from selenium.common.exceptions import NoAlertPresentException, TimeoutException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from .Driver import Driver
 from .Exceptions import ElementVisibilityTimeout
-from .LocatorCollection import LocatorCollection
 from .HTMLElement import HTMLElement, Locator
 from .HTMLElementList import HTMLElementList
-from .Driver import Driver
+from .LocatorCollection import LocatorCollection
 
 locators = LocatorCollection()
 locators["body"] = Locator("body", By.TAG_NAME)
 locators["executionDisplay"] = Locator("statusblock", By.CLASS_NAME)
 
 class BrowserController(object):
-    _instance = Driver()
+    _instance:webdriver.Firefox = Driver()
     
     def __init__(self, *args, **kwargs):
         self.timeout = 10

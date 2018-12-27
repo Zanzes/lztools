@@ -8,6 +8,7 @@ from urllib3.exceptions import MaxRetryError
 from web.enums import Browser
 
 _instance = None
+browser_type = Browser.Chrome
 
 def init_chrome():
     chrome_options = webdriver.ChromeOptions()
@@ -23,13 +24,13 @@ def init_firefox():
     firefox_options.add_argument('--window-size=1312,754')
     return webdriver.Firefox(firefox_options=firefox_options)
 
-def create_instance(browser:Browser):
-    if browser == Browser.Chrome:
+def create_instance():
+    if browser_type == Browser.Chrome:
         res = init_chrome()
-    elif browser == Browser.Firefox:
+    elif browser_type == Browser.Firefox:
         res = init_firefox()
     else:
-        raise Exception(f"Selected browser not recognized ({browser})")
+        raise Exception(f"Selected browser not recognized ({browser_type})")
 
     def ex():
         try:
