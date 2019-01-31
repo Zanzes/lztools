@@ -220,6 +220,11 @@ def docker():
 def cleanup():
     lztools.docker.cleanup()
 
+@docker.command(context_settings=CONTEXT_SETTINGS)
+@click.argument("NAME")
+def run(name):
+    command(f"sudo docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY -u zanzes --tty --rm {name}")
+
 @main.group(cls=ShortNameGroup, context_settings=CONTEXT_SETTINGS)
 def rc():
     """Operations for interacting with .bashrc"""
