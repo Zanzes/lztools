@@ -73,7 +73,7 @@ def search(find, path, exclude):
 @files.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('PATTERN')
 @click.option("-p", "--path", default=".", type=str, help="The path for search for files (Default: .)")
-@click.option("-e", "--exclude", default="*.git", type=Path(), help="Path not included in search (Default: *.git)")
+#@click.option("-e", "--exclude", default="*.git", type=Path(), help="Path not included in search (Default: *.git)")
 def find(pattern, path):
     # os.system(f"find {path} -type f -exec sed -i 's/{find}/{replacement}/g' {{}} +")
     pass
