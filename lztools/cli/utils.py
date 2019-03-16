@@ -1,8 +1,8 @@
 import click
 import sh
 
-from extras import work_logger
-from extras.alarm import run_timer, to_timespan
+from utils import work_logger
+from utils.alarm import run_timer, to_timespan
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 gnome_terminal = sh.gnome_terminal.bake()

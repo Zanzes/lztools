@@ -259,3 +259,17 @@ def print_dir_values(obj):
                 print(f"{res} {o}")
 
     pd(obj)
+
+def parse_name_list(name_list):
+    rset = {}
+    for setting in name_list:
+        key, value = setting.split("=", 1)
+        if value.isdigit():
+            if value.isdecimal():
+                value = float(value)
+            else:
+                value = int(value)
+        elif value.lower() == "true":
+            value = bool(value)
+        rset[key] = value
+    return rset

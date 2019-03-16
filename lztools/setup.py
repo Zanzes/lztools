@@ -1,9 +1,8 @@
 #!/usr/bin/env python3.7
-from subprocess import call
 
 from setuptools import setup
 
-from setup_requires import apt_requires, pip_requires
+from setup_requires import pip_requires
 
 # call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
 
@@ -35,10 +34,12 @@ setup(
     install_requires=pip_requires,
     packages=[
         'lztools',
-        'extras',
         'lztools.shared_resources',
         'lztools.resources',
-        'cli'
+        'cli',
+        'IO',
+        'meta_tools',
+        'utils'
     ],
     zip_safe=False,
     include_package_data=True,

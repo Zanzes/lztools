@@ -15,7 +15,7 @@ import lztools.docker
 from lztools import Images, constants
 from lztools.bashrc import search_history
 from lztools.beautification import rainbow
-from lztools.click import ShortNameGroup
+from lztools.click import CommandMatchingGroup
 from lztools.lztools import command
 from lztools.text import search_words, get_random_word, regex as rx
 
@@ -32,7 +32,7 @@ def try_read_input(input):
         return input
 
 
-@lztools.click.short_name_group()
+@lztools.click.command_matching_group()
 def main():
     """A collection of python tools and bash commands by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
@@ -50,14 +50,14 @@ def history(term, regex):
     for line in search_history(term, regex=regex):
         print(line)
 
-@main.group(context_settings=CONTEXT_SETTINGS, cls=ShortNameGroup)
+@main.group(context_settings=CONTEXT_SETTINGS, cls=CommandMatchingGroup)
 def files():
     pass
 
 @files.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('FIND')
 @click.argument('REPLACEMENT')
-@click.option("-p", "--path", default=".", type=str, help="The path for search for files (Default: .)")
+@click.option("-p", "--path", default=".", type=str, help="The path f or search for files (Default: .)")
 def replace(find, replacement, path):
     """Searches files in --path for the term in FIND and replaces occurrences with REPLACEMENT"""
     os.system(f"find {path} -type f -exec sed -i 's/{find}/{replacement}/g' {{}} +")
@@ -73,11 +73,10 @@ def search(find, path, exclude):
 @files.command(context_settings=CONTEXT_SETTINGS)
 @click.argument('PATTERN')
 @click.option("-p", "--path", default=".", type=str, help="The path for search for files (Default: .)")
-#@click.option("-e", "--exclude", default="*.git", type=Path(), help="Path not included in search (Default: *.git)")
+# @click.option("-e", "--exclude", default="*.git", type=Path(), help="Path not included in search (Default: *.git)")
 def find(pattern, path):
     # os.system(f"find {path} -type f -exec sed -i 's/{find}/{replacement}/g' {{}} +")
     pass
-
 
 @main.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("term", default="")
@@ -212,7 +211,7 @@ def art(width, invert, add_color, target):
 def bash(operation):
     pass
 
-@main.group(cls=ShortNameGroup, context_settings=CONTEXT_SETTINGS)
+@main.group(cls=CommandMatchingGroup, context_settings=CONTEXT_SETTINGS)
 def docker():
     """Operations for interacting with docker"""
 
@@ -225,7 +224,7 @@ def cleanup():
 def run(name):
     command(f"sudo docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY -u zanzes --tty --rm {name}")
 
-@main.group(cls=ShortNameGroup, context_settings=CONTEXT_SETTINGS)
+@main.group(cls=CommandMatchingGroup, context_settings=CONTEXT_SETTINGS)
 def rc():
     """Operations for interacting with .bashrc"""
 

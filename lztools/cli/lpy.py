@@ -2,12 +2,12 @@ from pathlib import Path
 
 import click
 
-from lztools.click import command, group, short_name_group
+from lztools.click import command, group, command_matching_group
 from lztools.modules import local_install
 from lztools.modules import create_new
 from lztools import Qt
 
-@short_name_group()
+@command_matching_group()
 def main():
     """Python utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
