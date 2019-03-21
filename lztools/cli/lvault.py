@@ -1,11 +1,11 @@
 from builtins import list as blist
 
 import click
-from lztools.click import proper_group, proper_command
-from lztools.git import list_files, load_file, save_file
+from core.click import proper_group, proper_command
+from third.git import list_files, load_file, save_file
 
-from lztools import ResourceManager
-from lztools.ResourceManager import resources_path
+from core import ResourceManager
+from core.ResourceManager import resources_path
 
 @proper_group()
 def main():

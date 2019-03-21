@@ -4,9 +4,9 @@ import shutil
 from time import sleep
 
 import sh
-from lztools.dating import hours_minutes_seconds
+from core.dating import hours_minutes_seconds
 
-from lztools.sound import beep, beep_on_off
+from core.sound import beep_on_off
 
 clear = lambda: os.system('clear')
 figlet = sh.figlet.bake()

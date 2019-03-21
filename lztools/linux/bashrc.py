@@ -1,8 +1,9 @@
 import subprocess
 from pathlib import Path
 
-from lztools import constants, text
-from lztools.lztools import command
+from core import constants
+from text_tools import text
+from core.lztools import command
 
 def read_bash_rc() -> str:
     return subprocess.getoutput("cat $HOME/.bashrc")

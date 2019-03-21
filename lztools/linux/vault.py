@@ -2,10 +2,10 @@ from datetime import datetime
 from subprocess import call
 
 import sh
-from lztools.git import GitFileData
+from third.git import GitFileData
 
-from lztools import ResourceManager
-from lztools.ResourceManager import resources_path as vault_path
+from core import ResourceManager
+from core.ResourceManager import resources_path as vault_path
 
 _vault_repo = sh.git.bake(_cwd=vault_path)
 

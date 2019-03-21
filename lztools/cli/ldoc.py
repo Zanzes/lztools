@@ -2,8 +2,8 @@
 
 import click
 
-from lztools.docker import get_running
-from lztools.click import proper_group, proper_command
+from third.docker import get_running
+from core.click import proper_group, proper_command
 
 @proper_group()
 def main():

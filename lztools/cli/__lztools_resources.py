@@ -1,6 +1,6 @@
-from lztools.click import proper_command, proper_group
+from core.click import proper_command, proper_group
 
-from lztools.ResourceManager import out_path
+from core.ResourceManager import out_path
 
 @proper_group()
 def main():

@@ -1,11 +1,9 @@
 from pathlib import Path
 
 import click
+from core.click import command_matching_group
 
-from lztools.click import command, group, command_matching_group
-from lztools.modules import local_install
-from lztools.modules import create_new
-from lztools import Qt
+from pytools.pip_package import create_new, local_install
 
 @command_matching_group()
 def main():
@@ -15,6 +13,7 @@ def main():
 @click.argument('name', type=click.Path())
 @click.option("-p", "--parent", nargs=1, default="")
 def create(name, parent):
+    """Creates the template for a new pip package"""
     create_new(name, pack=parent)
 
 @main.command()
@@ -67,7 +66,7 @@ def install(paths, upload, a, add):
         for x in paths:
             local_install(str(Path(x).absolute()), should_upload, add, upload)
 
-@main.command()
-@click.argument('PATH', type=click.Path())
-def generate(path):
-    Qt.generate(path)
+# @main.command()
+# @click.argument('PATH', type=click.Path())
+# def generate(path):
+#     Qt.generate(path)

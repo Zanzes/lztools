@@ -1,5 +1,5 @@
 import click
-from lztools.click import proper_group
+from core.click import proper_group
 from web import template
 
 @proper_group()

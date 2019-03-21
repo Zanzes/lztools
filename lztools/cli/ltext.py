@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.7
 import click
 
-from lztools.click import proper_group, proper_command
+from core.click import proper_group, proper_command
 
 @proper_group()
 def main():

@@ -8,16 +8,16 @@ from subprocess import call
 
 import click
 from click import Path
-from lztools import bashrc
-import lztools.Images
-import lztools.click
-import lztools.docker
-from lztools import Images, constants
-from lztools.bashrc import search_history
-from lztools.beautification import rainbow
-from lztools.click import CommandMatchingGroup
-from lztools.lztools import command
-from lztools.text import search_words, get_random_word, regex as rx
+
+from core import constants, Images
+from third import docker
+from linux import bashrc
+from text_tools import text
+from linux.bash import command
+from linux.bashrc import search_history
+from core.beautification import rainbow
+from core.click import CommandMatchingGroup, command_matching_group
+from text_tools.text import search_words, get_random_word, regex as rx
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -32,7 +32,7 @@ def try_read_input(input):
         return input
 
 
-@lztools.click.command_matching_group()
+@command_matching_group()
 def main():
     """A collection of python tools and bash commands by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
@@ -88,7 +88,7 @@ def search(term, type, strict, max_images):
         res = search_words(term, strict=strict)
         print(res)
     elif type == "images":
-        res = lztools.Images.search(term, count=max_images)
+        res = Images.search(term, count=max_images)
         for x in res:
             print(x)
 
@@ -217,7 +217,7 @@ def docker():
 
 @docker.command(context_settings=CONTEXT_SETTINGS)
 def cleanup():
-    lztools.docker.cleanup()
+    docker.cleanup()
 
 @docker.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("NAME")
@@ -246,7 +246,7 @@ def show(name, all, list_sections, include_padding):
         if list_sections or name == constants.SENTINEL_MARKER:
             print("Sections:")
             for i, line in enumerate(bashrc.get_section_names(), 1):
-                print(f"{lztools.text.pad_length()}{i}. {line}")
+                print(f"{text.pad_length()}{i}. {line}")
     elif name != constants.SENTINEL_MARKER:
         print(bashrc.get_section(name, include_padding))
 

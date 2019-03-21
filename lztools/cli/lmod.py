@@ -2,8 +2,8 @@
 
 import click
 
-from lztools.bash import add_bashrc_alias, copy_bashrc_other
-from lztools.click import proper_group, proper_command
+from linux.bash import add_bashrc_alias, copy_bashrc_other
+from core.click import proper_group, proper_command
 
 @proper_group()
 def main():

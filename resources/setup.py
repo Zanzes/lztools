@@ -1,18 +1,6 @@
 #!/usr/bin/env python3.7
-from subprocess import call
 
 from setuptools import setup
-
-from setup_requires import apt_requires, pip_requires
-
-# call(["sudo", "apt-get", "-qq", "-y", "install", *apt_requires])
-
-# try:
-#     codecs.lookup('mbcs')
-# except LookupError:
-#     ascii = codecs.lookup('ascii')
-#     func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
-#     codecs.register(func)
 
 setup(
     name='lztools.resources',
@@ -24,12 +12,10 @@ setup(
     url='',
     entry_points={
         'console_scripts': [
-            'lvault              = cli.lvault:main',
-            '__lztools_resources = cli.__lztools_resources:main'
         ],
     },
-    install_requires=pip_requires,
-    packages=["resources"],
+    install_requires=[],
+    packages=['resources'],
     zip_safe=False,
     include_package_data=True,
     package_data={'lztools': ['resources/*']},

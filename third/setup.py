@@ -3,44 +3,20 @@
 from setuptools import setup
 
 setup(
-    name='lztools',
+    name='lztools.third',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='1.2.18',
+    version='0.0.1',
     license='MIT License',
-    description='A collection of useful utilities by Laz aka Zanzes',
+    description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     url='',
+    requires=[],
     entry_points={
         'console_scripts': [
-            'lztools    = cli.lztools:main',
-            '¤          = cli.lztools:main',
-            'parse-work = cli.utils:parse_work',
-            'log-work   = cli.utils:log_work',
-            'alarm      = cli.utils:alarm',
-            'lzenv      = cli.lzenv:run',
-            'pytools    = cli.pytools:main',
-
+            'third = cli.main:main',
         ],
     },
-    install_requires=[
-        'flickrapi',
-        'zope.proxy',
-        'click',
-        'pip',
-        'ansiwrap',
-        'prompt_toolkit', 'PyQt5'
-    ],
-    packages=[
-        'cli',
-        'core',
-        'linux',
-        'pytools',
-        'text_tools',
-        'third',
-        'types',
-        'utils',
-        'web'
-    ],
+    packages=['cli'],
     zip_safe=False,
     include_package_data=True,
     package_data={},

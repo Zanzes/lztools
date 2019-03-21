@@ -1,15 +1,16 @@
 import click
-from core.click import proper_group
+from core.click import command_matching_group
+from cli import lzenv
 
-@proper_group()
-@click.argument("TEMPLATE_ARGUMENT", default=click.get_text_stream('stdin'))
+@command_matching_group()
 @click.option("-v", "--verbose", is_flag=True, default=False)
-def main(template_argument, verbose):
+def main(verbose):
     """Template bash command by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
     if verbose:
         print("Calling main functions")
-    print("Work")
+    lzenv.run()
     if verbose:
         print("Handling TEMPLATE_ARGUMENT")
-    if template_argument:
-        print(f"TEMPLATE_ARGUMENT: {template_argument}")
+
+if __name__ == '__main__':
+    main()

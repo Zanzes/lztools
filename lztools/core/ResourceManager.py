@@ -1,11 +1,11 @@
 from pathlib import Path
 from subprocess import call
 
-from lztools.TempPath import TempPath
-from lztools.git import clone_repo
+from core.TempPath import TempPath
+from third.git import clone_repo
 
-from lztools.shared_resources import repos
-from lztools.shared_resources.strings import data_loader_bash_script
+from pyshare import repos
+from pyshare.strings import data_loader_bash_script
 
 _user_home = Path.home().absolute()
 main_path = _user_home .joinpath(".lztools").absolute()

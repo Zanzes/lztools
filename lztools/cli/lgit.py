@@ -1,7 +1,7 @@
 import click
 
-from lztools.lztools import command
-from lztools.text import regex
+from core.lztools import command
+from text_tools.text import regex
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 

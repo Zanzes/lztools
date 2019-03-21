@@ -1,4 +1,4 @@
-from lztools.text import create_line, wall_text
+from text_tools.text import create_line, wall_text
 
 default_horizontal_symbol = "-"
 default_vertical_symbol = "|"

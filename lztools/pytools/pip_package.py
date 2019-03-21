@@ -1,16 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import inspect
-import os
 from pathlib import Path
-from pprint import pprint
 from subprocess import CalledProcessError, check_output, call
 
 import pip
-import sh
-import sys
-from lztools.text import regex
-from lztools.TempPath import TempPath
+from core.TempPath import TempPath
+from text_tools.text import regex
 
 _setup_text = """#!/usr/bin/env python3.7
 import codecs
@@ -33,16 +28,17 @@ setup(
     license='MIT License',
     description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     url='',
-    requires=["{packname}"],
+    requires=[],
+    install_requires=[],
     entry_points={{
         'console_scripts': [
             'l{module} = cli.l{module}:main',
         ],
     }},
-    packages=['{packname}', 'cli', 'resources'],
+    packages=['cli', 'resources'],
     zip_safe=False,
     include_package_data=True,
-    package_data={{'{fullname}': ['resources/*']}},
+    package_data={{}},
     classifiers=[  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha
@@ -85,15 +81,6 @@ def main(template_argument, verbose):
         print("Handling TEMPLATE_ARGUMENT")
     if template_argument:
         print(f"TEMPLATE_ARGUMENT: {{template_argument}}")"""
-packs_text = """#!/usr/bin/env python3.7
-
-pip_requires = [
-    "click"
-]
-
-apt_requires = [
-]
-"""
 license_text = """Copyright (c) 2016 The Python Packaging Authority (PyPA)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -174,9 +161,7 @@ def _upload(password):
     if online == local:
         raise Exception("Error: Same version as online")
     else:
-        twine = sh.twine.bake(_cwd=".")
-        print(twine.upload("dist/*", username="zanzes", password=password))
-        # call(["twine", "upload", "-u", "zanzes", "dist/*", *parg])
+        call(["twine", "upload", "-u", "zanzes", "dist/*", "-p", password])
 
 def get_version_online(name):
     try:
@@ -190,7 +175,7 @@ def get_version_online(name):
 def get_version():
     return check_output(["python3.7", "setup.py", "-V"]).decode("utf8").rstrip("\n")
 
-def pip_install(package):
+def install(package):
     pip.main(['install', package])
 
 def _create_data(name, pack=""):
@@ -216,12 +201,6 @@ def create_new(name, pack=""):
     pack = Path(name)
     pack.mkdir()
 
-    res = pack.joinpath("resources")
-    res.mkdir()
-
-    packs = res.joinpath("setup_requires.py")
-    mf(packs, packs_text)
-
     license = pack.joinpath("LICENSE.txt")
     mf(license, license_text)
 
@@ -235,31 +214,10 @@ def create_new(name, pack=""):
     readme = pack.joinpath("README.md")
     mf(readme, _readme_text.format(fullname=data["fullname"]))
 
-    inner = pack.joinpath(data["packname"])
-    inner.mkdir()
-    main = inner.joinpath(data["module"] + ".py")
+    main = pack.joinpath(data["module"] + ".py")
     mf(main, _main_text)
 
     cli = pack.joinpath("cli")
     cli.mkdir()
-    command = cli.joinpath("l" + data["module"] + ".py")
+    command = cli.joinpath("pytools.py")
     mf(command, _command_text.format(fullname=data["fullname"]))
-
-def get_module_path(target):
-    if hasattr(target, "__path__") and target.__path__:
-        return next(iter(target.__path__))
-    elif hasattr(target, "__file__") and target.__file__:
-        return target.__file__
-    elif hasattr(target, "__module__") and target.__module__:
-        return get_module_path(sys.modules[target.__module__])
-    try:
-        return inspect.getsourcefile(target)
-    except:
-        pass
-    raise Exception(f"Cant find path to target (type: {type(target)}, value: {target})")
-
-def ignore_exception(func, exception, *args, **kwargs):
-    try:
-        func(*args, **kwargs)
-    except exception:
-        pass

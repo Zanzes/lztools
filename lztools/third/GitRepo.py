@@ -1,4 +1,4 @@
-from lztools.git import load_file, save_file, list_files
+from third.git import load_file, save_file, list_files
 
 class GitRepo(object):
     path = None

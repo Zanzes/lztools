@@ -6,13 +6,13 @@ from typing import Union
 
 from ansiwrap import wrap
 
-from lztools import Ansi
-from lztools.MatchType import MatchType, brace, bracket, parentheses, gt_lt
+from text_tools import lz_ansi
+from core.MatchType import MatchType, brace, bracket, parentheses, gt_lt
 
 _words = None
 
 def words():
-    from lztools.lztools import command
+    from core.lztools import command
     global _words
     if _words is None:
         _words = command("cat", "/usr/share/dict/words", return_result=True)
@@ -43,29 +43,29 @@ def center_on(value:str, text:str) -> str:
 def pad(text, count, pad_char, text_alignment):
     alignment = _get_alignment(text_alignment)
     if alignment == "^":
-        while Ansi.true_length(text) < count:
+        while lz_ansi.true_length(text) < count:
             text += pad_char
-            if Ansi.true_length(text) < count:
+            if lz_ansi.true_length(text) < count:
                 text = pad_char + text
     elif alignment == "<":
-        while Ansi.true_length(text) < count:
+        while lz_ansi.true_length(text) < count:
             text += pad_char
     elif alignment == ">":
-        while Ansi.true_length(text) < count:
+        while lz_ansi.true_length(text) < count:
             text = pad_char + text
 
 def pad_length(text:str, width:int, text_alignment:str, pad_char=" ") -> str:
     alignment = _get_alignment(text_alignment)
     if alignment == "^":
-        while Ansi.true_length(text) < width:
+        while lz_ansi.true_length(text) < width:
             text += pad_char
-            if Ansi.true_length(text) < width:
+            if lz_ansi.true_length(text) < width:
                 text = pad_char + text
     elif alignment == "<":
-        while Ansi.true_length(text) < width:
+        while lz_ansi.true_length(text) < width:
             text += pad_char
     elif alignment == ">":
-        while Ansi.true_length(text) < width:
+        while lz_ansi.true_length(text) < width:
             text = pad_char + text
     return text
 
