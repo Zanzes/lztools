@@ -3,13 +3,13 @@ import os
 import shutil
 from time import sleep
 
-import sh
+from linux.bash import command
+
 from core.dating import hours_minutes_seconds
 
 from core.sound import beep_on_off
 
 clear = lambda: os.system('clear')
-figlet = sh.figlet.bake()
 
 def to_timespan(time_str:str):
     tt, tf = time_str[:-1], time_str[-1]
@@ -46,6 +46,7 @@ def run_timer(time:datetime.timedelta, in_window=False):
             e = f"{e}{h:02}:"
         if m > 0:
             e = f"{e}{m:02}:"
-        print(figlet(f"{e}{s:02}", w=shutil.get_terminal_size().columns, c=True))
+        command("figlet", f"{e}{s:02}", "-w", shutil.get_terminal_size().columns, "-c")
+        # print(figlet(f"{e}{s:02}", w=shutil.get_terminal_size().columns, c=True))
         sleep(0.1)
     beep_on_off(9999, 0.5, 880)
