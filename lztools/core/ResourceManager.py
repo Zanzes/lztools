@@ -1,7 +1,7 @@
 from pathlib import Path
 from subprocess import call
 
-from core.TempPath import TempPath
+from pathing import TempPath
 from third.git import clone_repo
 
 from pyshare import repos
@@ -13,7 +13,7 @@ scripts_path = main_path.joinpath("scripts")
 loader_path = scripts_path.joinpath("data_loader")
 data_path = main_path.joinpath("data")
 out_path = data_path.joinpath("out_data")
-resources_path = main_path.joinpath("resources")
+resources_path = main_path.joinpath("lzresources")
 bashrc_path = _user_home.joinpath(".bashrc")
 
 def ensure_initialized(override=False):

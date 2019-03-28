@@ -3,28 +3,17 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='lztools.pytools',
+    name='lzresources',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
-    version='0.0.1',
+    version='1.0.15',
     license='MIT License',
-    description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
-    requires=['click'],
+    description='A collection of resources by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     install_requires=[],
-    py_modules=[
-        'cli',
-        'class_tools',
-        'mod_tools',
-        'obj_tools',
-        'pip_package',
-        'utils'
-    ],
-    entry_points={
-        'console_scripts': [
-            'pytools = cli:main',
-        ],
-    },
     packages=find_packages(),
+    zip_safe=False,
+    include_package_data=True,
+    package_data={'lzresources': ['lzresources/*']},
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
