@@ -10,8 +10,19 @@ except ImportError:
 import asyncio
 from pyppeteer import launch
 import pyppeteer
-pyppeteer.launch()
+from bash import command
 
+def rainbow(text, frequency=0.1, hide_gap=True):
+    if frequency is None:
+        frequency = 0.1
+    args = ["--freq", str(frequency)]
+
+    m = "| sed '$d' " if hide_gap else ""
+    argsd = str.join(" ", args)
+
+    return command(f"echo \"{text}\" {m}| lolcat -f {argsd} 2> /dev/null", return_result=True)
+
+pyppeteer.launch()
 async def main():
     browser = await launch()
     page = await browser.newPage()

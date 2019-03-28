@@ -3,8 +3,8 @@ import os
 import shutil
 from time import sleep
 
-from core.dating import hours_minutes_seconds
-from core.sound import beep_on_off
+from dating import hours_minutes_seconds
+from sound import beep_on_off
 from linux.bash import command
 
 _clear = lambda: os.system('_clear')

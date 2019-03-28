@@ -1,3 +1,4 @@
+
 class EnumMeta(type):
     def __init__(cls, name, bases, clsdict):
         if len(cls.mro()) > 2:
@@ -25,3 +26,16 @@ class Enum(object, metaclass=EnumMeta):
     @classmethod
     def has_value(cls, value):
         return value in cls._values
+
+class Flag(object):
+    value = None
+
+    def __init__(self, value):
+        self.value = value
+
+    def __get__(self, instance, owner):
+        return self.value
+
+    @staticmethod
+    def has_flag(val, flag):
+        return (val | flag) > 0

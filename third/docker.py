@@ -1,4 +1,4 @@
-from third.DockerData import DockerData
+from DockerData import DockerData
 from bash import command
 
 def get_running():

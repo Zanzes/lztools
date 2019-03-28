@@ -1,10 +1,8 @@
-import inspect
 import os
 
-import sys
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Union, Callable, Any
+from typing import Callable, Any
 
 def get_current_path():
     return str(Path(".").absolute())
@@ -27,24 +25,24 @@ def remove_extension(path) -> str:
 def name(path) -> str:
     return remove_extension(name_and_ext(path))
 
-def get_module_path(target, return_string=False) -> Union[Path, str]:
-    mp = None
-    if hasattr(target, "__path__") and target.__path__:
-        mp = next(iter(target.__path__))
-    elif hasattr(target, "__file__") and target.__file__:
-        mp = target.__file__
-    elif hasattr(target, "__module__") and target.__module__:
-        mp = get_module_path(sys.modules[target.__module__])
-    else:
-        try:
-            mp = inspect.getsourcefile(target)
-        except:
-            pass
-    if not mp:
-        raise Exception(f"Cant find path to target (type: {type(target)}, value: {target})")
-    if return_string:
-        return mp
-    return Path(mp)
+# def get_module_path(target, return_string=False) -> Union[Path, str]:
+#     mp = None
+#     if hasattr(target, "__path__") and target.__path__:
+#         mp = next(iter(target.__path__))
+#     elif hasattr(target, "__file__") and target.__file__:
+#         mp = target.__file__
+#     elif hasattr(target, "__module__") and target.__module__:
+#         mp = get_module_path(sys.modules[target.__module__])
+#     else:
+#         try:
+#             mp = inspect.getsourcefile(target)
+#         except:
+#             pass
+#     if not mp:
+#         raise Exception(f"Cant find path to target (type: {type(target)}, value: {target})")
+#     if return_string:
+#         return mp
+#     return Path(mp)
 
 def move_to(path, relative=True):
     if relative:

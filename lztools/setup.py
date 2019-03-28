@@ -21,14 +21,14 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            '¤          = ccli.lztools:main',
-            'parse-work = ccli.utils:parse_work',
-            'log-work   = ccli.utils:log_work',
-            'alarm      = ccli.utils:alarm',
+            '¤          = lztools:main',
+            'parse-work = utils:parse_work',
+            'log-work   = utils:log_work',
+            'alarm      = utils:alarm',
 
         ],
     },
-    install_requires=['pip'],
+    install_requires=['pip', 'click'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

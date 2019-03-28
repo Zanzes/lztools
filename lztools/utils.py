@@ -2,8 +2,8 @@ from subprocess import call
 
 import click
 
-import work_logger
-from alarm import start_alarm, _to_timespan
+from utils import work_logger
+from utils.alarm import start_alarm, _to_timespan
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 

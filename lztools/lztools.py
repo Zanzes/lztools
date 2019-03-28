@@ -8,14 +8,13 @@ from subprocess import call
 
 import zlick
 
-from core import Images
+import Images
 import lzconstants
 from third import docker
 from linux import bashrc
 from text_tools import lztext
 from linux.bash import command
 from linux.bashrc import search_history
-from core.beautification import rainbow
 from zlick import CommandMatchingGroup, command_matching_group
 from text_tools.lztext import search_words, get_random_word, regex as rx
 
