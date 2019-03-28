@@ -1,4 +1,4 @@
-from lztools.Enum import Enum
+from Enum import Enum
 
 class Browser(Enum):
     Firefox = "firefox"

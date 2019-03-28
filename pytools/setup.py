@@ -9,10 +9,10 @@ setup(
     version='0.0.1',
     license='MIT License',
     description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
-    requires=['click'],
+    requires=['click', 'pip'],
     install_requires=[],
     py_modules=[
-        'cli',
+        'pytools_cli',
         'class_tools',
         'mod_tools',
         'obj_tools',
@@ -21,7 +21,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'pytools = cli:main',
+            'pytools = pytools_cli:main',
         ],
     },
     packages=find_packages(),

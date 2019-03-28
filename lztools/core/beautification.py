@@ -1,4 +1,4 @@
-from core.lztools import command
+from bash import command
 
 def rainbow(text, frequency=0.1, hide_gap=True):
     if frequency is None:

@@ -234,7 +234,7 @@ def _get_modules(path:Path):
 def generate_setup(name, path:Path, write_to_file=True):
     py_mods = []
     for item in path.glob("*.py"):
-        if item.name == "setup.py":
+        if item.name == "setup.py" or item.name.startswith("__"):
             continue
         py_mods.append(item.name[:-3])
     py_str = "'{}'".format("', '".join(py_mods))

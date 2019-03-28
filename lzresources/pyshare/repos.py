@@ -1,1 +1,0 @@
-Resources = r"git@bitbucket.org:zanzes/lzresources.git"

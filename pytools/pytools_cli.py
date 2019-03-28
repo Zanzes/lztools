@@ -1,9 +1,10 @@
 from pathlib import Path
 
-import click, pip_package
+import click
+import pip_package
+from zlick import command_matching_group
 
 from pip_package import local_install
-from zlick import command_matching_group
 
 @command_matching_group()
 def main():

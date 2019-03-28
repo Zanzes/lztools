@@ -1,14 +1,12 @@
-import zlick
+import click
 from zlick import command_matching_group
-from cli import lzenv
 
 @command_matching_group()
-@zlick.option("-v", "--verbose", is_flag=True, default=False)
+@click.option("-v", "--verbose", is_flag=True, default=False)
 def main(verbose):
     """Template bash command by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
     if verbose:
         print("Calling main functions")
-    lzenv.run()
     if verbose:
         print("Handling TEMPLATE_ARGUMENT")
 

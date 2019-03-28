@@ -18,11 +18,6 @@ setup(
         'lztext',
         'text_styler'
     ],
-    entry_points={
-        'console_scripts': [
-            'pytools = cli:main',
-        ],
-    },
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

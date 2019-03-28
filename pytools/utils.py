@@ -1,7 +1,7 @@
 import inspect
 
 from matching import parentheses
-from text_tools.lztext import find_matching
+from lztext import find_matching
 
 def get_variable_type_hint(variable):
     cf = inspect.currentframe()

@@ -1,7 +1,7 @@
 #!  /usr/bin/env python3.7
 # -*- coding: utf-8 -*-
 from collections import defaultdict, namedtuple
-from text_tools.lztext import create_line, center_on, pad_length
+from lztext import create_line, center_on, pad_length
 
 Row = namedtuple("Row", ["text", "marks"])
 

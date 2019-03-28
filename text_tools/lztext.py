@@ -1,7 +1,11 @@
+import ast
 import inspect
 import random
 import re
+import string
 import time
+import uuid
+from datetime import datetime
 from typing import Union
 
 from ansiwrap import wrap
@@ -12,8 +16,8 @@ from matching import MatchType, brace, bracket, parentheses, gt_lt
 _words = None
 
 def words():
-    from core.lztools import command
     global _words
+    from bash import command
     if _words is None:
         _words = command("cat", "/usr/share/dict/words", return_result=True)
     return _words
@@ -37,8 +41,8 @@ def create_line(char:str= "-", width:int=200, text:str= "") -> str:
     o = pad_length(text, width, text_alignment="<", pad_char=char)
     return o
 
-def center_on(value:str, text:str) -> str:
-    return u"{:^{}}".format(value, len(text))
+# def center_on(value:str, text:str) -> str:
+#     return u"{:^{}}".format(value, len(text))
 
 def pad(text, count, pad_char, text_alignment):
     alignment = _get_alignment(text_alignment)
@@ -128,13 +132,13 @@ def insert_spaces(name:str, underscore:str="") -> str:
     n = re.sub(r"(?<=\w)([A-Z])", r" \1", str(n))
     return u"{}{}".format(s, n)
 
-def trim_end(remove:str, the_text:str) -> str:
-    while the_text.endswith(remove):
-        the_text = the_text[:-len(remove)]
-    return the_text
+# def trim_end(remove:str, the_text:str) -> str:
+#     while the_text.endswith(remove):
+#         the_text = the_text[:-len(remove)]
+#     return the_text
 
-def format_seconds(sec:Union[int, float, str]) -> str:
-    return time.strftime('%H:%M:%S', time.gmtime(sec))
+# def format_seconds(sec:Union[int, float, str]) -> str:
+#     return time.strftime('%H:%M:%S', time.gmtime(sec))
 
 def search_words(term, strict=False):
     for word in words():
@@ -273,3 +277,89 @@ def parse_name_list(name_list):
             value = bool(value)
         rset[key] = value
     return rset
+
+
+def line(width=160, separator="-", text=""):
+    try:
+        o = f"{text:{separator}<{width}}"
+    except UnicodeEncodeError as ex:
+        if ex.message:
+            ex.message += text
+        elif ex.msg:
+            ex.msg += text
+        raise ex
+    return o
+
+def format_seconds(sec):
+    return time.strftime('%H:%M:%S', time.gmtime(sec))
+
+def center_on(value, text):
+    return f"{value:^{len(text)}}"
+
+def trim_end(remove, the_text):
+    while the_text.endswith(remove):
+        the_text = the_text[:-len(remove)]
+    return the_text
+
+def format_api_error(message):
+    res = message
+    if message is not None and message['error_code'] == "invalid_input_data":
+        res = "Invalid input data:"
+        if len(message['field_errors']) > 0:
+            res += "\n"
+            for error_key, error in zip(message['field_errors'].keys(), message['field_errors'].values()):
+                res += f"\t{error_key}\n"
+                res += f"\t\t{error['error_human']}\n"
+                if len(error['args']) > 0:
+                    for k, v in error.iteritems():
+                        res += f"\t\t{k}: {v}\n"
+    elif message['error_code'] == "missing_permissions":
+        res = f"API Error: {message['error_human']}"
+    return res
+
+def format_mission_errors(errors):
+    ret = errors
+    if isinstance(errors, list):
+        ret = ""
+        for error in errors:
+            ret += f"Code: {error[u'code']}\nError: {error[u'description']}\nModule: {error[u'module']}\n\n"
+    return ret
+
+def format_arg_string(string_data):
+    ret = string_data
+    if "%" in string_data:
+        etext = ast.literal_eval(string_data)
+        ret = etext['message'] % etext['args']
+    return ret
+
+def format_test_name(name):
+    s, n = u"", name
+    if name.startswith(u"MIRS_"):
+        s = re.search("MIRS_\d+_", n).group(0)
+        n = u" " + n.replace(s, u"").replace(u"_", u"")
+    s = s.replace(u"_", u"-")[:-1]
+    n = re.sub(r"(?<=\w)([A-Z0-9])", r" \1", str(n))
+    return f"{s}{n}"
+
+def generate_uniqe_date_based_name(date:datetime=None):
+    if not date:
+        date = datetime.now()
+    return f"{date.year}-{date.strftime('%B')}-{date.strftime('%A')}-{date.hour}-{date.minute}-{date.second}-{uuid.uuid4()}"
+
+def generate_uniqe_date_based_name_numeric(date:datetime=None):
+    if not date:
+        date = datetime.now()
+    return f"{date.year}-{date.month}-{date.day}-{date.hour}-{date.minute}-{date.second}-{uuid.uuid4()}"
+
+def generate_text(length=100, safe=False):
+    sel = string.ascii_letters + string.digits  # + "æøåÆØÅ" + "𢞵𠝹𡁻𤓓𡃁𠺝𠱓𠺢𠼮𤶸𢳂𢵌𨋢𠹷𩶘𠸏𠲖𦧺𨳒𢯊𡁜𢴈𠵿𠳏𢵧𦉘𠜎𠾴𧨾𢫕𠱸𨳍𡇙𢱕𠻺𠳕𠿪𠻗𠜱𦧲"
+    # TODO: Remove '<' and '>' when naming is fixed
+    ext = sel + string.punctuation.replace("\\", "").replace("<", "").replace(">", "")
+
+    name = random.choice(sel)
+    while len(name) < length:
+        if safe:
+            name += random.choice(sel)
+        else:
+            name += random.choice(ext)
+    return name

@@ -16,7 +16,8 @@ setup(
         'work_logger',
         'network',
         'zlick',
-        'pathing'
+        'pathing',
+        'lzconstants'
     ],
     entry_points={
         'console_scripts': [

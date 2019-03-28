@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
+from zlick import command_matching_group
 
-import zlick
+import zlick, click
 
 from third.docker import get_running
-from zlick import proper_group, proper_command
 
-@proper_group()
+@command_matching_group()
 def main():
     """A collection of python tools and bash commands for git by Laz aka nea"""
     pass
 
-@proper_command()
-@zlick.option("-a" "--all", is_flag=True, default=True)
-@zlick.option("-l" "--list", is_flag=True, default=True)
+@zlick.command()
+@click.option("-a" "--all", is_flag=True, default=True)
+@click.option("-l" "--list", is_flag=True, default=True)
 def kill():
     """test"""
     get_running()
     pass
 
-@proper_command()
-@zlick.option("-a" "--all", is_flag=True, default=True)
+@zlick.command()
+@click.option("-a" "--all", is_flag=True, default=True)
 def run():
     """test"""
     pass

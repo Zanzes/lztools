@@ -2,8 +2,6 @@ from collections import namedtuple
 from datetime import datetime
 from subprocess import call
 
-import sh
-
 GitFileData = namedtuple("GitFileData", ["permissions", "type", "hash", "path"])
 
 repos = dict()

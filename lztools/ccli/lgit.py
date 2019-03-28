@@ -1,6 +1,7 @@
+from bash import command
+
 import zlick
 
-from core.lztools import command
 from text_tools.lztext import regex
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])

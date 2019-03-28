@@ -7,9 +7,9 @@ from multiprocessing import Queue
 from subprocess import call
 
 import zlick
-from zlick import Path
 
-from core import constants, Images
+from core import Images
+import lzconstants
 from third import docker
 from linux import bashrc
 from text_tools import lztext
@@ -234,7 +234,7 @@ def rc():
 #     print(value)
 
 @rc.command(context_settings=CONTEXT_SETTINGS)
-@zlick.argument("NAME", default=constants.SENTINEL_MARKER)
+@zlick.argument("NAME", default=lzconstants.SENTINEL_MARKER)
 @zlick.option("-a", "--all", default=False, is_flag=True)
 @zlick.option("-l", "--list-sections", default=False, is_flag=True)
 @zlick.option("-i", "--include-padding", default=False, is_flag=True)
@@ -242,12 +242,12 @@ def show(name, all, list_sections, include_padding):
     if all:
         rcdata = bashrc.read_bash_rc()
         print(rcdata)
-    elif list_sections or name == constants.SENTINEL_MARKER:
-        if list_sections or name == constants.SENTINEL_MARKER:
+    elif list_sections or name == lzconstants.SENTINEL_MARKER:
+        if list_sections or name == lzconstants.SENTINEL_MARKER:
             print("Sections:")
             for i, line in enumerate(bashrc.get_section_names(), 1):
                 print(f"{lztext.pad_length()}{i}. {line}")
-    elif name != constants.SENTINEL_MARKER:
+    elif name != lzconstants.SENTINEL_MARKER:
         print(bashrc.get_section(name, include_padding))
 
 # @rc.command(context_settings=CONTEXT_SETTINGS)
@@ -269,24 +269,24 @@ def show(name, all, list_sections, include_padding):
 #             f.write(text)
 
 @rc.command(context_settings=CONTEXT_SETTINGS, name="get-section")
-@zlick.argument("NAME", default=constants.SENTINEL_MARKER)
+@zlick.argument("NAME", default=lzconstants.SENTINEL_MARKER)
 @zlick.option("-l", "--list", default=False, is_flag=True)
 @zlick.option("-f", "--full-section", default=False, is_flag=True)
 def get_section(name, list, full_section):
     rcdata = subprocess.getoutput("cat $HOME/.bashrc")
-    if list or name == constants.SENTINEL_MARKER:
+    if list or name == lzconstants.SENTINEL_MARKER:
         for line in rcdata.splitlines():
-            if line.endswith(" " + constants.RC_SECTION_START_RIGHT):
-                line = line.replace(" " + constants.RC_SECTION_START_RIGHT, "")
-                line = line.replace(constants.RC_SECTION_START_LEFT + " ", "")
+            if line.endswith(" " + lzconstants.RC_SECTION_START_RIGHT):
+                line = line.replace(" " + lzconstants.RC_SECTION_START_RIGHT, "")
+                line = line.replace(lzconstants.RC_SECTION_START_LEFT + " ", "")
                 print(line)
-    elif name != constants.SENTINEL_MARKER:
-        taken = rcdata.split(f"{constants.RC_SECTION_START_LEFT} {name} {constants.RC_SECTION_START_RIGHT}", 1)[1]
-        taken = taken.split(f"{constants.RC_SECTION_END_LEFT} {name} {constants.RC_SECTION_END_RIGHT}", 1)[0]
+    elif name != lzconstants.SENTINEL_MARKER:
+        taken = rcdata.split(f"{lzconstants.RC_SECTION_START_LEFT} {name} {lzconstants.RC_SECTION_START_RIGHT}", 1)[1]
+        taken = taken.split(f"{lzconstants.RC_SECTION_END_LEFT} {name} {lzconstants.RC_SECTION_END_RIGHT}", 1)[0]
         if full_section:
-            taken = f"""# {constants.RC_SECTION_START_LEFT} {name} {constants.RC_SECTION_START_RIGHT}
+            taken = f"""# {lzconstants.RC_SECTION_START_LEFT} {name} {lzconstants.RC_SECTION_START_RIGHT}
 {taken}
-{constants.RC_SECTION_END_LEFT} {name} {constants.RC_SECTION_END_RIGHT}"""
+{lzconstants.RC_SECTION_END_LEFT} {name} {lzconstants.RC_SECTION_END_RIGHT}"""
         print(taken.strip())
 
 @rc.command(context_settings=CONTEXT_SETTINGS, name="set-section")

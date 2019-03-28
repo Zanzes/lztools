@@ -21,7 +21,7 @@ def last_generate_int(count:int=1):
     return [generated_ints[-i] for i in range(1, count + 1)]
 
 def generate_text(length, safe=False):
-    from MiR.text import generate_text
+    from lztext import generate_text
     return generate_text(length, safe)
 
 class User(object):

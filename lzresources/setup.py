@@ -10,6 +10,7 @@ setup(
     license='MIT License',
     description='A collection of resources by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     install_requires=[],
+    py_modules=['resources'],
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,

@@ -1,9 +1,8 @@
 import json
 from pathlib import Path
 
-import MiRResources
+
 import pickle
-from MiR.pathing import get_module_path
 
 resources_path = get_module_path(MiRResources)
 
