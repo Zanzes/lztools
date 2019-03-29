@@ -10,14 +10,10 @@ setup(
     license='MIT License',
     description='A collection of useful utilities by Laz aka Zanzes',
     packages=find_packages(),
-    py_modules=[
-        'file_rotator',
-        'alarm',
-        'work_logger',
-        'network',
-        'zlick',
-        'pathing',
-        'lzconstants'
+    py_modules=[],
+    install_requires=[
+        'pip',
+        'click'
     ],
     entry_points={
         'console_scripts': [
@@ -28,7 +24,6 @@ setup(
 
         ],
     },
-    install_requires=['pip', 'click'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

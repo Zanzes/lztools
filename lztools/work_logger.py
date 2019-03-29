@@ -2,7 +2,7 @@ import datetime
 from pathlib import Path
 
 import lzresources
-from pytools.mod_tools import get_module_path
+from lztools.pytools import get_module_path
 
 resources_path = Path(get_module_path(lzresources))
 

@@ -9,7 +9,7 @@ from subprocess import call
 import zlick
 
 import Images
-import lzconstants
+from lztools import lzconstants
 from third import docker
 from linux import bashrc
 from text_tools import lztext

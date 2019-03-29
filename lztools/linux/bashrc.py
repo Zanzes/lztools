@@ -4,7 +4,7 @@ from pathlib import Path
 import lztext
 
 from bash import command
-import lzconstants
+from lztools import lzconstants
 
 def read_bash_rc() -> str:
     return subprocess.getoutput("cat $HOME/.bashrc")

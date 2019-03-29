@@ -4,7 +4,7 @@ from pathlib import Path
 from subprocess import call
 
 from git import clone_repo, repos
-from lzconstants import data_loader_bash_script
+from lztools.lzconstants import data_loader_bash_script
 
 from mod_tools import get_module_path
 

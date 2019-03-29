@@ -2,7 +2,7 @@ from datetime import datetime
 from subprocess import call
 
 import sh
-from third.git import GitFileData
+from lztools.third.git import GitFileData
 
 from core import ResourceManager
 from core.ResourceManager import resources_path as vault_path
