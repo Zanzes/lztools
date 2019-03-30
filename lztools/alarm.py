@@ -2,10 +2,9 @@ import datetime
 import os
 import shutil
 from time import sleep
-
-from dating import hours_minutes_seconds
-from sound import beep_on_off
-from linux.bash import command
+from lztools.dating import hours_minutes_seconds
+from lztools.linux.bash import command
+from lztools.sound import beep_on_off
 
 _clear = lambda: os.system('_clear')
 

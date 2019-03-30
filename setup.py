@@ -8,21 +8,23 @@ setup(
     author_email='ubuntuea@gmail.com',
     version='1.2.18',
     license='MIT License',
+    url="",
     description='A collection of useful utilities by Laz aka Zanzes',
-    packages=find_packages(),
-    py_modules=[],
+    packages=['lztools', 'lztools.linux', 'lztools.lztext'],
+    zip_safe=False,
+    include_package_data=True,
     install_requires=[
         'pip',
         'click'
     ],
     entry_points={
-        'console_scripts': [
-            '¤          = lztools:main',
-            'parse-work = utils:parse_work',
-            'log-work   = utils:log_work',
-            'alarm      = utils:alarm',
-
-        ],
+        # 'console_scripts': [
+        #     '¤          = lztools:main',
+        #     'parse-work = utils:parse_work',
+        #     'log-work   = utils:log_work',
+        #     'alarm      = utils:alarm',
+        #
+        # ],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

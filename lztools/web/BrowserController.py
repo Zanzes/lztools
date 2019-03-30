@@ -148,7 +148,7 @@ class BrowserController(object):
 
     def wait_for_text(self, locator, text, wait=None):
         """
-        Synchronization on some text being displayed in a particular element.
+        Synchronization on some lztext being displayed in a particular element.
 
         :raises: ElementVisiblityTimeout
         """

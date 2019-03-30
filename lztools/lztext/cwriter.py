@@ -1,10 +1,12 @@
 #!  /usr/bin/env python3.7
 # -*- coding: utf-8 -*-
-from collections import defaultdict, namedtuple
-from lztext import create_line, center_on, pad_length
+from collections import namedtuple
 
-Row = namedtuple("Row", ["text", "marks"])
+from . import export
 
+Row = namedtuple("Row", ["lztext", "marks"])
+
+@export
 class ColumnWriter(object):
     columns = None
     rows = None

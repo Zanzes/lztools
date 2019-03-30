@@ -6,7 +6,7 @@ from prompt_toolkit.widgets import TextArea, SystemToolbar
 def accept(buffer):
     out = input_field.text
     testx.text += f"\n{out}"
-    # output_field.buffer.text += f"\n{out}"
+    # output_field.buffer.lztext += f"\n{out}"
 
 # buffer1 = Buffer()
 input_field = TextArea(height=1, prompt=f'> ', style='class:input-field', multiline=False, wrap_lines=False, accept_handler=accept)

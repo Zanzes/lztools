@@ -1,10 +1,9 @@
 import subprocess
 from pathlib import Path
 
-import lztext
-
-from bash import command
 from lztools import lzconstants
+from lztools.lztext import lztext
+from lztools.linux.bash import command
 
 def read_bash_rc() -> str:
     return subprocess.getoutput("cat $HOME/.bashrc")
@@ -65,9 +64,9 @@ def search_history(term, regex=False):
 #     other_path = get_bashrc_other_path()
 #     return command("cat", other_path, True)
 #
-# def _rcadd(text, symbol):
+# def _rcadd(lztext, symbol):
 #     start, end = get_bashrc().split(symbol, 1)
-#     start = start + text
+#     start = start + lztext
 #     end = symbol + end
 #     return f"{start}\n{end}"
 #
@@ -76,17 +75,17 @@ def search_history(term, regex=False):
 #     _, replacement = replacement.split(symbol, 1)
 #     return start[:-1] + symbol + replacement
 #
-# def add_bashrc_alias(text):
-#     print(_rcadd(text, bashrc_symbols["aliasEnd"]), end="")
+# def add_bashrc_alias(lztext):
+#     print(_rcadd(lztext, bashrc_symbols["aliasEnd"]), end="")
 #
-# def add_bashrc_variabel(text):
-#     print(_rcadd(text, bashrc_symbols["variablesEnd"]), end="")
+# def add_bashrc_variabel(lztext):
+#     print(_rcadd(lztext, bashrc_symbols["variablesEnd"]), end="")
 #
-# def add_bashrc_export(text):
-#     print(_rcadd(text, bashrc_symbols["exportEnd"]), end="")
+# def add_bashrc_export(lztext):
+#     print(_rcadd(lztext, bashrc_symbols["exportEnd"]), end="")
 #
-# def add_bashrc_other(text):
-#     print(_rcadd(text, bashrc_symbols["otherEnd"]), end="")
+# def add_bashrc_other(lztext):
+#     print(_rcadd(lztext, bashrc_symbols["otherEnd"]), end="")
 #
 # def copy_bashrc_other(to_me:bool=True, out_path:str=None):
 #     if to_me:

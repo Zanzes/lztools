@@ -261,11 +261,11 @@ def show(name, all, list_sections, include_padding):
 #     lines.append("# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂")
 #     lines.append("")
 #     lines.append(value)
-#     text = "\n".join(lines)
-#     print(text)
+#     lztext = "\n".join(lines)
+#     print(lztext)
 #     if click.confirm(f"Overwrite old bashrc? ({home}/.bashrc)"):
 #         with open(home + "/.bashrc", "w") as f:
-#             f.write(text)
+#             f.write(lztext)
 
 @rc.command(context_settings=CONTEXT_SETTINGS, name="get-section")
 @zlick.argument("NAME", default=lzconstants.SENTINEL_MARKER)

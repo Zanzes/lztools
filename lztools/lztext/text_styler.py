@@ -1,3 +1,5 @@
+
+"""
 import time
 
 from requests_html import HTMLSession
@@ -44,7 +46,7 @@ _url = "http://www.webestools.com/stylish-text-generator-nickname-message-msn-fa
 
 sesh = HTMLSession()
 
-resp = sesh.post(_url, params={"textEffect": False, "textEffectStyle": 5, "decorationStyle": 34, "text": "kaskelot", "decoration":False})
+resp = sesh.post(_url, params={"textEffect": False, "textEffectStyle": 5, "decorationStyle": 34, "lztext": "kaskelot", "decoration":False})
 resp.hrml.render()
 
 print("kaskelot" in resp)
@@ -56,3 +58,4 @@ for part in resp.text.split("preview"):
     print(part[:200])
     time.sleep(1)
 # return resp
+"""
