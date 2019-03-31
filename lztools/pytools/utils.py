@@ -1,5 +1,7 @@
 import inspect
-from typing import Type
+import sys
+from importlib import import_module
+from inspect import currentframe, getsource, getmodule
 
 def get_variable_type_hint(variable):
     from lztools import lztext
@@ -27,10 +29,11 @@ def get_variable_type_hint(variable):
     r = annotations.get(name, None)
     return r if r else f.f_globals["__annotations__"].get(name, None)
 
-def import_class_file(name, *args, builtin_imp=__import__, **kwargs):
-    itm = builtin_imp(name, *args, **kwargs)
-    if hasattr(itm, name):
-        cls = getattr(itm, name)
-        if isinstance(cls, Type):
-            return cls
-    return itm
+def import_class():
+    frame = currentframe().f_back
+    line = getsource(frame).splitlines()[frame.f_lineno - 1]
+    name = line.split("=")[0].split(":")[0].strip()
+    module = import_module("."+name, getmodule(frame).__package__)
+    cls = getattr(module, name)
+    sys.modules[name] = cls
+    return cls

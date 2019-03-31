@@ -1,3 +1,5 @@
+from . import create_line, wall_text
+
 default_horizontal_symbol = "-"
 default_vertical_symbol = "|"
 default_fill_symbol = " "

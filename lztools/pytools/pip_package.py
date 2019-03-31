@@ -4,8 +4,6 @@ from pathlib import Path
 from subprocess import CalledProcessError, check_output, call
 
 import pip
-from pathing import TempPath
-from lztext import regex
 
 _setup_text = """#!/usr/bin/env python3.7
 import codecs

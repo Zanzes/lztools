@@ -5,10 +5,10 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from urllib3.exceptions import MaxRetryError
 
-from enums import Browser
+from lztools.enums import BrowserType
 
 _instance = None
-browser_type = Browser.Chrome
+browser_type = BrowserType.Chrome
 
 def init_chrome():
     chrome_options = webdriver.ChromeOptions()
@@ -25,9 +25,9 @@ def init_firefox():
     return webdriver.Firefox(firefox_options=firefox_options)
 
 def create_instance():
-    if browser_type == Browser.Chrome:
+    if browser_type == BrowserType.Chrome:
         res = init_chrome()
-    elif browser_type == Browser.Firefox:
+    elif browser_type == BrowserType.Firefox:
         res = init_firefox()
     else:
         raise Exception(f"Selected browser not recognized ({browser_type})")

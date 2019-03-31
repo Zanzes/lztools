@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import random
-from string import digits
+import string
+from string import digits, punctuation
 from typing import List
 
 generated_users:List[User] = []
@@ -20,9 +21,13 @@ def last_generate_int(count:int=1):
         return generated_ints[-1]
     return [generated_ints[-i] for i in range(1, count + 1)]
 
-def generate_text(length, safe=False):
-    from lztext import generate_text
-    return generate_text(length, safe)
+def generate_text(length=100, safe=False):
+    unsafe = "æøåÆØÅ𢞵𠝹𡁻𤓓𡃁𠺝𠱓𠺢𠼮𤶸𢳂𢵌𨋢𠹷𩶘𠸏𠲖𦧺𨳒𢯊𡁜𢴈𠵿𠳏𢵧𦉘𠜎𠾴𧨾𢫕𠱸𨳍𡇙𢱕𠻺𠳕𠿪𠻗𠜱𦧲"
+    sel = f"{string.ascii_letters}{string.digits}"
+    if not safe:
+        sel = f"{sel}{unsafe}{punctuation}"
+
+    return random.choice(sel, k=length)
 
 class User(object):
     name: str

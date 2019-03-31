@@ -1,12 +1,10 @@
 from pathlib import Path
 
 import click
-import pip_package
-from zlick import command_matching_group
+from lztools import zlick
+from lztools import pytools
 
-from pip_package import local_install
-
-@command_matching_group()
+@zlick.command_matching_group()
 def main():
     """Python utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙"""
 
@@ -62,10 +60,10 @@ def install(paths, upload, a, add):
     should_upload = upload is not None
 
     if not paths:
-        local_install(".", should_upload, add, upload)
+        pytools.local_install(".", should_upload, add, upload)
     else:
         for x in paths:
-            local_install(str(Path(x).absolute()), should_upload, add, upload)
+            pytools.local_install(str(Path(x).absolute()), should_upload, add, upload)
 
 @main.command()
 @click.argument('path', type=click.Path(), default=".")
@@ -76,6 +74,6 @@ def generate_setup(path, print_result, name):
     mname = name if name else Path(path).absolute().name
     path = Path(path)
     if print_result:
-        print(pip_package.generate_setup(mname, path, write_to_file=False))
+        print(pytools.generate_setup(mname, path, write_to_file=False))
     else:
-        pip_package.generate_setup(mname, path)
+        pytools.generate_setup(mname, path)

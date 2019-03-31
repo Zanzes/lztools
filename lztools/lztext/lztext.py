@@ -8,6 +8,8 @@ import uuid
 from datetime import datetime
 from typing import Union
 
+from lztools import ansi
+from lztools import lztext
 
 from .match_pairs import MatchPair
 from ansiwrap import wrap
@@ -17,7 +19,7 @@ _words = None
 
 def words():
     global _words
-    from bash import command
+    from lztools.linux import command
     if _words is None:
         _words = command("cat", "/usr/share/dict/words", return_result=True)
     return _words
@@ -47,29 +49,29 @@ def create_line(char:str= "-", width:int=200, text:str= "") -> str:
 def pad(text, count, pad_char, text_alignment):
     alignment = _get_alignment(text_alignment)
     if alignment == "^":
-        while lz_ansi.true_length(text) < count:
+        while ansi.true_length(text) < count:
             text += pad_char
-            if lz_ansi.true_length(text) < count:
+            if ansi.true_length(text) < count:
                 text = pad_char + text
     elif alignment == "<":
-        while lz_ansi.true_length(text) < count:
+        while ansi.true_length(text) < count:
             text += pad_char
     elif alignment == ">":
-        while lz_ansi.true_length(text) < count:
+        while ansi.true_length(text) < count:
             text = pad_char + text
 
 def pad_length(text:str, width:int, text_alignment:str, pad_char=" ") -> str:
     alignment = _get_alignment(text_alignment)
     if alignment == "^":
-        while lz_ansi.true_length(text) < width:
+        while ansi.true_length(text) < width:
             text += pad_char
-            if lz_ansi.true_length(text) < width:
+            if ansi.true_length(text) < width:
                 text = pad_char + text
     elif alignment == "<":
-        while lz_ansi.true_length(text) < width:
+        while ansi.true_length(text) < width:
             text += pad_char
     elif alignment == ">":
-        while lz_ansi.true_length(text) < width:
+        while ansi.true_length(text) < width:
             text = pad_char + text
     return text
 
@@ -166,14 +168,14 @@ def _is_escaped(text, index) -> bool:
 
 
 def find_matching(match_type:Union[MatchPair, str], text:str, offset:int=0, raise_error:bool=True, fail_value=-1) -> int:
-    if match_type is brace or match_type == "{":
-        open, close = brace
-    elif match_type is bracket or match_type == "[":
-        open, close = bracket
-    elif match_type is parentheses or match_type == "(":
-        open, close = parentheses
-    elif match_type is gt_lt or match_type == "<":
-        open, close = gt_lt
+    if match_type is lztext.brace_matcher or match_type == "{":
+        open, close = lztext.brace_matcher
+    elif match_type is lztext.bracket_matcher or match_type == "[":
+        open, close = lztext.brace_matcher
+    elif match_type is lztext.parentheses_matcher or match_type == "(":
+        open, close = lztext.parentheses_matcher
+    elif match_type is lztext.greater_and_less_than_matcher or match_type == "<":
+        open, close = lztext.greater_and_less_than_matcher
     else:
         raise ValueError(f"Argument 'match_type' value '{match_type}' not understood.\n'match_type' must be either {{, [, (, < or one of the values from MatchPair.")
 
@@ -204,7 +206,7 @@ def as_literal(*args, **kwargs) -> str:
     code_line = open(filename).readlines()[f.f_lineno - 1]
     t = f"{as_literal.__name__}("
     i = code_line.find(t) + len(t)
-    e = find_matching(parentheses, code_line, offset=i)
+    e = find_matching(lztext.parentheses_matcher, code_line, offset=i)
     return code_line[i:e]
 
 

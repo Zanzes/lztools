@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.7
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='lztools',
@@ -10,21 +10,24 @@ setup(
     license='MIT License',
     url="",
     description='A collection of useful utilities by Laz aka Zanzes',
-    packages=['lztools', 'lztools.linux', 'lztools.lztext'],
+    packages=[
+        'lztools',
+        'lztools.enums',
+        'lztools.linux',
+        'lztools.lztext',
+        'lztools.pytools',
+        'lztools.web'
+    ],
     zip_safe=False,
     include_package_data=True,
     install_requires=[
         'pip',
-        'click'
+        'click', 'selenium', 'urllib3'
     ],
     entry_points={
-        # 'console_scripts': [
-        #     '¤          = lztools:main',
-        #     'parse-work = utils:parse_work',
-        #     'log-work   = utils:log_work',
-        #     'alarm      = utils:alarm',
-        #
-        # ],
+        'console_scripts': [
+             'pytools = cli.pytools_cli:main',
+        ],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

@@ -8,11 +8,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from .Driver import Driver
-from .Exceptions import ElementVisibilityTimeout
-from .HTMLElement import HTMLElement, Locator
-from .HTMLElementList import HTMLElementList
-from .LocatorCollection import LocatorCollection
+from . import Driver
+from . import ElementVisibilityTimeout
+from . import HTMLElement
+from . import HTMLElementList
+from . import Locator
+from . import LocatorCollection
 
 locators = LocatorCollection()
 locators["body"] = Locator("body", By.TAG_NAME)

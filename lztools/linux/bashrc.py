@@ -1,7 +1,7 @@
 import subprocess
 from pathlib import Path
 
-from lztools import lzconstants
+from lztools import constants
 from lztools.lztext import lztext
 from lztools.linux.bash import command
 
@@ -10,19 +10,19 @@ def read_bash_rc() -> str:
 
 def get_section_names():
     for line in read_bash_rc().strip().splitlines():
-        if line.endswith(" " + lzconstants.RC_SECTION_START_RIGHT):
-            line = line.replace(" " + lzconstants.RC_SECTION_START_RIGHT, "")
-            line = line.replace(lzconstants.RC_SECTION_START_LEFT + " ", "")
+        if line.endswith(" " + constants.RC_SECTION_START_RIGHT):
+            line = line.replace(" " + constants.RC_SECTION_START_RIGHT, "")
+            line = line.replace(constants.RC_SECTION_START_LEFT + " ", "")
             yield line
 
 def get_section(name, include_padding):
     rcdata = read_bash_rc()
-    taken = rcdata.split(f"{lzconstants.RC_SECTION_START_LEFT} {name} {lzconstants.RC_SECTION_START_RIGHT}", 1)[1]
-    taken = taken.split(f"{lzconstants.RC_SECTION_END_LEFT} {name} {lzconstants.RC_SECTION_END_RIGHT}", 1)[0]
+    taken = rcdata.split(f"{constants.RC_SECTION_START_LEFT} {name} {constants.RC_SECTION_START_RIGHT}", 1)[1]
+    taken = taken.split(f"{constants.RC_SECTION_END_LEFT} {name} {constants.RC_SECTION_END_RIGHT}", 1)[0]
     if include_padding:
-        taken = f"""# {lzconstants.RC_SECTION_START_LEFT} {name} {lzconstants.RC_SECTION_START_RIGHT}
+        taken = f"""# {constants.RC_SECTION_START_LEFT} {name} {constants.RC_SECTION_START_RIGHT}
 {taken}
-{lzconstants.RC_SECTION_END_LEFT} {name} {lzconstants.RC_SECTION_END_RIGHT}"""
+{constants.RC_SECTION_END_LEFT} {name} {constants.RC_SECTION_END_RIGHT}"""
     return taken
 
 def get_history():

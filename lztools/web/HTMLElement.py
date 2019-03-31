@@ -8,10 +8,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 
-from HTMLElementList import HTMLElementList
-from Position import Position
-
-Locator = namedtuple("Locator", ["find_target", "by"])
+from . import HTMLElementList
+from . import Locator
 
 class HTMLElement(object):
     element = None
@@ -26,14 +24,6 @@ class HTMLElement(object):
     @text.setter
     def text(self, value):
         self.element.text = value
-
-    @property
-    def position(self):
-        return Position(self.element.location["x"], self.element.location["y"])
-    @position.setter
-    def position(self, value):
-        self.element.location["x"] = value.x
-        self.element.location["y"] = value.y
 
     @property
     def id(self):

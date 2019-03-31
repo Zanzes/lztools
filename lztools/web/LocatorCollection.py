@@ -1,4 +1,4 @@
-from HTMLElement import Locator
+from . import Locator
 
 class LocatorCollection(dict):
     def __setitem__(self, key, value):
