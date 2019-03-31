@@ -2,11 +2,8 @@
 # -*- coding: utf-8 -*-
 from collections import namedtuple
 
-from . import export
-
 Row = namedtuple("Row", ["lztext", "marks"])
 
-@export
 class ColumnWriter(object):
     columns = None
     rows = None

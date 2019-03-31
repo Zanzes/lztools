@@ -1,9 +1,7 @@
-from . import export
 default_horizontal_symbol = "-"
 default_vertical_symbol = "|"
 default_fill_symbol = " "
 
-@export
 class BlockWriter(object):
     roof_str = None
     wall_str = None

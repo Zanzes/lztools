@@ -1,10 +1,6 @@
-__all__ = []
+from lztools import import_class
 
-def export(defn):
-    globals()[defn.__name__] = defn
-    __all__.append(defn.__name__)
-    return defn
+BlockWriter = import_class()
+ColumnWriter = import_class()
 
-from . import bwriter
-from . import cwriter
-from . import lztext
+__all__ = [ColumnWriter, BlockWriter]
