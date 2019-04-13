@@ -11,22 +11,27 @@ setup(
     url="",
     description='A collection of useful utilities by Laz aka Zanzes',
     packages=[
+        'cli',
         'lztools',
         'lztools.enums',
         'lztools.linux',
         'lztools.lztext',
         'lztools.pytools',
+        'lztools.types',
         'lztools.web'
     ],
     zip_safe=False,
     include_package_data=True,
     install_requires=[
         'pip',
-        'click', 'selenium', 'urllib3'
+        'click',
+        'selenium',
+        'urllib3'
     ],
     entry_points={
         'console_scripts': [
              'pytools = cli.pytools_cli:main',
+             'ps      = cli.pytools_cli:main',
         ],
     },
     classifiers=[
