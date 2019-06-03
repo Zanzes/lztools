@@ -8,27 +8,7 @@ from lztools.sound import beep_on_off
 
 _clear = lambda: os.system('_clear')
 
-def _to_timespan(time_str:str):
-    tt, tf = time_str[:-1], time_str[-1]
-    format = tt.isdigit() and tf.isalpha()
-    if time_str.isdigit() or tf == "m" and format:
-        return datetime.timedelta(minutes=int(time_str))
-    elif ":" in time_str:
-        h, m = time_str.split(":")
-        h, m = int(h), int(m)
-        n = datetime.datetime.now()
-        t = n.replace(hour=h, minute=m)
-        if t < n:
-            t = t.replace(day=t.day+1)
-        return t - datetime.datetime.now()
-    elif tf == "s" and format:
-        return datetime.timedelta(seconds=int(tt))
-    elif tf == "h" and format:
-        return datetime.timedelta(hours=int(tt))
-    elif tf == "d" and format:
-        return datetime.timedelta(days=int(tt))
-    else:
-        raise Exception("Unable to parse time argument")
+
 
 def start_alarm(time:datetime.timedelta, in_window=False):
     end = datetime.datetime.now() + time
