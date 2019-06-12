@@ -7,8 +7,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 
-from web import HTMLElementList
-from web.web import Locator
+from lztools.web import HTMLElementList
+from lztools.web import Locator
 
 class HTMLElement(object):
     element = None

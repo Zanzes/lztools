@@ -1,4 +1,4 @@
-from web.web import Locator
+from lztools.web import Locator
 
 class LocatorCollection(dict):
     def __setitem__(self, key, value):

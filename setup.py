@@ -13,18 +13,10 @@ setup(
     packages=[
         'cli',
         'lztools',
-        'lztools.alarm',
         'lztools.enums',
-        'lztools.file_rotator',
-        'lztools.generator',
-        'lztools.lzassert',
-        'lztools.networking',
-        'lztools.pytools'
-        'lztools.sound',
-        'lztools.types',
-        'lztools.utils',
-        'lztools.work_logger',
-        'lzresources',
+        'lztools.lzenv',
+        'lztools.pytools',
+        'lztools.types'
     ],
     zip_safe=False,
     include_package_data=True,
