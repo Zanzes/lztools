@@ -3,7 +3,7 @@ from datetime import timedelta, datetime
 def hours_minutes_seconds(time:timedelta):
     return time.seconds // 3600, (time.seconds // 60) % 60, time.seconds % 60
 
-def o_timespan(time_str:str):
+def to_timespan(time_str:str):
     tt, tf = time_str[:-1], time_str[-1]
     format = tt.isdigit() and tf.isalpha()
     if time_str.isdigit() or tf == "m" and format:

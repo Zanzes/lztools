@@ -2,13 +2,11 @@ import datetime
 import os
 import shutil
 from time import sleep
-from lztools.dating import hours_minutes_seconds
-from lztools.linux.bash import command
+from lztools.timing_and_dating import hours_minutes_seconds
+from lztools.bash import command
 from lztools.sound import beep_on_off
 
 _clear = lambda: os.system('_clear')
-
-
 
 def start_alarm(time:datetime.timedelta, in_window=False):
     end = datetime.datetime.now() + time

@@ -12,7 +12,7 @@ except LookupError:
 
 
 setup(
-    name='linux',
+    name='lztools.linux',
     author='Laz aka Zanzes',
     author_email='ubuntuea@gmail.com',
     version='0.0.1',
@@ -22,10 +22,9 @@ setup(
     install_requires=[],
     entry_points={
         'console_scripts': [
-            'llinux = cli.llinux:main',
         ],
     },
-    packages=['cli', 'lzresources'],
+    packages=['cli', 'lztools'],
     zip_safe=False,
     include_package_data=True,
     package_data={},

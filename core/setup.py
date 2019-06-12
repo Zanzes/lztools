@@ -3,14 +3,6 @@ import codecs
 
 from setuptools import setup
 
-try:
-    codecs.lookup('mbcs')
-except LookupError:
-    ascii = codecs.lookup('ascii')
-    func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
-    codecs.register(func)
-
-
 setup(
     name='lztools.core',
     author='Laz aka Zanzes',
@@ -19,11 +11,11 @@ setup(
     license='MIT License',
     description='A collection of useful utilities by Laz, ᒪᗩᘔ, ㄥ卂乙, ןɐz, lคz, ℓДՀ, լᕱᏃ, Նคઽ, ﾚﾑ乙',
     url='',
-    py_modules=[
-        'lztools.dating',
-        'lztools.pathing',
-        'lztools.zlick'
-    ],
+    # py_modules=[
+    #     'lztools.dating',
+    #     'lztools.pathing',
+    #     'lztools.zlick'
+    # ],
     install_requires=[],
     entry_points={
         'console_scripts': [

@@ -1,15 +1,6 @@
 #!/usr/bin/env python3.7
-import codecs
 
 from setuptools import setup
-
-try:
-    codecs.lookup('mbcs')
-except LookupError:
-    ascii = codecs.lookup('ascii')
-    func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
-    codecs.register(func)
-
 
 setup(
     name='lztools.utils',
@@ -31,7 +22,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'scan-network = cli.net:main'
+            'scan-network = cli.utils:scan_network'
         ],
     },
     packages=['cli', 'lztools.'],
@@ -53,5 +44,8 @@ setup(
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 3.7',
     ],
+    install_requires=[
+        'click'
+    ]
 )
 
