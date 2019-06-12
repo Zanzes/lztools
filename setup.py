@@ -13,25 +13,29 @@ setup(
     packages=[
         'cli',
         'lztools',
+        'lztools.alarm',
         'lztools.enums',
-        'lztools.linux',
-        'lztools.lztext',
-        'lztools.pytools',
+        'lztools.file_rotator',
+        'lztools.generator',
+        'lztools.lzassert',
+        'lztools.networking',
+        'lztools.pytools'
+        'lztools.sound',
         'lztools.types',
-        'lztools.web'
+        'lztools.utils',
+        'lztools.work_logger',
+        'lzresources',
     ],
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'pip',
-        'click',
-        'selenium',
-        'urllib3'
+        'click'
     ],
     entry_points={
         'console_scripts': [
-             'pytools = cli.pytools_cli:main',
-             'ps      = cli.pytools_cli:main',
+            'scan-network = cli.utils:scan_network',
+            'llzenv = cli.llzenv:main',
+            'pytools = cli.pytools:main',
         ],
     },
     classifiers=[
