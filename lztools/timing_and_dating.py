@@ -7,7 +7,7 @@ def to_timespan(time_str:str):
     tt, tf = time_str[:-1], time_str[-1]
     format = tt.isdigit() and tf.isalpha()
     if time_str.isdigit() or tf == "m" and format:
-        return timedelta(minutes=int(time_str))
+        return timedelta(minutes=int(tt))
     elif ":" in time_str:
         h, m = time_str.split(":")
         h, m = int(h), int(m)

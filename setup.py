@@ -26,7 +26,6 @@ setup(
     entry_points={
         'console_scripts': [
             'scan-network = cli.utils:scan_network',
-            'llzenv = cli.llzenv:main',
             'pytools = cli.pytools:main',
         ],
     },

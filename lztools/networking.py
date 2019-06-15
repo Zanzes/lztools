@@ -1,6 +1,7 @@
 import platform
 import queue
 import re
+
 import subprocess
 import threading
 
@@ -52,7 +53,7 @@ def scan_network(base_ip):
 
     # Put all the addresses into the 'pending' queue.
     rmatch = re.search("\d{1,3}\.\d{1,3}\.\d{1,3}", base_ip).group()
-    for i in range(2, 257):
+    for i in range(1, 257):
         ip = f"{rmatch}.{i}"
         pending.put(ip)
 
@@ -77,3 +78,15 @@ def scan_network(base_ip):
     # Wait for all the workers to terminate.
     for w in workers:
         w.join()
+
+def get_local_ip(alternate_method:bool):
+    import socket
+    if alternate_method:
+        return socket.gethostbyname(socket.gethostname()), socket.getfqdn()
+    else:
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
