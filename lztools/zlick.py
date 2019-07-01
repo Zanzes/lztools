@@ -1,6 +1,36 @@
+from __future__ import annotations
+
+from pathlib import Path
+
 import click
+from lztools import io
 
 DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], max_content_width=click.get_terminal_size()[0])
+
+class ExtraSettings(object):
+    _global:ExtraSettings = None
+
+    verbose:bool = False
+    working_dir:Path = io.get_current_path()
+
+    @classmethod
+    def create(cls):
+        return ExtraSettings()
+
+    @classmethod
+    def set_global(cls, settings:ExtraSettings):
+        cls._global = settings
+
+    @classmethod
+    def set_specific_global(cls, **kwargs):
+        if not cls._global:
+            cls._global = ExtraSettings()
+        for k in kwargs:
+            cls.__dict__[k] = kwargs[k]
+
+    @classmethod
+    def get_global(cls):
+        return cls._global
 
 class CommandMatchingGroup(click.Group):
 

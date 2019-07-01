@@ -4,7 +4,7 @@ from pathlib import Path
 from subprocess import CalledProcessError, check_output, call
 
 import pip
-from lztools.pathing import TempPath
+from lztools.io import TempPath
 
 _setup_text = """#!/usr/bin/env python3.7
 import codecs

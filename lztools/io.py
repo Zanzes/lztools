@@ -1,11 +1,18 @@
 import os
+import shutil
 
 from contextlib import contextmanager
+from distutils.errors import DistutilsFileError
 from pathlib import Path
 from typing import Callable, Any
 
-def get_current_path():
-    return str(Path(".").absolute())
+import errno
+
+def get_current_path() -> Path:
+    return Path(".").absolute()
+
+def get_current_path_str() -> str:
+    return str(get_current_path())
 
 def is_escaped(text, index) -> bool:
     def __is_escaped(t, i, v) -> bool:
@@ -43,6 +50,7 @@ def name(path) -> str:
 #     if return_string:
 #         return mp
 #     return Path(mp)
+from distutils.dir_util import copy_tree
 
 def move_to(path, relative=True):
     if relative:
@@ -99,3 +107,47 @@ def on_dirs(on_dirs:Callable[[Path], Any], path:Path, subdirs:bool=True):
 #
 #     def __exit__(self, exc_type, exc_val, exc_tb):
 #         os.chdir(self.original_path)
+
+def copy_directory(src, dst, symlinks=False, ignore=None):
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            shutil.copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)
+
+def copy_anything(src, dst):
+    try:
+        #copy_directory(src, dst)
+        copy_tree(str(src), str(dst))
+    except DistutilsFileError as exc:
+        shutil.copy(src, dst)
+
+def scatter_files(base_path:Path, recursive:bool=True, scatter_name:str="_scatter_"):
+    if not base_path:
+        base_path = get_current_path()
+
+    for item in base_path.iterdir():
+        if item.name == scatter_name:
+            _scatter_file_routine(item)
+        if recursive and item.is_dir():
+            scatter_files(item, recursive)
+
+def _scatter_file_routine(scatter_file:Path):
+    text = scatter_file.read_text()
+    for line in text.strip().splitlines():
+        if "->" not in line:
+            continue
+        if line.startswith("#"):
+            continue
+        split = line.split("->")
+        if not len(split) == 2:
+            continue
+        path_a:Path = scatter_file.parent.joinpath(split[0].strip())
+        path_b = Path(split[1].strip()).expanduser()
+
+        from lztools import lzglobal
+        if lzglobal.settings.verbose:
+            print(f"Copying: {path_a.absolute()} -> {path_b.absolute()}")
+        copy_anything(path_a, path_b)

@@ -27,6 +27,7 @@ setup(
         'console_scripts': [
             'scan-network = cli.utils:scan_network',
             'pytools = cli.pytools:main',
+            'scatter = cli.scatter:scatter',
         ],
     },
     classifiers=[

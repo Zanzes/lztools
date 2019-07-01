@@ -1,0 +1,9 @@
+config/.ssh -> ~/.ssh
+config/.bashrc -> ~/.bashrc
+config/.lzconfigrc -> ~/.lzconfigrc
+config/.tmux.conf -> ~/.tmux.conf
+config/.vimrc -> ~/.vimrc
+config/dec-dir -> /usr/bin/dec-dir
+config/enc-dir -> /usr/bin/enc-dir
+config/init.el -> ~/.emacs.d/init.el
+config/lzconf.org -> ~/.emacs.d/lzconf.org

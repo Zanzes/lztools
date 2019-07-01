@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+USAGE="Usage: encrypt-dir TARGET
+
+    TARGET    The path to the directory to be encrypted";
+
+if [[ $1 == "-h" ]] || [[ $1 == "--help" ]] ;then
+    echo $USAGE
+    exit
+fi
+
+if [[ $# != 1 ]] || [ ! -d $1 ] ;then
+    echo "Error: The argument should be a path to a directory you wish to incrypt";
+    echo $USAGE;
+    exit;
+fi
+
+bn="$(basename $1)"
+
+if [[ -f $ENC_NAME ]] ;then
+    rm -f $ENC_NAME
+fi
+
+TAR_NAME="$bn.tar.gz"
+
+if [[ -f "$TAR_NAME" ]] ;then
+    rm -f "$TAR_NAME"
+fi
+
+# cp -r $1 $ITM_NAME
+
+# rm $1
+
+tar czf $TAR_NAME $1
+
+#rm -r $ITM_NAME
+
+enc-file $TAR_NAME
+
+rm -fr $1
+
+
