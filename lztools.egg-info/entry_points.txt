@@ -1,0 +1,5 @@
+[console_scripts]
+pytools = cli.pytools:main
+scan-network = cli.utils:scan_network
+scatter = cli.scatter:scatter
+

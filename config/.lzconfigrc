@@ -41,12 +41,12 @@ branch='$(lgit branch -b 2>/dev/null)'
 
 # Devices
 base_ip=192.168.87
-main_ip=$base_ip.2
-media_laptop_ip=$base_ip.7
-laptop_ip=$base_ip.8
-tablet_ip=$base_ip.9
-phone_ip=$base_ip.10
-org_ip=$base_ip.99
+main_ip=$base_ip.100
+laptop_ip=$base_ip.101
+media_laptop_ip=$base_ip.102
+tablet_ip=$base_ip.103
+phone_ip=$base_ip.104
+org_ip=$base_ip.199
 
 # ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Vars END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
 
@@ -71,8 +71,8 @@ export PROJECT_HOME=$HOME/dev
 # source /home/zanzes/.local/bin/virtualenvwrapper.sh
 #VIRTUALENVWRAPPER_PYTHON=/home/zanzes/.virtualenvs/lztools/bin/python3.7
 #source /home/zanzes/.local/bin/virtualenvwrapper.sh
-source /usr/local/bin/virtualenvwrapper.sh
-
+#source /usr/local/bin/virtualenvwrapper.sh
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 # Arduino
 export ARDUINO_DIR=/usr/share/arduino
