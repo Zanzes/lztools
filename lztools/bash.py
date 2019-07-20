@@ -1,5 +1,5 @@
 import os
-from subprocess import run
+from subprocess import run, getoutput
 
 def command(cmd, *args, return_result=False):
     if return_result:
@@ -7,12 +7,12 @@ def command(cmd, *args, return_result=False):
     else:
         _command(cmd, *args)
 
-def _command_result(name, *args):
+def _command_result(cmd, *args):
     try:
-        result = run([name, *args], capture_output=True, universal_newlines=True)
-        return result.stdout
+        return getoutput(cmd)
     except:
-        raise
+        result = run([cmd, *args], capture_output=True, universal_newlines=True)
+        return result.stdout
 
 def _command(cmd, *args, return_result=False):
     fargs = " ".join(args)

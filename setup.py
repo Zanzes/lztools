@@ -16,12 +16,14 @@ setup(
         'lztools.enums',
         'lztools.lzenv',
         'lztools.pytools',
-        'lztools.types'
+        'lztools.types',
+        'lztools.text'
     ],
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'click'
+        'click',
+        'ansiwrap'
     ],
     entry_points={
         'console_scripts': [

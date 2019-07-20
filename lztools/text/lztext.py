@@ -8,7 +8,8 @@ import uuid
 from datetime import datetime
 from typing import Union
 
-from lztools import lztext, ansi
+from lztools import ansi
+from lztools.text.match_pairs import brace_matcher, parentheses_matcher, bracket_matcher, greater_and_less_than_matcher
 
 from .match_pairs import MatchPair
 from ansiwrap import wrap
@@ -18,7 +19,7 @@ _words = None
 
 def words():
     global _words
-    from lztools.linux import command
+    from lztools.bash import command
     if _words is None:
         _words = command("cat", "/usr/share/dict/words", return_result=True)
     return _words
@@ -167,14 +168,14 @@ def _is_escaped(text, index) -> bool:
 
 
 def find_matching(match_type:Union[MatchPair, str], text:str, offset:int=0, raise_error:bool=True, fail_value=-1) -> int:
-    if match_type is lztext.brace_matcher or match_type == "{":
-        open, close = lztext.brace_matcher
-    elif match_type is lztext.bracket_matcher or match_type == "[":
-        open, close = lztext.brace_matcher
-    elif match_type is lztext.parentheses_matcher or match_type == "(":
-        open, close = lztext.parentheses_matcher
-    elif match_type is lztext.greater_and_less_than_matcher or match_type == "<":
-        open, close = lztext.greater_and_less_than_matcher
+    if match_type is brace_matcher or match_type == "{":
+        open, close = brace_matcher
+    elif match_type is bracket_matcher or match_type == "[":
+        open, close = bracket_matcher
+    elif match_type is parentheses_matcher or match_type == "(":
+        open, close = parentheses_matcher
+    elif match_type is greater_and_less_than_matcher or match_type == "<":
+        open, close = greater_and_less_than_matcher
     else:
         raise ValueError(f"Argument 'match_type' value '{match_type}' not understood.\n'match_type' must be either {{, [, (, < or one of the values from MatchPair.")
 
@@ -205,7 +206,7 @@ def as_literal(*args, **kwargs) -> str:
     code_line = open(filename).readlines()[f.f_lineno - 1]
     t = f"{as_literal.__name__}("
     i = code_line.find(t) + len(t)
-    e = find_matching(lztext.parentheses_matcher, code_line, offset=i)
+    e = find_matching(parentheses_matcher, code_line, offset=i)
     return code_line[i:e]
 
 

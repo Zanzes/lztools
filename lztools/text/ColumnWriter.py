@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 from collections import namedtuple
 
-from text import pad_length
-from text import create_line, center_on
+from lztools.text import pad_length
+from lztools.text import create_line, center_on
 
 Row = namedtuple("Row", ["lztext", "marks"])
 

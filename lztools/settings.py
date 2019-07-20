@@ -17,6 +17,7 @@ class SettingsGroup(object):
 class GlobalSettings(SettingsGroup):
     verbose = False
     working_dir:Path = None
+    quiet = False
 
     def __init__(self):
         from lztools import io
