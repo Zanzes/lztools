@@ -28,6 +28,7 @@ setup(
             'scan-network = cli.utils:scan_network',
             'pytools = cli.pytools:main',
             'scatter = cli.scatter:scatter',
+            'sr = cli.sr:sr',
         ],
     },
     classifiers=[

@@ -79,7 +79,7 @@ def scan_network(base_ip):
     for w in workers:
         w.join()
 
-def get_local_ip(alternate_method:bool):
+def get_local_ip(alternate_method:bool=False):
     import socket
     if alternate_method:
         return socket.gethostbyname(socket.gethostname()), socket.getfqdn()
