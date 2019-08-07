@@ -1,6 +1,8 @@
 from subprocess import call
 
 import click
+
+from lztools.networking import get_local_ip
 from lztools.timing_and_dating import to_timespan
 
 from lztools import networking
@@ -11,7 +13,7 @@ from lztools.alarm import start_alarm
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 @zlick.command()
-@click.argument("BASE_IP")
+@click.argument("BASE_IP", default=get_local_ip())
 def scan_network(base_ip):
     for ip in networking.scan_network(base_ip):
         print(ip)

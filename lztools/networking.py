@@ -5,6 +5,8 @@ import re
 import subprocess
 import threading
 
+import psutil
+
 def scan_network(base_ip):
     def worker_func(pingArgs, pending, done):
         try:
@@ -90,3 +92,9 @@ def get_local_ip(alternate_method:bool=False):
         ip = s.getsockname()[0]
         s.close()
         return ip
+
+def find_network_card():
+    cards = psutil.net_if_stats()
+    out = []
+    for card in [item for item in cards if cards[item].speed > 0 and cards[item].isup]:
+        return card
