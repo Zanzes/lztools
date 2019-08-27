@@ -127,7 +127,7 @@ def add_versions(left, right):
     e1, e2, e3 = int(l1) + int(r1), int(l2) + int(r2), int(l3) + int(r3),
     return f"{e1}.{e2}.{e3}"
 
-def clean():
+def cleanup_build_files():
     call(["rm", "-rf", "*egg-info"])
     call(["rm", "-rf", "build", "dist", "*.egg-info"])
     for x in Path(".").glob("*.egg*"):
@@ -136,7 +136,7 @@ def clean():
 
 def local_install(path, upload=False, add_to_version=None, password=None, dev_mode:bool=False):
     with TempPath(path):
-        clean()
+        cleanup_build_files()
         if add_to_version is not None:
             ov = get_version()
             nv = add_versions(ov, add_to_version)
@@ -145,11 +145,11 @@ def local_install(path, upload=False, add_to_version=None, password=None, dev_mo
         if dev_mode:
             cmnd = "develop"
         call(["python3.7", "setup.py", cmnd])
-        clean()
+        cleanup_build_files()
         if upload:
             call(["python3.7", "setup.py", "install", "sdist", "bdist_wheel"])
             _upload(password)
-        clean()
+        cleanup_build_files()
 
 def get_name_from_path():
     _, end = check_output(["cat", "setup.py"]).decode("utf8").split("name='", 1)

@@ -124,17 +124,17 @@ def copy_anything(src, dst):
     except DistutilsFileError as exc:
         shutil.copy(src, dst)
 
-def scatter_files(base_path:Path, recursive:bool=True, scatter_name:str="_scatter_"):
+def scatter_files(base_path:Path, recursive:bool=True, scatter_name:str="_scatter_", sudo:bool=False):
     if not base_path:
         base_path = get_current_path()
 
     for item in base_path.iterdir():
         if item.name == scatter_name:
-            _scatter_file_routine(item)
+            _scatter_file_routine(item, sudo)
         if recursive and item.is_dir():
             scatter_files(item, recursive)
 
-def _scatter_file_routine(scatter_file:Path):
+def _scatter_file_routine(scatter_file:Path, sudo:bool=False):
     text = scatter_file.read_text()
     for line in text.strip().splitlines():
         if "->" not in line:
@@ -150,4 +150,7 @@ def _scatter_file_routine(scatter_file:Path):
         from lztools import lzglobal
         if lzglobal.settings.verbose:
             print(f"Copying: {path_a.absolute()} -> {path_b.absolute()}")
-        copy_anything(path_a, path_b)
+        if not sudo:
+            copy_anything(path_a, path_b)
+        else:
+            os.system(f"sudo cp {path_a.absolute()} {path_b.absolute()}")

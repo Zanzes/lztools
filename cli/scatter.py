@@ -15,8 +15,9 @@ def scatter(verbose:bool):
 @click.argument("SEARCH_PATH", default=".")
 @click.option("-r/-c", "--recursive/--current-dir", default=False)
 @click.option("-n", "--name", default="_scatter_")
-def now(search_path, recursive:bool, name:str):
-    io.scatter_files(Path(search_path), recursive, scatter_name=name)
+@click.option("-s", "--sudo", is_flag=True, default=False)
+def now(search_path, recursive:bool, name:str, sudo:bool):
+    io.scatter_files(Path(search_path), recursive, scatter_name=name, sudo=sudo)
 
 @scatter.command(name="print")
 @click.argument("SEARCH_PATH", default=".")

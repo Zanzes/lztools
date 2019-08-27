@@ -72,3 +72,13 @@ def start_server(name, ip, sudo:bool):
     else:
         server = servers.find(True, custom_name=name)
     os.system(f"sudo etherwake -i {networking.find_network_card()} {server.mac}")
+
+@sr.command()
+@click.argument("NAME")
+@click.option("-i", "--ip", is_flag=True, default=False, help="Use ip instead of name")
+def connect(name, ip):
+    if ip:
+        server = servers.find(True, ip=name)
+    else:
+        server = servers.find(True, custom_name=name)
+    os.system(f"ssh {server.ip}")
