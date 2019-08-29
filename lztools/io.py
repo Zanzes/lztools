@@ -1,5 +1,6 @@
 import os
 import shutil
+import tempfile
 
 from contextlib import contextmanager
 from distutils.errors import DistutilsFileError
@@ -7,6 +8,9 @@ from pathlib import Path
 from typing import Callable, Any
 
 import errno
+
+import atexit
+
 
 def get_current_path() -> Path:
     return Path(".").absolute()
@@ -93,6 +97,12 @@ def on_dirs(on_dirs:Callable[[Path], Any], path:Path, subdirs:bool=True):
         if result is not None:
             yield result
 
+def get_temporary_file() -> Path:
+    """Creates a temporary file withc is automatically deleted when the program exits"""
+    tmp_file = Path(tempfile.mkstemp()[1])
+    tmp_file.touch()
+    atexit.register(lambda: tmp_file.unlink())
+    return tmp_file
 # class TempPath(object):
 #     original_path = None
 #     new_path = None

@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import click
-from lztools import io
+from lztools import io, servers, lzglobal
 
 DEFAULT_CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], max_content_width=click.get_terminal_size()[0])
 

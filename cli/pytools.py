@@ -1,3 +1,5 @@
+import click
+
 from lztools import zlick
 from lztools import pytools
 
@@ -6,11 +8,12 @@ def main():
     """Tools to make python development more convenient"""
 
 @main.command()
-def cleanup_temporary():
+def clean_build_files():
     """Removes temporary files leftover after build"""
     pytools.cleanup_build_files()
 
 @main.command()
-def install_module():
-    """Installs a python module  """
-    pytools.cleanup_build_files()
+@click.argument("PATH", type=click.Path(exists=True, file_okay=False))
+def install_module(path):
+    """Installs a python module"""
+    pytools.local_install(path)
