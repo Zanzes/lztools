@@ -27,6 +27,9 @@ setup(
         'ansiwrap',
         'psutil'
     ],
+    # dependency_links=[
+    #     "git@bitbucket.org:zanzes/lzresources.git"
+    # ],
     entry_points={
         'console_scripts': [
             'scan-network = cli.utils:scan_network',
