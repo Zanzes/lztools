@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.7
 
 from setuptools import setup
+import post_setup
 
 setup(
     name='lztools',
@@ -23,7 +24,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'click',
-        'ansiwrap'
+        'ansiwrap',
+        'psutil'
     ],
     entry_points={
         'console_scripts': [
@@ -32,6 +34,7 @@ setup(
             'scatter = cli.scatter:scatter',
             'sr = cli.server:sr',
             'server = cli.server:sr',
+            'bash-tools = cli.bash_tools:main'
         ],
     },
     classifiers=[
@@ -43,3 +46,4 @@ setup(
     ],
 )
 
+post_setup.run()
