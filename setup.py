@@ -37,7 +37,8 @@ setup(
             'scatter = cli.scatter:scatter',
             'sr = cli.server:sr',
             'server = cli.server:sr',
-            'bash-tools = cli.bash_tools:main'
+            'bash-tools = cli.bash_tools:main',
+            'currency = cli.currency:main'
         ],
     },
     classifiers=[
