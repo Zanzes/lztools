@@ -25,7 +25,7 @@ setup(
     install_requires=[
         'click',
         'ansiwrap',
-        'psutil'
+        'psutil', 'requests'
     ],
     # dependency_links=[
     #     "git@bitbucket.org:zanzes/lzresources.git"
@@ -38,6 +38,7 @@ setup(
             'sr = cli.server:sr',
             'server = cli.server:sr',
             'bash-tools = cli.bash_tools:main',
+            'clipboard = cli.clipboard:main',
             'currency = cli.currency:main'
         ],
     },

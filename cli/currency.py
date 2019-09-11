@@ -12,14 +12,12 @@ def main():
 @click.argument("FROM_A")
 @click.argument("TO_B")
 def convert(value, from_a, to_b):
-    currency.update_rates()
-    print(currency.convert(value, from_a, to_b))
+    currency.get_rates()
+    pp(currency.convert(value, from_a, to_b))
 
 @main.command()
 def t():
     currency.get_rates()
-
-    pp("done")
 
 @main.command()
 @click.argument("CURRENCIES", nargs=-1)
@@ -29,5 +27,5 @@ def print(currencies):
         for c in currencies:
             big.append(c.upper())
         currencies = big
-    currency.update_rates()
+    currency.get_rates()
     currency.print_rates(currencies)

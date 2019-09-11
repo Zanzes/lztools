@@ -2,9 +2,11 @@ import os
 
 import click
 
-from lztools import lzglobal, networking, io
+from lztools import lzglobal, networking, io, bash
 from lztools import servers
 from lztools import zlick
+from lztools.enums import ClipboardBuffer
+
 
 class OptArgGroup(zlick.CommandMatchingGroup):
     def parse_args(self, ctx, args):
@@ -77,9 +79,21 @@ def connect():
     os.system(f"ssh -XC {server.ip}")
 
 @sr.command()
-@click.argument("VALUE")
-def play(value):
+@click.argument("VALUE", required=False)
+@click.option("-c", "--clipboard", is_flag=True)
+@click.option("-a", "--clipboard-alternate", is_flag=True)
+def play(value, clipboard, clipboard_alternate):
+    """Play item in vlc"""
+    if not value and not clipboard and not clipboard_alternate:
+        value = input()
+    elif clipboard:
+        value = bash.get_clipboard_content(ClipboardBuffer.clipboard)
+    elif clipboard_alternate:
+        value = bash.get_clipboard_content(ClipboardBuffer.primary)
+    os.system(f"notify-send 'Playing' '{value}'")
+
     server = lzglobal.settings.server
+
     os.system(f"ssh -XC {server.ip} 'export DISPLAY=:0;vlc --one-instance \"{value}\" &' 1> /dev/null 2> /dev/null")
 
 @sr.group(cls=zlick.CommandMatchingGroup)
@@ -88,9 +102,17 @@ def send():
 
 @send.command()
 @click.argument("VALUE", required=False)
-def text(value):
-    if not value:
+@click.option("-c", "--clipboard", is_flag=True)
+@click.option("-a", "--clipboard-alternate", is_flag=True)
+def text(value, clipboard, clipboard_alternate):
+    if not value and not clipboard and not clipboard_alternate:
         value = input()
+    elif clipboard:
+        value = bash.get_clipboard_content(ClipboardBuffer.clipboard)
+    elif clipboard_alternate:
+        value = bash.get_clipboard_content(ClipboardBuffer.primary)
+
+    os.system(f"notify-send 'Sending' '{value}'")
 
     server = lzglobal.settings.server
 

@@ -1,16 +1,19 @@
+import atexit
 import os
+import pickle
 import shutil
 import tempfile
-
 from contextlib import contextmanager
+from datetime import timedelta, datetime
 from distutils.errors import DistutilsFileError
 from pathlib import Path
+from types import FunctionType
 from typing import Callable, Any
+from lztools import lzglobal
+from lztools.enums import FileExtension
 
-import errno
-
-import atexit
-
+_expire_dir = lzglobal.storage_location().joinpath("expires")
+_expire_dir.mkdir(exist_ok=True, parents=True)
 
 def get_current_path() -> Path:
     return Path(".").absolute()
@@ -36,24 +39,6 @@ def remove_extension(path) -> str:
 def name(path) -> str:
     return remove_extension(name_and_ext(path))
 
-# def get_module_path(target, return_string=False) -> Union[Path, str]:
-#     mp = None
-#     if hasattr(target, "__path__") and target.__path__:
-#         mp = next(iter(target.__path__))
-#     elif hasattr(target, "__file__") and target.__file__:
-#         mp = target.__file__
-#     elif hasattr(target, "__module__") and target.__module__:
-#         mp = get_module_path(sys.modules[target.__module__])
-#     else:
-#         try:
-#             mp = inspect.getsourcefile(target)
-#         except:
-#             pass
-#     if not mp:
-#         raise Exception(f"Cant find path to target (type: {type(target)}, value: {target})")
-#     if return_string:
-#         return mp
-#     return Path(mp)
 from distutils.dir_util import copy_tree
 
 def move_to(path, relative=True):
@@ -97,26 +82,22 @@ def on_dirs(on_dirs:Callable[[Path], Any], path:Path, subdirs:bool=True):
         if result is not None:
             yield result
 
+def is_empty(path:Path):
+    if path.is_file():
+        return path.stat().st_size == 0
+    elif path.is_dir():
+        for _ in path.iterdir():
+            return False
+        return True
+    else:
+        raise Exception(f"""Unhandled case! path:{type(path)} -> {path}""")
+
 def get_temporary_file() -> Path:
     """Creates a temporary file withc is automatically deleted when the program exits"""
     tmp_file = Path(tempfile.mkstemp()[1])
     tmp_file.touch()
     atexit.register(lambda: tmp_file.unlink())
     return tmp_file
-# class TempPath(object):
-#     original_path = None
-#     new_path = None
-#
-#     def __init__(self, path):
-#         self.original_path = os.getcwd()
-#         self.new_path = os.path.realpath(path)
-#
-#     def __enter__(self):
-#         os.chdir(self.new_path)
-#         return self.new_path
-#
-#     def __exit__(self, exc_type, exc_val, exc_tb):
-#         os.chdir(self.original_path)
 
 def copy_directory(src, dst, symlinks=False, ignore=None):
     for item in os.listdir(src):
@@ -164,3 +145,38 @@ def _scatter_file_routine(scatter_file:Path, sudo:bool=False):
             copy_anything(path_a, path_b)
         else:
             os.system(f"sudo cp {path_a.absolute()} {path_b.absolute()}")
+
+def _gen_exp_fn(name):
+    return f"{name}¤{datetime.now()}.{FileExtension.expiring_file}"
+
+def get_expiring_file(name:str, expires_after:timedelta) -> Path:
+    for file in _expire_dir.glob(f"{name}¤*.{FileExtension.expiring_file}"):
+        f_name, f_date = file.name.split("¤")
+        f_date = datetime.fromisoformat(f_date.split(f".{FileExtension.expiring_file}")[0])
+        delta = datetime.now() - f_date
+        if delta > expires_after:
+            file.unlink()
+            file = file.with_name(_gen_exp_fn(name))
+        file.touch(exist_ok=True)
+        return file
+    file = _expire_dir.joinpath(_gen_exp_fn(name))
+    file.touch()
+    return file
+
+def get_self_renewing_file(name:str, renew_after:timedelta, renew:FunctionType, pickle_data=True) -> Path:
+    file = get_expiring_file(name, expires_after=renew_after)
+    if is_empty(file):
+        data = renew()
+        if pickle_data:
+            with file.open("wb") as f:
+                pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
+        else:
+            file.write_text(data)
+        return data
+    with file.open("rb") as f:
+        return pickle.load(f)
+
+
+
+
+

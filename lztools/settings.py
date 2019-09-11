@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+def get_current_path() -> Path:
+    return Path(".").absolute()
 
 class SettingsGroup(object):
 
@@ -20,6 +22,5 @@ class GlobalSettings(SettingsGroup):
     quiet = False
 
     def __init__(self):
-        from lztools import io
-        self.working_dir = io.get_current_path()
+        self.working_dir = get_current_path()
 
