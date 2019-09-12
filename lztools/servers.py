@@ -8,6 +8,7 @@ from lztools import networking
 from lztools.text import regex
 from lztools.types import Server
 
+_servers = None
 
 def discover(target:str=None):
     if not lzglobal.settings.quiet:
@@ -40,23 +41,21 @@ def discover(target:str=None):
     return servers
 
 def save(server_list:List[Server], skip_naming:bool=False):
-    servers = load()
-    ips = [s.ip for s in servers]
-    with open(Path.home().joinpath(".lztools/servers"), "a") as f:
+    with Path.home().joinpath(".lztools/servers").open("w") as f:
         for server in server_list:
-            if server.ip not in ips:
-                name_string = f"{server.ip}¤{server.system_name}¤{server.mac}¤{server.mac_name}"
-                if not lzglobal.settings.quiet:
-                    print(f"Adding server {server.ip} ({server.system_name}):")
-                    if not skip_naming:
-                        name_string = name_string + "¤" + input("Custom name: ") + os.linesep
-                f.write(name_string)
+            name_string = f"{server.ip}¤{server.system_name}¤{server.mac}¤{server.mac_name}"
+            if not lzglobal.settings.quiet:
+                print(f"Adding server {server.ip} ({server.system_name}):")
+                if not skip_naming:
+                    name_string = name_string + "¤" + input("Custom name: ") + os.linesep
+            f.write(name_string)
 
 def load() -> List[Server]:
     path = Path.home().joinpath(".lztools/servers")
     if not path.exists():
         path.touch(exist_ok=True)
-    with open(path, "r") as f:
+    with path.open("r") as f:
+        servers = []
         for line in f.readlines():
             server = Server()
             vals = line.strip().split("¤")
@@ -65,12 +64,11 @@ def load() -> List[Server]:
             else:
                 vals.append(None)
                 server.ip, server.system_name, server.mac, server.mac_name, server.custom_name = vals
-            yield server
-
-live_servers = load()
+            servers.append(server)
+    return servers
 
 def find(like:bool=True, **kwargs) -> Server:
-    for server in live_servers:
+    for server in get_servers():
         for arg in kwargs:
             if like:
                 if not kwargs[arg] in server.__dict__[arg]:
@@ -80,7 +78,7 @@ def find(like:bool=True, **kwargs) -> Server:
                     continue
             return server
 
-def print_details(server):
+def print_details(server:Server):
     print("Server:")
     print(f"  IP:    {server.ip}")
     print(f"  Name:  {server.custom_name}")
@@ -89,5 +87,9 @@ def print_details(server):
     print(f"  MName: {server.mac_name}")
     print()
 
-
+def get_servers() -> List[Server]:
+    global _servers
+    if not _servers:
+        _servers = load()
+    return _servers
 

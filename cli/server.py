@@ -7,7 +7,6 @@ from lztools import servers
 from lztools import zlick
 from lztools.enums import ClipboardBuffer
 
-
 class OptArgGroup(zlick.CommandMatchingGroup):
     def parse_args(self, ctx, args):
         if args:
@@ -20,6 +19,13 @@ class OptArgGroup(zlick.CommandMatchingGroup):
             else:
                 args.insert(0, '')
         super(OptArgGroup, self).parse_args(ctx, args)
+
+_remove_help_text = """Usage: sr SERVER remove [OPTIONS]
+
+Options:
+  --help  Show this message and exit.
+  
+Missing the SERVER argument."""
 
 # noinspection PyUnusedLocal
 @click.group(cls=OptArgGroup)
@@ -38,6 +44,16 @@ def sr(server, ip, verbose:bool, quiet:bool):
     lzglobal.settings.set(verbose=verbose, quiet=quiet)
 
 @sr.command()
+def remove():
+    if not hasattr(lzglobal.settings, "server"):
+        click.echo(_remove_help_text)
+        quit()
+    server = lzglobal.settings.server
+    server_list = servers.get_servers()
+    server_list.remove(server)
+    servers.save(server_list, skip_naming=True)
+
+@sr.command()
 @click.option('-t', '--target')
 def discover_servers(target:str):
     if target:
@@ -46,8 +62,8 @@ def discover_servers(target:str):
         server_list = servers.discover()
     servers.save(server_list)
 
-@sr.command()
-def print_servers():
+@sr.command(name="print")
+def my_print():
     if os.sep == "/":
         os.system("clear")
     elif os.sep == "\\\\":
@@ -60,13 +76,18 @@ def print_servers():
         servers.print_details(lzglobal.settings.server)
 
 @sr.command()
-@click.option("-s", "--sudo", is_flag=True, default=False, help="Send 'sudo poweroff'")
-def poweroff(sudo:bool):
+@click.option("-s", "--sudo", is_flag=True, default=False, help="Execute as sudo")
+@click.option("-r", "--reboot", is_flag=True, default=False, help="Reboot instead of shutting down")
+def poweroff(sudo:bool, reboot:bool):
     server = lzglobal.settings.server
+    cmd = "systemctl"
     if sudo:
-        os.system(f"ssh {server.ip} sudo poweroff")
+        cmd = f"sudo {cmd}"
+    if reboot:
+        cmd = f"{cmd} reboot"
     else:
-        os.system(f"ssh {server.ip} poweroff")
+        cmd = f"{cmd} poweroff"
+    os.system(f"ssh {server.ip} '{cmd}'")
 
 @sr.command()
 def start_server():
