@@ -40,7 +40,14 @@ def discover(target:str=None):
 
     return servers
 
-def save(server_list:List[Server], skip_naming:bool=False):
+def save(server_list: List[Server], skip_naming: bool = False, override=False):
+    if not override:
+        macs = [s.mac for s in server_list]
+        existing = get_servers()
+        for server in existing:
+            if server.mac not in macs:
+                server_list.append(server)
+
     with Path.home().joinpath(".lztools/servers").open("w") as f:
         for server in server_list:
             name_string = f"{server.ip}¤{server.system_name}¤{server.mac}¤{server.mac_name}"
@@ -48,7 +55,12 @@ def save(server_list:List[Server], skip_naming:bool=False):
                 print(f"Adding server {server.ip} ({server.system_name}):")
                 if not skip_naming:
                     name_string = name_string + "¤" + input("Custom name: ") + os.linesep
+
             f.write(name_string)
+
+def same(a:Server, b:Server):
+    return a.ip == b.ip and a.custom_name == b.custom_name and a.mac == b.mac and a.mac_name == b.mac_name and a.system_name == b.system_name
+
 
 def load() -> List[Server]:
     path = Path.home().joinpath(".lztools/servers")

@@ -51,7 +51,7 @@ def remove():
     server = lzglobal.settings.server
     server_list = servers.get_servers()
     server_list.remove(server)
-    servers.save(server_list, skip_naming=True)
+    servers.save(server_list, skip_naming=True, override=True)
 
 @sr.command()
 @click.option('-t', '--target')
@@ -60,7 +60,7 @@ def discover_servers(target:str):
         server_list = servers.discover(target)
     else:
         server_list = servers.discover()
-    servers.save(server_list)
+    servers.save(server_list, override=False)
 
 @sr.command(name="print")
 def my_print():
