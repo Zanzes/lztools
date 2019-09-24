@@ -90,14 +90,18 @@ def find(like:bool=True, **kwargs) -> Server:
                     continue
             return server
 
-def print_details(server:Server):
-    print("Server:")
-    print(f"  IP:    {server.ip}")
-    print(f"  Name:  {server.custom_name}")
-    print(f"  MAC:   {server.mac}")
-    print(f"  SName: {server.system_name}")
-    print(f"  MName: {server.mac_name}")
-    print()
+def print_details(server:Server, properties:List[str]=None ):
+    if not properties:
+        print("Server:")
+        print(f"  IP:    {server.ip}")
+        print(f"  Name:  {server.custom_name}")
+        print(f"  MAC:   {server.mac}")
+        print(f"  SName: {server.system_name}")
+        print(f"  MName: {server.mac_name}")
+        print()
+    else:
+        for prop in properties:
+            print(f"{prop}: {server.__dict__[prop]}")
 
 def get_servers() -> List[Server]:
     global _servers

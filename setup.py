@@ -39,7 +39,8 @@ setup(
             'server = cli.server:sr',
             'bash-tools = cli.bash_tools:main',
             'clipboard = cli.clipboard:main',
-            'currency = cli.currency:main'
+            'currency = cli.currency:main',
+            'playlist = cli.playlist:main'
         ],
     },
     classifiers=[

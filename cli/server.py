@@ -63,7 +63,8 @@ def discover_servers(target:str):
     servers.save(server_list, override=False)
 
 @sr.command(name="print")
-def my_print():
+@click.argument("PROPERTIES", required=False, nargs=-1)
+def my_print(properties):
     if os.sep == "/":
         os.system("clear")
     elif os.sep == "\\\\":
@@ -73,7 +74,10 @@ def my_print():
         for server in servers.load():
             servers.print_details(server)
     else:
-        servers.print_details(lzglobal.settings.server)
+        if properties:
+            servers.print_details(lzglobal.settings.server, properties=properties)
+        else:
+            servers.print_details(lzglobal.settings.server)
 
 @sr.command()
 @click.option("-s", "--sudo", is_flag=True, default=False, help="Execute as sudo")
@@ -126,6 +130,27 @@ def send():
 @click.option("-c", "--clipboard", is_flag=True)
 @click.option("-a", "--clipboard-alternate", is_flag=True)
 def text(value, clipboard, clipboard_alternate):
+    if not value and not clipboard and not clipboard_alternate:
+        value = input()
+    elif clipboard:
+        value = bash.get_clipboard_content(ClipboardBuffer.clipboard)
+    elif clipboard_alternate:
+        value = bash.get_clipboard_content(ClipboardBuffer.primary)
+
+    os.system(f"notify-send 'Sending' '{value}'")
+
+    server = lzglobal.settings.server
+
+    tmp_file = io.get_temporary_file()
+    tmp_file.write_text(value + os.linesep)
+
+    os.system(f"cat {tmp_file.absolute()} | ssh {server.ip} 'cat >> shared-text'")
+
+@send.command()
+@click.argument("VALUE", required=False)
+@click.option("-c", "--clipboard", is_flag=True)
+@click.option("-a", "--clipboard-alternate", is_flag=True)
+def file(value, clipboard, clipboard_alternate):
     if not value and not clipboard and not clipboard_alternate:
         value = input()
     elif clipboard:
