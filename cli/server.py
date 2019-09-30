@@ -82,15 +82,24 @@ def my_print(properties):
 @sr.command()
 @click.option("-s", "--sudo", is_flag=True, default=False, help="Execute as sudo")
 @click.option("-r", "--reboot", is_flag=True, default=False, help="Reboot instead of shutting down")
-def poweroff(sudo:bool, reboot:bool):
+@click.option("-w", "--windows", is_flag=True, default=False, help="Run in windows compatibility mode")
+def poweroff(sudo:bool, reboot:bool, windows:bool):
     server = lzglobal.settings.server
     cmd = "systemctl"
-    if sudo:
-        cmd = f"sudo {cmd}"
-    if reboot:
-        cmd = f"{cmd} reboot"
+    if not windows:
+        if sudo:
+            cmd = f"sudo {cmd}"
+        if reboot:
+            cmd = f"{cmd} reboot"
+        else:
+            cmd = f"{cmd} poweroff"
     else:
-        cmd = f"{cmd} poweroff"
+        cmd = "/mnt/c/Windows/System32/shutdown.exe"
+        if reboot:
+            cmd = f"{cmd} /r"
+        else:
+            cmd = f"{cmd} /s"
+        cmd = f"{cmd} /t 0"
     os.system(f"ssh {server.ip} '{cmd}'")
 
 @sr.command()
