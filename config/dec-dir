@@ -1,0 +1,61 @@
+#!/bin/bash
+
+set -e
+
+temp_tar_name="___temp.tar.gz"
+USAGE="Usage: decrypt-dir TARGET
+
+    TARGET    The path to the encrypted directory to be decrypted";
+
+if [[ $1 == "-h" ]] || [[ $1 == "--help" ]] ;then
+    echo $USAGE
+    exit
+fi
+
+if [[ $# != 1 ]] || [ ! -f $1 ] ;then
+    echo "Error: The argument should be a path to a encrypted directory you wish to decrypt";
+    echo $USAGE;
+    exit;
+fi
+
+gpg -o $temp_tar_name -d $1 
+
+tar zxvf $temp_tar_name
+
+rm $temp_tar_name
+rm $1
+exit
+
+
+
+
+set -e
+
+temp_tar_name="___temp.tar.gz"
+USAGE="Usage: decrypt-dir TARGET
+
+    TARGET    The path to the encrypted directory to be decrypted";
+
+if [[ $1 == "-h" ]] || [[ $1 == "--help" ]] ;then
+    echo $USAGE
+    exit
+fi
+
+if [[ $# != 1 ]] || [ ! -f $1 ] ;then
+    echo "Error: The argument should be a path to a encrypted directory you wish to decrypt";
+    echo $USAGE;
+    exit;
+fi
+
+dec-file $1
+
+filename="$(basename $1)"
+filename="${filename%.*}"
+
+truename="${filename%.*}"
+truename="${filename%.*}"
+
+tar zxvf $filename --directory=$truename
+
+rm $filename
+rm -f $1

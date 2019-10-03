@@ -1,0 +1,242 @@
+#!/bin/bash
+
+# ▂▃▅▇█▓▒░LAZ░▒▓█▇▅▃▂
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Alias START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+#alias reboot='systemctl reboot'
+#alias poweroff='sudo poweroff'
+alias cp='cp -rv'
+alias mv='mv -v'
+alias rm='rm -v'
+alias cc='clear'
+alias echo='echo -e'
+#alias ll='ls -AlhF'
+alias ee='exit'
+alias poweroff='systemctl poweroff'
+alias reboot='systemctl reboot'
+alias em='emacsclient -a "" -c &'
+alias suspend='systemctl suspend'
+alias hibernate='systemctl hibernate'
+alias hybrid-sleep='systemctl hybrid-sleep'
+alias gg1="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+alias gg2="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
+alias gg3="git log --all --decorate --oneline --graph"
+alias docker="sudo docker"
+alias python3.7='~/.virtualenvs/lztools/bin/python3.7'
+alias python3='python3.7'
+alias python='python3.7'
+#alias dd='dd bs status=progress conv=fsync'
+alias gdb='gdb -x ~/lab/gdb_cmd'
+#alias emacs='emacs -nw'
+alias e='emacs'
+#alias bpython='PYTHONPATH=/usr/bin/bpython3 python3.7 -m bpython.cli'
+#alias bpython3='PYTHONPATH=/usr/bin/bpython3 python3.7 -m bpython.cli'
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Alias END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Vars START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+branch='$(lgit branch -b 2>/dev/null)'
+
+# Devices
+base_ip=192.168.87
+main_ip=$base_ip.2
+media_laptop_ip=$base_ip.7
+laptop_ip=$base_ip.8
+tablet_ip=$base_ip.9
+phone_ip=$base_ip.10
+org_ip=$base_ip.99
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Vars END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Export START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+# Devices
+export BASE_IP=$base_ip
+export MY_IP=$main_ip
+export MEDIALT_IP=$media_laptop_ip
+export LAPTOP_IP=$laptop_ip
+export TABLET_IP=$tablet_ip
+export A5_IP=$phone_ip
+export OrgServer=$org_ip
+
+export PS1="\[$(tput setaf 7)\]$branch\[$(tput bold)\]\[$(tput setaf 1)\]\u@\h \[$(tput setaf 2)\]\d \[$(tput setaf 4)\]\A \[$(tput setaf 6)\]\# \[$(tput setaf 5)\]\!  \[$(tput setaf 3)\]\w\[$(tput setaf 7)\]\n\\$> \[$(tput sgr0)\]"
+
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/dev
+# export VIRTUALENVWRAPPER_SCRIPT=/home/zanzes/.virtualenvs/lztools/bin/virtualenvwrapper.sh
+# source /home/zanzes/.virtualenvs/lztools/bin/virtualenvwrapper_lazy.sh 2> /dev/null
+# source /usr/share/virtualenvwrapper/virtualenvwrapper_lazy.sh
+# source /home/zanzes/.local/bin/virtualenvwrapper.sh
+#VIRTUALENVWRAPPER_PYTHON=/home/zanzes/.virtualenvs/lztools/bin/python3.7
+#source /home/zanzes/.local/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper.sh
+
+
+# Arduino
+export ARDUINO_DIR=/usr/share/arduino
+#export ARDMK_DIR=/home/sudar/Dropbox/code/Arduino-Makefile
+export AVR_TOOLS_DIR=/usr/include
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Export END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Other START <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+#shopt -s extdebug
+#function auto_source_names {
+#    local CMD="$BASH_COMMAND"
+#    if [[ "$CMD" == dev-init* ]];then
+#        #w=$(lwhere dev-init)
+#        echo "Autosourcing"
+#        eval ". $CMD"
+#    elif [[ "$CMD" == pedit || "$CMD" == *"/pedit" ]];then
+#        echo "Autosourcing"
+#        eval ". $CMD"
+#    fi
+#}
+#trap 'auto_source_names' DEBUG
+
+
+eval "$(_LZTOOLS_COMPLETE=source lztools 2> /dev/null)" 2> /dev/null
+stty -ixon
+PROMPT_COMMAND='source /home/zanzes/.lztools/scripts/data_loader 2> /dev/null'
+#clear
+
+# added by Anaconda3 installer
+# export PATH="/home/zanzes/.anaconda3/bin:$PATH"
+
+venv="lztools"
+
+
+workon $venv
+
+if [[ -n "$TMUX" ]]; then
+    x=$(tmux list-panes | wc -l)
+    if [[ $x == 1 ]];then 
+        workon $venv
+        tmux splitw -h
+    elif [[ $x == 2 ]];then
+        workon $venv
+        tmux splitw
+    elif [[ $x == 3 ]];then
+        workon $venv
+        htop
+    fi
+fi 
+
+shopt -s extdebug
+function auto_source_names {
+    local CMD="$BASH_COMMAND"
+    if [[ $CMD == *" -h" ]];then
+        echo "Used auto --help"
+        ${CMD/ -h/ --help}
+        return 555
+    fi
+}
+trap 'auto_source_names' DEBUG
+
+export http_proxy=''
+export https_proxy=''
+export ftp_proxy=''
+export socks_proxy=''
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+function iso-to-disk()
+{
+    if [[ $# != 2 ]]; then
+        echo "Usage: dd {ISO} {DISK}"
+        echo ""
+        echo "Example:"
+        echo "  If the iso is named example.iso and"
+        echo "  the disk is named sdf"
+        echo "  then the correct command would be:"
+        echo ""
+        echo "      dd example.iso /dev/sdf"
+        echo ""
+        echo "  Which would generate the complete command:"
+        echo ""
+        echo "      dd bs=4M if=example.iso of=/dev/sdf status=progress conv=fsync";
+        echo ""
+        (>&2 echo "Error: Missing argument")
+    else
+        sudo dd bs=4M if=$1 of=$2 status=progress conv=fsync
+    fi
+}
+
+function sau()
+{
+    sudo apt update && sudo apt upgrade -y
+}
+
+
+eval "$(stack --bash-completion-script stack)"
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Other END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Functions <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
+
+# Googeling
+function ggl()
+{
+    googler --unfilter --noprompt -n 3 $*;
+}
+
+function ggl-open()
+{
+    googler --first --unfilter --noprompt $*;
+}
+
+shopt -s dotglob
+
+# Encrypting secrets
+function unlock-secrets()
+{
+    start=$(pwd)
+    cd ~/org/
+    dec-dir fuck_off.tar.gz.gpg
+    cd "$start"
+}
+
+function lock-secrets()
+{
+    start=$(pwd)
+    cd ~/org/
+    enc-dir fuck_off
+    cd "$start"
+}
+
+# Databases for locate
+function update-locate-files()
+{
+    estr="Creating locate database (Skipping: "
+
+    echo "$estr/mnt/win7)"
+    sudo updatedb --prunepaths=/mnt/win7 -o skip_Win7_Data.db
+    
+    echo "$estr/mnt/data)"
+    sudo updatedb --prunepaths=/mnt/data -o skip_Win7_Data.db
+    
+    echo "$estr/mnt/win7, /mnt/data)"
+    sudo updatedb --prunepaths="/mnt/win7 /mnt/data" -o skip_Win7_Data.db
+}
+
+function pymod-install()
+{
+    pt=$(pwd)
+    cd $1
+    python3.7 setup.py install
+    rm -rf dist > /dev/null
+    rm -rf build > /dev/null 
+    rm -rf *.egg-info > /dev/null 
+    cd $pt
+}
+
+function install-website()
+{
+    rm -rfv /var/www/html/*;
+    cp -rv /home/zanzes/dev/FaceTutor/* /var/www/html/.;
+}
+
+
+# ∙∙∙∙∙·▫▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ☼)===> Other END <===(☼ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫ₒₒ▫ᵒᴼᵒ▫▫·∙∙∙∙∙
