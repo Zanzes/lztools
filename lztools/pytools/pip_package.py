@@ -220,7 +220,7 @@ def create(name, pack=""):
 
     cli = pack.joinpath("cli")
     cli.mkdir()
-    command = cli.joinpath("pytools.py")
+    command = cli.joinpath("pytools_old.py")
     mf(command, _command_text.format(fullname=data["fullname"]))
 
 def _get_modules(path:Path):
