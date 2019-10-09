@@ -18,7 +18,8 @@ setup(
         'lztools.lzenv',
         'lztools.pytools',
         'lztools.types',
-        'lztools.text'
+        'lztools.text',
+        'remote_tools'
     ],
     zip_safe=False,
     include_package_data=True,

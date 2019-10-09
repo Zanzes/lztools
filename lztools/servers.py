@@ -74,6 +74,7 @@ def load() -> List[Server]:
                 server.ip, server.system_name, server.mac, server.mac_name, server.custom_name = vals
             else:
                 vals.append(None)
+                print(vals)
                 server.ip, server.system_name, server.mac, server.mac_name, server.custom_name = vals
             servers.append(server)
     return servers

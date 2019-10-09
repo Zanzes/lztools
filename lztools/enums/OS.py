@@ -1,0 +1,6 @@
+Linux = "Linux"
+Windows = "Windows"
+WSL = "WSL"
+Cygwin = "Cygwin"
+Mac = "Mac"
+Bsd = "Bsd"

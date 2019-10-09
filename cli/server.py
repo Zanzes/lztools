@@ -88,8 +88,7 @@ def my_print(properties):
 @click.option("-b", "--blind-kill", is_flag=True, default=False, help="Try to poweroff a server without this software installed")
 def poweroff(sudo:bool, reboot:bool, blind_kill:bool):
     if not hasattr(lzglobal.settings, "server"):
-        print("Poweroff")
-        xplatform.execute(linux.poweroff(reboot, sudo), windows.poweroff(reboot))
+        print("")
 
     server = lzglobal.settings.server
     if not blind_kill:
