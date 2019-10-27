@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{08c432bd-f767-4bf4-8cb9-653a6ae48d7e}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>post_setup.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>Global|VisualStudio|The main venv for lztools</InterpreterId>
+    <TestFramework>Pytest</TestFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cli\bash_tools.py" />
+    <Compile Include="cli\clipboard.py" />
+    <Compile Include="cli\currency.py" />
+    <Compile Include="cli\playlist.py" />
+    <Compile Include="cli\pytools.py" />
+    <Compile Include="cli\pytools_old.py" />
+    <Compile Include="cli\scatter.py" />
+    <Compile Include="cli\server.py" />
+    <Compile Include="cli\utils.py" />
+    <Compile Include="cli\__init__.py" />
+    <Compile Include="lztools\alarm.py" />
+    <Compile Include="lztools\ansi.py" />
+    <Compile Include="lztools\bash.py" />
+    <Compile Include="lztools\bashrc.py" />
+    <Compile Include="lztools\constants.py" />
+    <Compile Include="lztools\currency.py" />
+    <Compile Include="lztools\enums\BrowserType.py" />
+    <Compile Include="lztools\enums\ClipboardBuffer.py" />
+    <Compile Include="lztools\enums\FileExtension.py" />
+    <Compile Include="lztools\enums\OS.py" />
+    <Compile Include="lztools\enums\PlaylistType.py" />
+    <Compile Include="lztools\enums\RemoteTool.py" />
+    <Compile Include="lztools\enums\__init__.py" />
+    <Compile Include="lztools\file_rotator.py" />
+    <Compile Include="lztools\generator.py" />
+    <Compile Include="lztools\io.py" />
+    <Compile Include="lztools\linux.py" />
+    <Compile Include="lztools\lzassert.py" />
+    <Compile Include="lztools\lzenv.py" />
+    <Compile Include="lztools\lzenv\lzenv.py" />
+    <Compile Include="lztools\lzenv\main_layout.py" />
+    <Compile Include="lztools\lzenv\__init__.py" />
+    <Compile Include="lztools\lzglobal.py" />
+    <Compile Include="lztools\mac.py" />
+    <Compile Include="lztools\networking.py" />
+    <Compile Include="lztools\playlist.py" />
+    <Compile Include="lztools\pytools\class_tools.py" />
+    <Compile Include="lztools\pytools\debugging.py" />
+    <Compile Include="lztools\pytools\mod_tools.py" />
+    <Compile Include="lztools\pytools\obj_tools.py" />
+    <Compile Include="lztools\pytools\pip_package.py" />
+    <Compile Include="lztools\pytools\utils.py" />
+    <Compile Include="lztools\pytools\__init__.py" />
+    <Compile Include="lztools\servers.py" />
+    <Compile Include="lztools\settings.py" />
+    <Compile Include="lztools\share.py" />
+    <Compile Include="lztools\sound.py" />
+    <Compile Include="lztools\text\BlockWriter.py" />
+    <Compile Include="lztools\text\ColumnWriter.py" />
+    <Compile Include="lztools\text\lztext.py" />
+    <Compile Include="lztools\text\match_pairs.py" />
+    <Compile Include="lztools\text\text_styler.py" />
+    <Compile Include="lztools\text\__init__.py" />
+    <Compile Include="lztools\third.py" />
+    <Compile Include="lztools\third\docker.py" />
+    <Compile Include="lztools\third\DockerData.py" />
+    <Compile Include="lztools\third\git.py" />
+    <Compile Include="lztools\third\GitRepo.py" />
+    <Compile Include="lztools\third\Images.py" />
+    <Compile Include="lztools\third\main.py" />
+    <Compile Include="lztools\third\Qt.py" />
+    <Compile Include="lztools\timing_and_dating.py" />
+    <Compile Include="lztools\types\Constraint.py" />
+    <Compile Include="lztools\types\Descriptor.py" />
+    <Compile Include="lztools\types\DescriptorDict.py" />
+    <Compile Include="lztools\types\HttpString.py" />
+    <Compile Include="lztools\types\named_tuples.py" />
+    <Compile Include="lztools\types\Server.py" />
+    <Compile Include="lztools\types\__init__.py" />
+    <Compile Include="lztools\vault.py" />
+    <Compile Include="lztools\web.py" />
+    <Compile Include="lztools\web\BrowserController.py" />
+    <Compile Include="lztools\web\Driver.py" />
+    <Compile Include="lztools\web\ElementVisibilityTimeout.py" />
+    <Compile Include="lztools\web\GenericPage.py" />
+    <Compile Include="lztools\web\HTMLElement.py" />
+    <Compile Include="lztools\web\HTMLElementList.py" />
+    <Compile Include="lztools\web\LocatorCollection.py" />
+    <Compile Include="lztools\windows.py" />
+    <Compile Include="lztools\work_logger.py" />
+    <Compile Include="lztools\xplatform.py" />
+    <Compile Include="lztools\zlick.py" />
+    <Compile Include="lztools\__init__.py" />
+    <Compile Include="lztools\__main__.py" />
+    <Compile Include="lztools\__resources.py" />
+    <Compile Include="post_setup.py" />
+    <Compile Include="remote_tools\identify_os.py" />
+    <Compile Include="remote_tools\ssh-ensure-key.py" />
+    <Compile Include="remote_tools\__init__.py" />
+    <Compile Include="setup.py" />
+    <Compile Include="tmp.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="cli" />
+    <Folder Include="lztools" />
+    <Folder Include="lztools\enums" />
+    <Folder Include="lztools\lzenv" />
+    <Folder Include="lztools\pytools" />
+    <Folder Include="lztools\text" />
+    <Folder Include="lztools\third" />
+    <Folder Include="lztools\types" />
+    <Folder Include="lztools\web" />
+    <Folder Include="remote_tools" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|VisualStudio|The main venv for lztools" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>

@@ -81,12 +81,14 @@ def load() -> List[Server]:
 
 def find(like:bool=True, **kwargs) -> Server:
     for server in get_servers():
-        for arg in kwargs:
+        for key, value in kwargs.items():
             if like:
-                if not kwargs[arg] in server.__dict__[arg]:
+                print(f"{key}: {value}")
+                print(server.__dict__)
+                if value not in server.__dict__[key]:
                     continue
             else:
-                if not kwargs[arg] == server.__dict__[arg]:
+                if not value == server.__dict__[key]:
                     continue
             return server
 

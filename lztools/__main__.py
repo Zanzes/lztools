@@ -16,5 +16,5 @@ def execute_on(execute, server:Server):
     print(cmd)
     os.system(cmd)
 
-s = servers.find(True, custom_name="main")
+s = servers.find(True, custom_name="rasp")
 execute_on(RemoteTool.IdentifyOS, s)
