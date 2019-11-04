@@ -121,17 +121,19 @@ def scatter_files(base_path:Path, recursive:bool=True, scatter_name:str="_scatte
 
     for item in base_path.iterdir():
         if item.name == scatter_name:
-            _scatter_file_routine(item, sudo)
+            _scatter_now_routine(item, sudo)
         if recursive and item.is_dir():
             scatter_files(item, recursive)
 
-def _scatter_file_routine(scatter_file:Path, sudo:bool=False):
+def _scatter_now_routine(scatter_file:Path, sudo:bool=False):
     text = scatter_file.read_text()
     for line in text.strip().splitlines():
         if "->" not in line:
             continue
         if line.startswith("#"):
             continue
+        if line.startswith("¤ "):
+            line = line[2:]
         split = line.split("->")
         if not len(split) == 2:
             continue
@@ -145,6 +147,38 @@ def _scatter_file_routine(scatter_file:Path, sudo:bool=False):
             copy_anything(path_a, path_b)
         else:
             os.system(f"sudo cp {path_a.absolute()} {path_b.absolute()}")
+
+def collect_files(base_path:Path, recursive:bool=True, scatter_name:str="_scatter_", sudo:bool=False):
+    if not base_path:
+        base_path = get_current_path()
+
+    for item in base_path.iterdir():
+        if item.name == scatter_name:
+            _scatter_collect_routine(item, sudo)
+        if recursive and item.is_dir():
+            collect_files(item, recursive)
+
+def _scatter_collect_routine(scatter_file:Path, sudo:bool=False):
+    text = scatter_file.read_text()
+    for line in text.strip().splitlines():
+        if "->" not in line:
+            continue
+        if not line.startswith("¤ "):
+            continue
+        line = line[2:]
+        split = line.split("->")
+        if not len(split) == 2:
+            continue
+        path_a:Path = scatter_file.parent.joinpath(split[0].strip())
+        path_b = Path(split[1].strip()).expanduser()
+
+        from lztools import lzglobal
+        #if lzglobal.settings.verbose:
+        print(f"Copying: {path_b.absolute()} -> {path_a.absolute()}")
+        # if not sudo:
+        #     copy_anything(path_a, path_b)
+        # else:
+        #     os.system(f"sudo cp {path_a.absolute()} {path_b.absolute()}")
 
 def _gen_exp_fn(name):
     return f"{name}¤{datetime.now()}.{FileExtension.expiring_file}"

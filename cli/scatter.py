@@ -47,11 +47,21 @@ def add(copy_from, copy_to, path:str, name:str):
     text.append(f"{copy_from} -> {copy_to}")
     p.write_text("\n".join(text))
 
+
 @scatter.command()
 @click.option("-p", "--path", default=".")
 @click.option("-n", "--name", default="_scatter_")
-def create(path:str, name:str):
+def create(path: str, name: str):
     p = Path(path)
     if not p.name == name:
         p = p.joinpath(name)
     p.touch()
+
+@scatter.command()
+@click.argument("SEARCH_PATH", default=".")
+@click.option("-r/-c", "--recursive/--current-dir", default=False)
+@click.option("-n", "--name", default="_scatter_")
+@click.option("-s", "--sudo", is_flag=True, default=False)
+def collect(search_path, recursive:bool, name:str, sudo:bool):
+    io.collect_files(Path(search_path), recursive, scatter_name=name, sudo=sudo)
+
